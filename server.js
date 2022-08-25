@@ -1,11 +1,11 @@
 // Create an instance of a server
 const express = require('express');
-// const connectDB = require('./config/db');
+const connectDB = require('./config/db');
 // const path = require('path');
 const app = express();
 
 //Connect DB
-// connectDB();
+connectDB();
 
 app.get('/', (req, res) => res.json({msg: "We are Here"}));
 
