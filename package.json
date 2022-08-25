@@ -2,7 +2,7 @@
   "name": "maintenance-log-tracker",
   "version": "1.0.0",
   "description": "A Maintenance Log Tracker App",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js"
