@@ -37,6 +37,14 @@ const TechSchema = mongoose.Schema({
     },
     salt: String,
 
+    permissions: [{
+        get: Boolean,
+        post: Boolean,
+        update: Boolean,
+        delete: Boolean
+
+    }],
+
     created: {
         type: Date,
         default: Date.now

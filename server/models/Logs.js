@@ -5,6 +5,12 @@ const LogSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    
+    tech:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tech'
+    },
+
     message: {
         type: String,
         required: [true, 'Name is Required']
