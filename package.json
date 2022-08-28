@@ -13,6 +13,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.3.7",
+    "crypto": "^1.0.1",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
@@ -24,7 +25,10 @@
     "react-redux": "^8.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
     "babel": "^6.23.0",
+    "babel-loader": "^8.2.5",
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "webpack": "^5.74.0",

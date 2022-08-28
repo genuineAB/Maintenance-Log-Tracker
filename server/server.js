@@ -13,7 +13,7 @@ app.get('/', (req, res) => res.json({msg: "We are Here"}));
 // app.use(express.json({extended:false}))
 
 
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 // Define Routes
 app.use('/api/users', require('./routes/users'));
@@ -21,4 +21,4 @@ app.use('/api/logs', require('./routes/logs'));
 app.use('/api/techs', require('./routes/techs'));
 app.use('/api/auth', require('./routes/auth'));
 
-app.listen(PORT, () => console.log(`Server Started at ${PORT}`));
+app.listen(port, () => console.log(`Server Started at ${port}`));
