@@ -2,7 +2,7 @@ const mongoose = require('mongosse');
 const crypto = require('crypto');
 
 var validateEmail = function(email) {
-    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var re = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
     return re.test(email)
 };
 
@@ -18,8 +18,9 @@ const UserSchema = mongoose.Schema({
         required: [true, 'Email is Required'], 
         lowercase: true,
         trim: true,
+        unique: true,
         validate: [validateEmail, 'Please Enter a Valid Email Address'],
-        unique: true
+        match: [/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i , 'Please Enter a Valid Email Address']
     },
 
     hashed_password: {
@@ -81,6 +82,8 @@ UserSchema.methods = {
 
 
 //Password Field Validation
+const decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
 UserSchema.path('hashed_password').validate(function(v) {
     if(this._password && !this._password.match(decimal)){
         this.invalidate('password', 'Password must be 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character');
@@ -90,6 +93,6 @@ UserSchema.path('hashed_password').validate(function(v) {
     }
 }, null)
 
-const decimal=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
 
 module.exports = mongoose.model('user', UserSchema)
