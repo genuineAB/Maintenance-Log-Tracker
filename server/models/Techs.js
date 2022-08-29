@@ -5,6 +5,11 @@ var validateEmail = function(email) {
     return re.test(email)
 };
 
+// var validatePhoneNumber = function(phone){
+//     var phoneNo = /^\+?([0-9]{2,3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+//     return phoneNo.test(phone)
+// }
+
 const TechSchema = mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +24,23 @@ const TechSchema = mongoose.Schema({
     lastName: {
         type: String,
         required: [true, 'Name is Required']
+    },
+
+    contractor: {
+        type: Boolean,
+        required: [true, 'Name is Required']
+    },
+
+    occupation: {
+        type: String,
+
+    },
+
+    phoneNumber: {
+        type: String,
+        required: [true, 'Phone Number is Required']
+        // validate: [validatePhoneNumber, 'Please Enter a Valid Phone Number'],
+        // match: [/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i , 'Please Enter a Valid Phone Number']
     },
 
     email: {
