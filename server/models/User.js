@@ -1,4 +1,4 @@
-const mongoose = require('mongosse');
+const mongoose = require('mongoose');
 const crypto = require('crypto');
 
 var validateEmail = function(email) {
@@ -27,13 +27,19 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: [true, 'Password is Required']
     },
-    salt: String,
+    salt: {
+        type: String
+    },
 
     created: {
         type: Date,
         default: Date.now
     },
-    updated : Date.now
+
+    updated : {
+        type: Date,
+        default: Date.now
+    } 
 });
 
 

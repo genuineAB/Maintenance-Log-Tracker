@@ -10,7 +10,7 @@ connectDB();
 app.get('/', (req, res) => res.json({msg: "We are Here"}));
 
 //Initialize Middleware
-// app.use(express.json({extended:false}))
+app.use(express.json({extended:false}))
 
 
 const port = process.env.PORT || 5000;
