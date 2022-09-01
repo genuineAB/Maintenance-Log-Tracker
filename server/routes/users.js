@@ -69,8 +69,15 @@ router.post('/',
 // @route GET api/users
 // @desc Get all registered users
 // @access Private
-router.get('/', (req, res) => {
-    res.json({msg: 'Get Registered Users'});
+router.get('/', async (req, res) => {
+    try {
+        let users = await User.find().sort({date: -1});
+        res.json({users});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+
 });
 
 // @route UPDATE api/users/:id
