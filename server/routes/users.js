@@ -17,7 +17,7 @@ router.post('/',
     body('email', 'Please include a valid email').isEmail(),
     //username must not be empty
     body('name', 'Please add Name').not().isEmpty(),
-    // password must be at least 5 chars long
+    // password must be at least 6 chars long
     body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 6 }), async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -43,7 +43,7 @@ router.post('/',
             const salt = await bcrypt.genSalt(10);
             user.hashed_password = await bcrypt.hash(hashed_password, salt);
 
-            // res.send('Got Here')
+            
             await user.save();
 
             const payload ={
@@ -51,7 +51,7 @@ router.post('/',
                     id: user.id
                 }
             }
-            // res.send('Got Here')
+            
             jwt.sign(payload, config.get('jwtSecret'), {
                 expiresIn: 36000
             }, (err, token) => {
