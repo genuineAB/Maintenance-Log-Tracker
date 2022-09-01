@@ -130,8 +130,22 @@ router.patch('/:id', async (req, res) => {
 // @route DELETE api/users/:id
 // @desc DELETE registered user
 // @access Private
-router.delete('/:id', (req, res) => {
-    res.json({msg: 'Delete a registered user'});
+router.delete('/:id', async (req, res) => {
+    try {
+        let contact = await User.findById(req.params.id);
+
+        if(!contact){
+            return res.status(404).json({msg: "Contact not found"})
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+
+        res.json({msg: "User deleted"});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
 });
+
 
 module.exports = router;
