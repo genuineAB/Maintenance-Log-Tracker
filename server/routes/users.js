@@ -115,6 +115,9 @@ router.patch('/:id', async (req, res) => {
             { $set: userFields },
             { new: true }
           );
+        
+        // Password Sanitization
+        user.hashed_password = undefined;
 
         res.json({user});
     } catch (error) {
