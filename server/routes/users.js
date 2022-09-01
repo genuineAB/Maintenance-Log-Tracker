@@ -71,7 +71,7 @@ router.post('/',
 // @access Private
 router.get('/', async (req, res) => {
     try {
-        let users = await User.find().sort({date: -1});
+        let users = await User.find().select('name email created updated').sort({date: -1});
         res.json({users});
     } catch (error) {
         console.error(error.message);
@@ -83,8 +83,45 @@ router.get('/', async (req, res) => {
 // @route UPDATE api/users/:id
 // @desc UPDATE registered user
 // @access Private
-router.patch('/:id', (req, res) => {
-    res.json({msg: 'Update a registered user'});
+router.patch('/:id', async (req, res) => {
+    const {name, email, hashed_password} = req.body;
+
+    //Encrypting Password
+    const salt = await bcrypt.genSalt(10);
+    newPassword = await bcrypt.hash(hashed_password, salt);
+    
+    //Create Contact Field Object
+    const userFields = {};
+    if (name){
+        userFields.name = name;
+    }
+    if (email){
+        userFields.email = email;
+    }
+    if (hashed_password){
+        userFields.hashed_password = newPassword;
+    }
+    userFields.updated = Date.now();
+
+    try {
+        let user = await User.findById(req.params.id);
+
+        if(!user){
+            return res.status(404).json({msg: " User not found"})
+        }
+
+        contact = await User.findByIdAndUpdate(
+            req.params.id,
+            { $set: userFields },
+            { new: true }
+          );
+
+        res.json({user});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+        
+    }
 });
 
 // @route DELETE api/users/:id
