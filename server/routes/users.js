@@ -80,6 +80,24 @@ router.get('/', async (req, res) => {
 
 });
 
+
+// @route GET api/users/:id
+// @desc GET a single user
+// @access Private
+router.get('/:id', async (req, res) => {
+    try {
+        let user = await User.findById(req.params.id).select('name email created updated');
+
+        if(!user){
+            return res.status(400).send("No user found");
+        }
+        res.json({user});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+})
+
 // @route UPDATE api/users/:id
 // @desc UPDATE registered user
 // @access Private
@@ -90,7 +108,7 @@ router.patch('/:id', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     newPassword = await bcrypt.hash(hashed_password, salt);
     
-    //Create Contact Field Object
+    //Create User Field Object
     const userFields = {};
     if (name){
         userFields.name = name;
@@ -132,10 +150,10 @@ router.patch('/:id', async (req, res) => {
 // @access Private
 router.delete('/:id', async (req, res) => {
     try {
-        let contact = await User.findById(req.params.id);
+        let user = await User.findById(req.params.id);
 
-        if(!contact){
-            return res.status(404).json({msg: "Contact not found"})
+        if(!user){
+            return res.status(404).json({msg: "User not found"})
         }
 
         await User.findByIdAndDelete(req.params.id);
