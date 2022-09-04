@@ -12,10 +12,10 @@ const User = require('../models/User');
 // @route GET api/auth
 // @desc Get Logged in User
 //@access Private
-router.get('/', 
+router.get('/',
     // email validation
     body('email', 'Please include a valid email').isEmail(),
-    // must include password
+    // must include password 
     body('hashed_password', 'Please Enter a Password').exists(),
     async (req, res) => {
         const errors = validationResult(req);
@@ -94,7 +94,7 @@ router.post('/',
                     id: user.id
                 }
             }
-            
+
             jwt.sign(payload, config.get('jwtSecret'), {
                 expiresIn: 36000
             }, (err, token) => {
