@@ -96,8 +96,6 @@ router.post('/', auth,
 router.patch('/:id', auth, async (req, res) => {
     const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
 
-    
-
     //Create Tech Fields
     const techField = {};
 
@@ -155,8 +153,21 @@ router.patch('/:id', auth, async (req, res) => {
 // @route DELETE api/tech
 // @desc Delete Maintenance Log
 //@access Private
-router.delete('/:id',async (req, res) => {
-    res.json({msg: 'Delete Maintenance tech'});
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        let tech = await Tech.findById(req.params.id);
+
+        if(!tech){
+            return res.status(400).send("Technician not Found");
+        }
+
+        await Tech.findByIdAndDelete(req.params.id);
+
+        res.json({msg: 'Technician Deleted'});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
 });
 
 module.exports = router;

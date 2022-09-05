@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
 
 
 
@@ -69,7 +70,7 @@ router.post('/',
 // @route GET api/users
 // @desc Get all registered users
 // @access Private
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         let users = await User.find().select('name email created updated').sort({date: -1});
         res.json({users});
@@ -84,7 +85,7 @@ router.get('/', async (req, res) => {
 // @route GET api/users/:id
 // @desc GET a single user
 // @access Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
         let user = await User.findById(req.params.id).select('name email created updated');
 
@@ -101,7 +102,7 @@ router.get('/:id', async (req, res) => {
 // @route UPDATE api/users/:id
 // @desc UPDATE registered user
 // @access Private
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
     const {name, email, hashed_password} = req.body;
 
     
@@ -149,7 +150,7 @@ router.patch('/:id', async (req, res) => {
 // @route DELETE api/users/:id
 // @desc DELETE registered user
 // @access Private
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
 
