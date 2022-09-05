@@ -8,6 +8,7 @@ const auth = require('../../middleware/auth');
 
 const User = require('../models/User');
 const Tech = require('../models/Techs');
+const { has } = require('config');
 // @route GET api/tech
 // @desc Get Saved Maintenance tech
 //@access Private
@@ -92,14 +93,69 @@ router.post('/', auth,
 // @route PATCH api/tech
 // @desc Update Maintenance Log
 //@access Private
-router.patch('/:id', (req, res) => {
-    res.json({msg: 'Update Maintenance tech'});
+router.patch('/:id', auth, async (req, res) => {
+    const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
+
+    
+
+    //Create Tech Fields
+    const techField = {};
+
+    if(firstName){
+        techField.firstName = firstName
+    }
+    if(lastName){
+        techField.lastName = lastName
+    }
+    if(hashed_password){
+        //Encrypting Password
+        const salt = await bcrypt.genSalt(10);
+        let newPassword = await bcrypt.hash(hashed_password, salt);
+        techField.hashed_password = newPassword
+    }
+    if(phoneNumber){
+        techField.phoneNumber = phoneNumber
+    }
+    if(email){
+        techField.email = email
+    }
+    if(occupation){
+        techField.occupation = occupation
+    }
+    if(employment_type){
+        techField.employment_type = employment_type
+    }
+    if(role){
+        techField.role = role
+    }
+    techField.updated = Date.now();
+
+    try {
+        let tech = await Tech.findById(req.params.id);
+
+        if(!tech){
+            return res.status(400).send("Technician not found");
+        }
+
+        tech = await Tech.findByIdAndUpdate(
+            req.params.id,
+            {$set: techField},
+            {new: true}
+        )
+
+        tech.hashed_password = undefined;
+        res.json({tech});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+
 });
 
 // @route DELETE api/tech
 // @desc Delete Maintenance Log
 //@access Private
-router.delete('/:id', (req, res) => {
+router.delete('/:id',async (req, res) => {
     res.json({msg: 'Delete Maintenance tech'});
 });
 

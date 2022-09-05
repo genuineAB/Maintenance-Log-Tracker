@@ -60,7 +60,7 @@ router.post('/',
             })
 
         } catch (error) {
-            console.error(error.msg);
+            console.error(error.message);
             res.status(500).send('Server Error');
         }
 });
@@ -104,9 +104,7 @@ router.get('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
     const {name, email, hashed_password} = req.body;
 
-    //Encrypting Password
-    const salt = await bcrypt.genSalt(10);
-    newPassword = await bcrypt.hash(hashed_password, salt);
+    
     
     //Create User Field Object
     const userFields = {};
@@ -117,6 +115,9 @@ router.patch('/:id', async (req, res) => {
         userFields.email = email;
     }
     if (hashed_password){
+        //Encrypting Password
+        const salt = await bcrypt.genSalt(10);
+        newPassword = await bcrypt.hash(hashed_password, salt);
         userFields.hashed_password = newPassword;
     }
     userFields.updated = Date.now();
