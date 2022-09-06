@@ -9,8 +9,9 @@ const auth = require('../../middleware/auth');
 const User = require('../models/User');
 const Tech = require('../models/Techs');
 const { has } = require('config');
+
 // @route GET api/tech
-// @desc Get Saved Maintenance tech
+// @desc Get All technician
 //@access Private
 router.get('/', auth, async(req, res) => {
     try {
@@ -23,7 +24,7 @@ router.get('/', auth, async(req, res) => {
 });
 
 // @route POST api/tech
-// @desc Add to Maintenance tech
+// @desc Add Technician
 //@access Private
 router.post('/', auth,
     // email validation
@@ -92,9 +93,25 @@ router.post('/', auth,
             res.status(500).send("Server Error");
         }
 });
+// @route GET api/tech/:id
+// @desc Get Single User
+// @access Private
+router.get('/:id', auth, async (req, res) => {
+    try {
+        let tech = await Tech.findById(req.params.id).select('firstName lastName email occupation employment_type role');
 
-// @route PATCH api/tech
-// @desc Update Maintenance Log
+        if(!tech){
+            return res.status(400).send("Technician does not exist");
+        }
+        res.json({tech});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
+})
+
+// @route PATCH api/tech/:id
+// @desc Update Technician Details
 //@access Private
 router.patch('/:id', auth, async (req, res) => {
     const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
@@ -153,8 +170,8 @@ router.patch('/:id', auth, async (req, res) => {
 
 });
 
-// @route DELETE api/tech
-// @desc Delete Maintenance Log
+// @route DELETE api/tech/:id
+// @desc Delete Technician
 //@access Private
 router.delete('/:id', auth, async (req, res) => {
     try {
