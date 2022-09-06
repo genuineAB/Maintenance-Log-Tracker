@@ -4,21 +4,22 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth')
 
 
 
-const User = require('../models/User');
+// const User = require('../models/User');
+const Tech = require('../models/Techs');
 
 // @route GET api/auth
 // @desc Get Logged in User
 //@access Private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
         
         try {
-            let user = await User.findById(req.user.id).select('-password');
-            res.json({user})
-           
+            let tech = await Tech.findById(req.tech.id).select('-password');
+
+            res.json({tech});
+
         } catch (error) {
             console.error(error.message);
             res.status(500).send('Server Error');
@@ -41,21 +42,21 @@ router.post('/',
         const {email, hashed_password} = req.body;
         
         try {
-            let user = await User.findOne({email});
+            let tech = await Tech.findOne({email});
 
-            if(!user){
-                return res.status(400).json({msg: "Invalid User, Register User"});
+            if(!tech){
+                return res.status(400).json({msg: "Invalid Credentials"});
             }
 
-            const isMatch = await bcrypt.compare(hashed_password, user.hashed_password);
+            const isMatch = await bcrypt.compare(hashed_password, tech.hashed_password);
             
             if(!isMatch){
                 return res.status(400).res.json({msg: 'Invalid Credentials'});
             }
             
             const payload ={
-                user: {
-                    id: user.id
+                tech: {
+                    id: tech.id
                 }
             }
 

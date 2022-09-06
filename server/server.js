@@ -20,5 +20,6 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/logs', require('./routes/logs'));
 app.use('/api/techs', require('./routes/techs'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('api/techAuth', require('./routes/techAuth'));
 
 app.listen(port, () => console.log(`Server Started at ${port}`));
