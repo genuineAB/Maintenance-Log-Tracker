@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth');
 
 
 
@@ -50,7 +50,7 @@ router.post('/',
             const isMatch = await bcrypt.compare(hashed_password, user.hashed_password);
             
             if(!isMatch){
-                return res.status(400).res.json({msg: 'Invalid Credentials'});
+                return res.status(400).json({msg: 'Invalid Credentials'});
             }
             
             const payload ={
@@ -67,7 +67,7 @@ router.post('/',
             });
 
         } catch (error) {
-            console.error(error.msg);
+            console.error(error.message);
             res.status(500).send('Server Error');
         }
 });

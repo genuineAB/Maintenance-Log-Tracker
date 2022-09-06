@@ -4,16 +4,15 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
 
 
-
-// const User = require('../models/User');
 const Tech = require('../models/Techs');
 
 // @route GET api/auth
 // @desc Get Logged in User
 //@access Private
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
         
         try {
             let tech = await Tech.findById(req.tech.id).select('-password');
@@ -51,7 +50,7 @@ router.post('/',
             const isMatch = await bcrypt.compare(hashed_password, tech.hashed_password);
             
             if(!isMatch){
-                return res.status(400).res.json({msg: 'Invalid Credentials'});
+                return res.status(400).json({msg: 'Invalid Credentials'});
             }
             
             const payload ={
@@ -68,7 +67,7 @@ router.post('/',
             });
 
         } catch (error) {
-            console.error(error.msg);
+            console.error(error.message);
             res.status(500).send('Server Error');
         }
 });
