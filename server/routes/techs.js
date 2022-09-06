@@ -45,13 +45,16 @@ router.post('/', auth,
 
         
         try {
-            let tech = await Tech.findOne({email});
+            let techEmail = await Tech.findOne({email});
+            let techfirstName = await Tech.findOne({firstName});
+            let techlastName = await Tech.findOne({lastName});
+            let techphoneNumber = await Tech.findOne({phoneNumber})
 
-            if(tech){
+            if((techEmail) || (techphoneNumber) || (techfirstName && techlastName)){
                 return res.status(400).json({msg: "Technician Already Exist"});
             }
 
-            tech = new Tech ({
+            let tech = new Tech ({
                 firstName,
                 lastName,
                 email,
