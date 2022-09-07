@@ -29,7 +29,11 @@ const LogSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    updated : Date.now
+
+    updated : {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.export = mongoose.model('log', LogSchema);

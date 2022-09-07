@@ -1,11 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const {body, validationResult} = require('express-validator');
+const auth = require('../../middleware/auth');
+
+const Users = require('../models/User');
+const Tech = require('../models/Techs');
+const Logs = require('../models/Logs');
 
 // @route GET api/logs
 // @desc Get Saved Maintenance Logs
 //@access Private
-router.get('/', (req, res) => {
-    res.json({msg: 'Get Maintenance Log'});
+router.get('/', auth, async (req, res) => {
+    try{
+        let logs = await Logs.find({logs: req.user.id}).sort({date: -1});
+        res.json({logs})
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
 });
 
 // @route POST api/logs

@@ -8,14 +8,13 @@ const auth = require('../../middleware/auth');
 
 const User = require('../models/User');
 const Tech = require('../models/Techs');
-const { has } = require('config');
 
 // @route GET api/tech
 // @desc Get All technician
 //@access Private
 router.get('/', auth, async(req, res) => {
     try {
-        let techs = await Tech.find({user: req.user.id}).select('firstName lastName email occupation employment_type role');
+        let techs = await Tech.find({tech: req.user.id}).select('firstName lastName email occupation employment_type role');
         res.json({techs});
     } catch (error) {
         console.error(error.message);
@@ -74,7 +73,7 @@ router.post('/', auth,
             await tech.save();
 
             const payload ={
-                tech: {
+                user: {
                     id: tech.id
                 }
             }

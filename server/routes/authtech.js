@@ -9,13 +9,14 @@ const auth = require('../../middleware/auth');
 
 const Tech = require('../models/Techs');
 
-// @route GET api/auth
-// @desc Get Logged in User
+// @route GET api/authtech
+// @desc Get Logged in Technician
 //@access Private
 router.get('/', auth, async (req, res) => {
+    
         
         try {
-            let tech = await Tech.findById(req.tech.id).select('-password');
+            let tech = await Tech.findById(req.tech.id).select('-hashed_password');
 
             res.json({tech});
 
@@ -26,7 +27,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route POST api/auth
-// @desc Authenticate && Log in User
+// @desc Authenticate && Log in Technician
 //@access Public
 router.post('/', 
     // email validation
@@ -44,13 +45,13 @@ router.post('/',
             let tech = await Tech.findOne({email});
 
             if(!tech){
-                return res.status(400).json({msg: "Invalid Credentials"});
+                return res.status(400).json({msg: "User Not Found"});
             }
 
             const isMatch = await bcrypt.compare(hashed_password, tech.hashed_password);
             
             if(!isMatch){
-                return res.status(400).json({msg: 'Invalid Credentials'});
+                return res.status(400).json({msg: "Email and password don't match"});
             }
             
             const payload ={
