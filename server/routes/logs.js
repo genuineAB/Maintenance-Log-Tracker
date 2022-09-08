@@ -24,8 +24,38 @@ router.get('/', auth, async (req, res) => {
 // @route POST api/logs
 // @desc Add to Maintenance Logs
 //@access Private
-router.post('/', (req, res) => {
-    res.json({msg: 'Add Maintenance Logs'});
+router.post('/', auth,
+    //Log Message must not be empty
+    body('message', 'Please add Log Message').not().isEmpty(),
+    //Technician Must not be empty
+    body('technician', 'Please add Technician to Log').not().isEmpty(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
+    
+        const {message, attention, technician} = req.body;
+
+        try {
+            let log = await Logs.findOne({message});
+
+            if(log){
+                return res.status(400).json({msg: "Log Already Exist"});
+            }
+
+            log = new Logs ({
+                message,
+                attention,
+                technician,
+                user: req.user.id
+            })
+
+            await log.save();
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server Error");
+        }
 });
 
 // @route PATCH api/logs

@@ -17,7 +17,8 @@ const LogSchema = mongoose.Schema({
     },
 
     attention: {
-        type: Boolean
+        type: Boolean,
+        required: [true, 'Attention type is Required']
     },
 
     technician: {
@@ -36,4 +37,4 @@ const LogSchema = mongoose.Schema({
     }
 });
 
-module.export = mongoose.model('log', LogSchema);
+module.exports = mongoose.model('log', LogSchema);

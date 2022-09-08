@@ -28,7 +28,7 @@ router.get('/', auth, async(req, res) => {
 router.post('/', auth,
     // email validation
     body('email', 'Please include a valid email').isEmail(),
-    //username must not be empty
+    //Technician Name must not be empty
     body('firstName', 'Please add first Name').not().isEmpty(),
     body('lastName', 'Please add last Name').not().isEmpty(),
     // password must be at least 6 chars long
