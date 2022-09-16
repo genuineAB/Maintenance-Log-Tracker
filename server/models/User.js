@@ -22,6 +22,40 @@ const UserSchema = mongoose.Schema({
         required: [true, 'Password is Required']
     },
 
+    employment_type: {
+        type: String
+        // required: [true, 'Employment Type is Required']
+    },
+
+    occupation: {
+        type: String
+        // required: [true, 'Occupation is Required']
+    },
+
+    phoneNumber: {
+        type: String
+        // required: [true, 'Phone Number is Required']
+        // validate: [validatePhoneNumber, 'Please Enter a Valid Phone Number'],
+        // match: [/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i , 'Please Enter a Valid Phone Number']
+    },
+
+    organizationNumber: {
+        type: Number,
+        required: [true, 'Ogranization Number is required'],
+        // unique: true
+    },
+
+    organizationName: {
+        type: String,
+        required: [true, 'Organization Name is required'],
+        // unique: true
+    },
+
+    role: {
+        type: String,
+        default: "Admin"
+    },
+    
     created: {
         type: Date,
         default: Date.now

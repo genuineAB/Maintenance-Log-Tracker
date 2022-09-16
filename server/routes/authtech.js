@@ -13,10 +13,10 @@ const Tech = require('../models/Techs');
 // @desc Get Logged in Technician
 //@access Private
 router.get('/', auth, async (req, res) => {
-    
+        console.log(req.user)
         
         try {
-            let tech = await Tech.findById(req.tech.id).select('-hashed_password');
+            let tech = await Tech.findById(req.user.id).select('-hashed_password');
 
             res.json({tech});
 
@@ -55,8 +55,11 @@ router.post('/',
             }
             
             const payload ={
-                tech: {
-                    id: tech.id
+                user: {
+                    user: tech.user,
+                    id: tech.id,
+                    role: tech.role,
+                    organizationNumber: 2
                 }
             }
 

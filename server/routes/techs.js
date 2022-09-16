@@ -29,52 +29,66 @@ router.post('/', auth,
     // email validation
     body('email', 'Please include a valid email').isEmail(),
     //Technician Name must not be empty
-    body('firstName', 'Please add first Name').not().isEmpty(),
-    body('lastName', 'Please add last Name').not().isEmpty(),
+    body('name', 'Please add  User Name').not().isEmpty(),
+    body('role', 'Please add user role').not().isEmpty(),
     // password must be at least 6 chars long
     body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 6 }),
     //Phone Number must not be empty
     body('phoneNumber', 'Please add a phone number').not().isEmpty(),
     async (req, res) => {
+        console.log(req.user)
+        
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
         }
 
-        const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
+        if(req.user.role !== "Admin"){
+            res.status(405).json({msg: "Permission Denied"})
+        }
 
+        // let userRole = await Tech.find({user: req.user.role});
+            
+        // if (userRole !== 'Admin')
+        //     return res.status(405).json({msg: "Access Denied"})
+
+        const {name, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
+
+        console.log({role});
         
         try {
-            let techEmail = await Tech.findOne({email});
-            let techfirstName = await Tech.findOne({firstName});
-            let techlastName = await Tech.findOne({lastName});
-            let techphoneNumber = await Tech.findOne({phoneNumber})
+            let userEmail = await User.findOne({email});
+            let userName = await User.findOne({name});
+            let userNumber = await User.findOne({phoneNumber})
 
-            if((techEmail) || (techphoneNumber) || (techfirstName && techlastName)){
-                return res.status(400).json({msg: "Technician Already Exist"});
+            if((userEmail) || (userNumber) || (userName)){
+                return res.status(400).json({msg: "User Already Exist"});
             }
-
-            let tech = new Tech ({
-                firstName,
-                lastName,
+            console.log(req.user.organizationNumber);
+            let user = new User ({
+                name,
                 email,
                 role,
                 hashed_password,
                 phoneNumber,
                 occupation,
                 employment_type,
-                user: req.user.id
+                user: req.user.id,
+                organizationName: req.user.organizationName,
+                organizationNumber: req.user.organizationNumber
             })
 
             //Encrypting Password
             const salt = await bcrypt.genSalt(10);
-            tech.hashed_password = await bcrypt.hash(hashed_password, salt);
+            user.hashed_password = await bcrypt.hash(hashed_password, salt);
 
-            await tech.save();
+            await user.save();
 
             const payload ={
                 user: {
-                    id: tech.id
+                    organizationNumber: req.user.organizationNumber,
+                    id: user.id,
+                    role: user.role
                 }
             }
             

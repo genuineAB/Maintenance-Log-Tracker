@@ -10,6 +10,10 @@ const auth = require('../../middleware/auth');
 
 const User = require('../models/User');
 
+const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
 // @route POST api/users
 // @desc Register a user
 //@access Public
@@ -18,6 +22,7 @@ router.post('/',
     body('email', 'Please include a valid email').isEmail(),
     //username must not be empty
     body('name', 'Please add Name').not().isEmpty(),
+    body('organizationName', 'Please add organization Name').not().isEmpty(),
     // password must be at least 6 chars long
     body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 6 }), async (req, res) => {
         const errors = validationResult(req);
@@ -25,7 +30,8 @@ router.post('/',
         return res.status(400).json({ errors: errors.array() });
         } 
         
-        const {name, email, hashed_password} = req.body;
+        const {name, email, hashed_password, organizationName} = req.body;
+
 
         try {
             let user = await User.findOne({email});
@@ -35,10 +41,19 @@ router.post('/',
 
             }
 
+            /// Genrate and Validate Organization Number
+            let orgNumber;
+            do {
+                orgNumber = getRandomNumber(1000, 100000)
+            } while (orgNumber == await User.findOne({orgNumber: orgNumber}));
+            
             user = new User ({
                 name,
                 email,
-                hashed_password
+                hashed_password,
+                organizationName,
+                organizationNumber: orgNumber,
+                
             });
             // 
             const salt = await bcrypt.genSalt(10);
@@ -49,7 +64,10 @@ router.post('/',
 
             const payload ={
                 user: {
-                    id: user.id
+                    id: user.id,
+                    role: user.role,
+                    organizationNumber: user.organizationNumber,
+                    organizationName: user.organizationName
                 }
             }
             
@@ -67,12 +85,18 @@ router.post('/',
 });
 
 
+
 // @route GET api/users
 // @desc Get all registered users
 // @access Private
 router.get('/', auth, async (req, res) => {
+    
     try {
-        let users = await User.find().select('name email created updated').sort({date: -1});
+        // if(req.user.role !== "Admin"){
+        //     res.status(403).json({msg: "Permission Denied"})
+        // }
+        console.log(req.user.organizationNumber)
+        let users = await User.find({organizationNumber: req.user.organizationNumber}).select('-hashed_password').sort({date: -1});
         res.json({users});
     } catch (error) {
         console.error(error.message);
@@ -103,7 +127,7 @@ router.get('/:id', auth, async (req, res) => {
 // @desc UPDATE registered user
 // @access Private
 router.patch('/:id', auth, async (req, res) => {
-    const {name, email, hashed_password} = req.body;
+    const {name, email, hashed_password, organizationName} = req.body;
 
     
     
@@ -114,6 +138,9 @@ router.patch('/:id', auth, async (req, res) => {
     }
     if (email){
         userFields.email = email;
+    }
+    if (organizationName){
+        userFields.organizationName = organizationName;
     }
     if (hashed_password){
         //Encrypting Password
@@ -137,6 +164,7 @@ router.patch('/:id', auth, async (req, res) => {
           );
         
         // Password Sanitization
+        user = await User.findById(req.params.id);
         user.hashed_password = undefined;
 
         res.json({user});

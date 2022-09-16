@@ -14,6 +14,7 @@ const User = require('../models/User');
 // @desc Get Logged in User
 //@access Private
 router.get('/', auth, async (req, res) => {
+        console.log(req.user.role)
         
         try {
             let user = await User.findById(req.user.id).select('-hashed_password');
@@ -55,7 +56,10 @@ router.post('/',
             
             const payload ={
                 user: {
-                    id: user.id
+                    id: user.id,
+                    role: user.role,
+                    organizationNumber: user.organizationNumber,
+                    organizationName: user.organizationName
                 }
             }
 

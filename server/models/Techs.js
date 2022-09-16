@@ -58,6 +58,18 @@ const TechSchema = mongoose.Schema({
         required: [true, 'Password is Required']
     },
 
+    organizationNumber: {
+        type: Number,
+        required: [true, 'Ogranization Number is required'],
+        unique: true
+    },
+
+    organizationName: {
+        type: String,
+        required: [true, 'Organization Name is required'],
+        unique: true
+    },
+
     role: {
         type: String,
         default: 'Regular'

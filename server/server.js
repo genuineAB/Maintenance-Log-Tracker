@@ -19,7 +19,7 @@ const port = process.env.PORT || 5000;
 app.use('/api/users', require('./routes/users'));
 app.use('/api/logs', require('./routes/logs'));
 app.use('/api/techs', require('./routes/techs'));
-app.use('/api/authuser', require('./routes/authuser'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/authtech', require('./routes/authtech'));
 
 app.listen(port, () => console.log(`Server Started at ${port}`));
