@@ -133,7 +133,7 @@ router.get('/:id', auth, async (req, res) => {
 // @desc UPDATE registered user
 // @access Private
 router.patch('/:id', auth, async (req, res) => {
-    const {name, email, hashed_password, organizationName} = req.body;
+    const {name, email, hashed_password, organizationName, employment_type, occupation, phoneNumber, role} = req.body;
 
     
     
@@ -148,20 +148,33 @@ router.patch('/:id', auth, async (req, res) => {
     if (organizationName){
         userFields.organizationName = organizationName;
     }
+    if (employment_type){
+        userFields.employment_type = employment_type
+    }
+    if (occupation){
+        userFields.occupation = occupation
+    }
+    if (phoneNumber){
+        userFields.phoneNumber = phoneNumber
+    }
+    if (role){
+        userFields.role = role
+    }
     if (hashed_password){
         //Encrypting Password
         const salt = await bcrypt.genSalt(10);
         newPassword = await bcrypt.hash(hashed_password, salt);
         userFields.hashed_password = newPassword;
     }
-
     
     
     userFields.updated = Date.now();
 
     try {
         let user = await User.findById(req.params.id);
-        
+        if(req.user.role == "Admin" && req.user.id == req.params.id){
+            userFields.role = "Admin"
+        }
 
         if(!user || (req.user.organizationNumber !== user.organizationNumber)){
             return res.status(404).json({msg: " User not found"})
