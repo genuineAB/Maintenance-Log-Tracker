@@ -111,11 +111,17 @@ router.get('/', auth, async (req, res) => {
 // @access Private
 router.get('/:id', auth, async (req, res) => {
     try {
-        let user = await User.findById(req.params.id).select('name email created updated');
+        let user = await User.findById(req.params.id).select('-hashed_password');
 
-        if(!user){
-            return res.status(400).send("No user found");
+        
+        if(!user || (req.user.organizationNumber !== user.organizationNumber)){
+            return res.status(400).json({msg: "User Not Found"});
         }
+        
+        if(((req.user.role !== "Admin") || (req.user.id !== req.params.id)) ){
+            return res.status(403).json({msg: "Permission Denied"})
+        }
+
         res.json({user});
     } catch (error) {
         console.error(error.message);
@@ -148,13 +154,21 @@ router.patch('/:id', auth, async (req, res) => {
         newPassword = await bcrypt.hash(hashed_password, salt);
         userFields.hashed_password = newPassword;
     }
+
+    
+    
     userFields.updated = Date.now();
 
     try {
         let user = await User.findById(req.params.id);
+        
 
-        if(!user){
+        if(!user || (req.user.organizationNumber !== user.organizationNumber)){
             return res.status(404).json({msg: " User not found"})
+        }
+
+        if(((req.user.role !== "Admin") || (req.user.id !== req.params.id))){
+            return res.status(403).json({msg: "Permission Denied"})
         }
 
         contact = await User.findByIdAndUpdate(
@@ -164,7 +178,7 @@ router.patch('/:id', auth, async (req, res) => {
           );
         
         // Password Sanitization
-        user = await User.findById(req.params.id);
+        // user = await User.findById(req.params.id);
         user.hashed_password = undefined;
 
         res.json({user});
@@ -182,8 +196,12 @@ router.delete('/:id', auth, async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
 
-        if(!user){
+        if(!user || (req.user.organizationNumber !== user.organizationNumber)){
             return res.status(404).json({msg: "User not found"})
+        }
+
+        if(((req.user.role !== "Admin"))){
+            return res.status(403).json({msg: "Permission Denied"})
         }
 
         await User.findByIdAndDelete(req.params.id);
