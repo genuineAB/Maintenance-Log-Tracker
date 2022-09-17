@@ -93,7 +93,7 @@ router.get('/', auth, async (req, res) => {
     
     try {
         // if(req.user.role !== "Admin"){
-        //     res.status(403).json({msg: "Permission Denied"})
+        //     res.status(401).json({msg: "Not Authorized"})
         // }
         console.log(req.user.organizationNumber)
         let users = await User.find({organizationNumber: req.user.organizationNumber}).select('-hashed_password').sort({date: -1});
@@ -119,7 +119,7 @@ router.get('/:id', auth, async (req, res) => {
         }
         
         if(((req.user.role !== "Admin") || (req.user.id !== req.params.id)) ){
-            return res.status(403).json({msg: "Permission Denied"})
+            return res.status(401).json({msg: "Not Authorized"})
         }
 
         res.json({user});
@@ -181,7 +181,7 @@ router.patch('/:id', auth, async (req, res) => {
         }
 
         if(((req.user.role !== "Admin") || (req.user.id !== req.params.id))){
-            return res.status(403).json({msg: "Permission Denied"})
+            return res.status(401).json({msg: "Not Authorized"})
         }
 
         contact = await User.findByIdAndUpdate(
@@ -214,7 +214,7 @@ router.delete('/:id', auth, async (req, res) => {
         }
 
         if(((req.user.role !== "Admin"))){
-            return res.status(403).json({msg: "Permission Denied"})
+            return res.status(401).json({msg: "Not Authorized"})
         }
 
         await User.findByIdAndDelete(req.params.id);

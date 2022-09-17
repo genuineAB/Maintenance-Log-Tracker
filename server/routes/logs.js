@@ -61,7 +61,7 @@ router.post('/', auth,
 // @route PATCH api/logs
 // @desc Update Maintenance Log
 //@access Private
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
     const {message, attention, technician } = req.body;
 
     //Create Contact Field Object
@@ -101,8 +101,26 @@ router.patch('/:id', async (req, res) => {
 // @route DELETE api/logs
 // @desc Delete Maintenance Log
 //@access Private
-router.delete('/:id', (req, res) => {
-    res.json({msg: 'Delete Maintenance Logs'});
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        let log = await Logs.findById(req.params.id);
+
+        if(!log || (log.organizationNumber.toString() !== req.user.organizationNumber)){
+            return res.status(404).json({msg: "Log not found"})
+        }
+
+        // Make sure user owns log
+        if (req.user.role !== 'Admin') {
+            return res.status(401).json({ msg: 'Not authorized' });
+        }
+
+        await Logs.findByIdAndDelete(req.params.id);
+
+        res.json({msg: "Log deleted"});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+    }
 });
 
 module.exports = router;

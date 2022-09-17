@@ -44,7 +44,7 @@ router.post('/', auth,
         }
 
         if(req.user.role !== "Admin"){
-            res.status(405).json({msg: "Permission Denied"})
+            res.status(401).json({msg: "Not Authorized"})
         }
 
         // let userRole = await Tech.find({user: req.user.role});
