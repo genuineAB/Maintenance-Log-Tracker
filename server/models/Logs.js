@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
 const LogSchema = mongoose.Schema({
-    user:{
+    organizationNumber:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     
-    tech:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tech'
-    },
+    // tech:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Tech'
+    // },
 
     message: {
         type: String,
@@ -22,8 +22,8 @@ const LogSchema = mongoose.Schema({
     },
 
     technician: {
-        type: String,
-        required: [true, 'Please select a technician']
+        type: String
+        // required: [true, 'Please select a technician']
     },
 
     created: {

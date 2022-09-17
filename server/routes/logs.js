@@ -12,7 +12,7 @@ const Logs = require('../models/Logs');
 //@access Private
 router.get('/', auth, async (req, res) => {
     try{
-        let logs = await Logs.find({logs: req.user.id}).sort({date: -1});
+        let logs = await Logs.find({logs: req.user.organizationNumber}).sort({date: -1});
         res.json({logs})
     }
     catch(error){
@@ -48,7 +48,7 @@ router.post('/', auth,
                 message,
                 attention,
                 technician,
-                user: req.user.id
+                organizationNumber: req.user.organizationNumber
             })
 
             await log.save();
@@ -61,8 +61,41 @@ router.post('/', auth,
 // @route PATCH api/logs
 // @desc Update Maintenance Log
 //@access Private
-router.patch('/:id', (req, res) => {
-    res.json({msg: 'Update Maintenance Logs'});
+router.patch('/:id', async (req, res) => {
+    const {message, attention, technician } = req.body;
+
+    //Create Contact Field Object
+    const logFields = {};
+    if (message){
+        logFields.message = message;
+    }
+    if (attention){
+        logFields.attention = attention;
+    }
+    if (technician){
+        logFields.technician = technician;
+    }
+   
+    try {
+        let log = await Logs.findById(req.params.id);
+
+        if((!log) || (log.organizationNumber.toString() !== req.user.organizationNumber)){
+            return res.status(404).json({msg: "Log not found"})
+        }
+
+
+        log = await Logs.findByIdAndUpdate(
+            req.params.id,
+            { $set: logFields },
+            { new: true }
+          );
+
+        res.json({log});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server Error");
+        
+    };
 });
 
 // @route DELETE api/logs
