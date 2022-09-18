@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 
 const LogSchema = mongoose.Schema({
-    organizationNumber:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+    // organizationNumber:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User'
+    // },
+
+    organizationNumber: {
+        type: Number,
+        required: true
     },
     
     // tech:{

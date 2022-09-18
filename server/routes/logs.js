@@ -12,7 +12,7 @@ const Logs = require('../models/Logs');
 //@access Private
 router.get('/', auth, async (req, res) => {
     try{
-        let logs = await Logs.find({logs: req.user.organizationNumber}).sort({date: -1});
+        let logs = await Logs.find({organizationNumber: req.user.organizationNumber}).sort({date: -1});
         res.json({logs})
     }
     catch(error){
@@ -43,7 +43,7 @@ router.post('/', auth,
             if(log){
                 return res.status(400).json({msg: "Log Already Exist"});
             }
-
+            console.log(req.user.organizationNumber)
             log = new Logs ({
                 message,
                 attention,
@@ -52,6 +52,8 @@ router.post('/', auth,
             })
 
             await log.save();
+
+            return res.json({msg: "Log Added"});
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Server Error");
