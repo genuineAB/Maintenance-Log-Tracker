@@ -462,7 +462,75 @@ table th {
   padding-left: 1rem;
 }
 /* Mobile Styles */
-@media (max-width: 700px) {
+@media (max-width: 1200px){
+  body {
+    grid-gap: 1rem;
+    padding: 10% 3%;
+  }
+  
+  .header {
+    margin-top: 20%;
+    padding: 5% 2%;
+  
+  }
+  
+  .form-1 {
+    padding: 0 20px;
+    margin-bottom: 90%;
+  }
+  
+
+  .form-1 .btn-2{
+    margin: 20% 0; 
+    
+  }
+  
+  
+}
+@media (max-width: 800px) {
+
+  body {
+    display: block;
+    padding: 5%;
+  }
+  
+  .header {
+    margin-top: 2%;
+  
+  }
+  
+  .header h3{
+    text-align: center;
+    font-size: xx-large;
+  }
+
+  .header p{
+    display: none;
+  }
+  
+  .form-1 {
+    padding: 2% 5%;
+    margin-bottom: 30%;
+  }
+  
+  .form-1 .btn-1{
+    margin: 5% 0;
+    
+  }
+
+  .form-1 .btn-2{
+    margin-top: 10%;
+    margin-bottom: 7%;
+    
+    
+  }
+  
+  .form-1 .recover{
+    padding-bottom: 5%;
+    
+  }
+  
+  
   .hide-sm {
     display: none;
   }
@@ -560,4 +628,86 @@ table th {
 
 #cancelBtn {
   background-color: var(--dark-color);
+}
+
+@media (max-width: 520px){
+  body {
+    font-family: 'Roboto', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: rgb(244, 244, 244);
+    color: #333;
+    display: block;
+    padding: 5%;
+  }
+  
+  .header {
+    margin-top: 10%;
+    padding: 5% 2%;
+    font-size: large;
+    align-content: center;
+  
+  }
+  
+  .header h3{
+    text-align: left;
+    color: var(--primary-color);
+    font-weight: bolder;
+    font-size: large;
+  }
+
+  .header p{
+    display: none;
+  }
+  
+  .form-1 {
+    /* grid-area: form-1; */
+    padding: 0 20px 40px 20px;
+    margin-bottom: 30%;
+    border-style: outset;
+    background-color: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 10px;
+  }
+  
+  .form-1 .btn-1{
+    /* padding: 0% 42% 0 42%; */
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    background-color: var(--primary-color);
+    margin: 5% 0 5% 0;
+    
+  }
+  .form-1 .btn-items{
+    display: flex;  
+    justify-content: center;  
+    align-items: center; 
+    
+  }
+  .form-1 .btn-2{
+    width: 60%;
+    border-radius: 5px;
+    margin-top: 30px;
+    text-align: center;
+    background-color: var(--success-color);
+    
+    
+  }
+  
+  .form-1 .recover{
+    padding-bottom: 20px;
+    text-align: center;
+    color: var(--primary-color);
+    border-bottom-style: solid;
+    border-color: rgb(244, 244, 244);;
+    
+  }
+  
+  
+  .hide-sm {
+    display: none;
+  }
 }
