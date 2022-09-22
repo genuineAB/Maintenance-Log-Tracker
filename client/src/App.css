@@ -15,7 +15,7 @@
   padding: 0;
 }
 
-body {
+.my-container {
   font-family: 'Roboto', sans-serif;
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,6 @@ body {
 }
 
 .form-1 {
-  /* grid-area: form-1; */
   padding: 0 20px 0 20px;
   margin-bottom: 30%;
   border-style: outset;
@@ -53,6 +52,38 @@ body {
   border-radius: 10px;
 }
 
+.form-2 {
+  border-radius: 10px;
+}
+
+.submit-btn{
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  font-size: large;
+}
+
+.submit-btn .submit-1{
+  margin-right: 20%;
+  height: 50px;
+  width: 45%;
+  background-color: var(--success-color);
+  border-radius: 5px;
+  float: left;
+  color: #fff;
+  
+}
+
+.submit-btn .submit-2{
+  margin-right: 20%;
+  height: 50px;
+  width: 45%;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  float: right;
+  color: #fff;
+  font-size: large;
+}
 .form-1 .btn-1{
   /* padding: 0% 42% 0 42%; */
   width: 100%;
@@ -61,6 +92,8 @@ body {
   text-align: center;
   background-color: var(--primary-color);
   margin: 5% 0 5% 0;
+  font-size: large;
+  font-weight: 600;
   
 }
 .form-1 .btn-items{
@@ -70,12 +103,14 @@ body {
   
 }
 .form-1 .btn-items .btn-2{
-  width: 60%;
+  width: 65%;
   height: 50px;
   border-radius: 5px;
   margin: 30px 0;
   text-align: center;
   background-color: var(--success-color);
+  font-size: large;
+  font-weight: 600;
   
   
 }
@@ -465,7 +500,7 @@ table th {
 }
 /* Mobile Styles */
 @media (max-width: 1200px){
-  body {
+  .my-container {
     grid-gap: 1rem;
     padding: 10% 3%;
   }
@@ -491,7 +526,7 @@ table th {
 }
 @media (max-width: 800px) {
 
-  body {
+  .my-container {
     display: block;
     padding: 5%;
   }
@@ -633,7 +668,7 @@ table th {
 }
 
 @media (max-width: 520px){
-  body {
+  .my-container {
     font-family: 'Roboto', sans-serif;
     width: 100vw;
     height: 100vh;
