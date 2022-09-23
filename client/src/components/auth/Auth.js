@@ -19,17 +19,17 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
     useEffect(() => {
         M.AutoInit()
         // onClick();
-        // onSubmit();
+        // onLogIn();
         // eslint-disable-next-line
     },[] ) 
 
-    const onClick = (e) => {
+    const onSignUp = (e) => {
         e.preventDefault();
         register();
         console.log("Register User")
     }
 
-    const onSubmit = (e) => {
+    const onLogIn = (e) => {
         e.preventDefault();
         if(password.trim().length < 6 ){
             M.toast({html: 'Please Enter an email address'})
@@ -70,7 +70,7 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
                     <input placeholder="Password" id="password" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <div>
-                    <button className="btn btn-1 waves-light" type="submit" name="action" onClick={onSubmit}>Sign In
+                    <button className="btn btn-1 waves-light" type="submit" name="action" onClick={onLogIn}>Sign In
                     </button>
                 </div>
                 <div className='recover'>
@@ -113,7 +113,7 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
                             </div>
                             
                             <div className="modal-footer submit-btn">
-                                <button href="#!" className="modal-close waves-effect btn-flat submit-1" onClick={onClick}>Sign Up</button>
+                                <button href="#!" className="modal-close waves-effect btn-flat submit-1" onClick={onSignUp}>Sign Up</button>
                                 <button href="#!" className="modal-close waves-effect btn-flat submit-2">Close</button>
                             </div>
                         </form>
