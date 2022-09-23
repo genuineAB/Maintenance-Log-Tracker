@@ -1,14 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import PreLoader from './Preloader';
-import {logout} from '../../actions/authAction'
+import {logout} from '../../actions/authAction';
+import {loadUser} from '../../actions/authAction'
 
 const AppNavbar = ({auth:{loading, user},icon, title, logout}) => {
-  if(loading){
+
+  useEffect(() => {
+    loadUser();
+    //eslint-disable-next-line
+  },[]);
+
+  console.log(user);
+  if(user == null || (loading)){
+    window.location.reload();
     return (
       <PreLoader />
     )
+    
   }
   const onLogout = (e) => {
     e.preventDefault();
@@ -51,4 +61,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {logout})(AppNavbar)
+export default connect(mapStateToProps, {logout, loadUser})(AppNavbar)
