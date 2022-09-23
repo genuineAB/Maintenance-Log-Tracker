@@ -16,14 +16,15 @@ import {
 
 
 // Register A User
-export const register = async (dispatch, formData) => {
+export const register = (auth) => async (dispatch) => {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     }
+    console.log(auth)
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await axios.post('/api/users', auth, config);
       localStorage.setItem('token', res.data.token);
       dispatch({
         type: REGISTER_SUCCESS,
@@ -41,7 +42,7 @@ export const register = async (dispatch, formData) => {
 }
 
 // Load User
-export const loadUser = async (dispatch) => {
+export const loadUser = () => async (dispatch) => {
     if(localStorage.token){
         setAuthToken(localStorage.token);
         
@@ -58,14 +59,17 @@ export const loadUser = async (dispatch) => {
     }
 };
 
-export const login = async (dispatch, formData) => {
+export const login = (auth) => async (dispatch, formData) => {
     const config = {
     headers: {
         'Content-Type': 'application/json'
     }
     }
+    console.log(auth);
+   
     try {
-    const res = await axios.post('/api/auth', formData, config);
+    const res = await axios.post('/api/auth', auth, config);
+    console.log(formData)
     localStorage.setItem('token', res.data.token)
     dispatch({
         type: LOGIN_SUCCESS,
@@ -82,13 +86,13 @@ export const login = async (dispatch, formData) => {
 }
 
 //Logout
-export const logout = (dispatch) => {
+export const logout = () => (dispatch) => {
     localStorage.removeItem('token');
     dispatch({type: LOGOUT})
 }
 
 //Clear Errors
-export const clearErrors = (dispatch) => {
+export const clearErrors = () => (dispatch) => {
     dispatch({type: CLEAR_ERRORS});
 }
 

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import { AppNavbar } from './components/layout/AppNavbar';
-import { Home } from './pages/Home';
+import Home  from './pages/Home';
 
 const App = () => {
   useEffect(() => {
