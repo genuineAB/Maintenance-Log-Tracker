@@ -25,7 +25,39 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
 
     const onSignUp = (e) => {
         e.preventDefault();
-        register();
+        console.log(organization);
+        if(organization.trim().length === 0){
+            M.toast({html: 'Please enter organization name'})
+        }
+        
+        else if(name.trim().length < 6){
+            M.toast({html: 'Please Enter a name'})
+        }
+        else if(email.trim().length < 6 ){
+            M.toast({html: 'Please enter an email'});
+        }
+        else if(password.trim().length < 6 ){
+            
+            M.toast({html: 'Please Enter password'});
+            
+        }
+        else{
+            const signUp = {
+                email,
+                name,
+                hashed_password: password,
+                organizationName: organization
+            }
+
+            register(signUp);
+            console.log(signUp)
+
+            //Clear Fields
+            setEmail('');
+            setPassword('');
+            setName('');
+            setOrganization('');
+        }
         console.log("Register User")
     }
 
@@ -91,24 +123,24 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
                         <form className="col s12">
                             <div className="row">
                                 <div className="input-field col s6">
-                                <input id="full_name" type="text" className="validate" />
-                                <label htmlFor="full_name"> Full Name</label>
+                                <input id="full_name" type="text" className="validate" value={name} onChange={e => setName(e.target.value)}/>
+                                <label htmlFor="full_name" > Full Name</label>
                                 </div>
                                 <div className="input-field col s6">
-                                <input id="organization_name" type="text" className="validate" />
-                                <label htmlFor="organization_name">Organization Name</label>
+                                <input id="organization_name" type="text" className="validate" value={organization} onChange={e => setOrganization(e.target.value)}/>
+                                <label htmlFor="organization_name" >Organization Name</label>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="input-field col s12">
-                                <input id="email_2" type="email" className="validate" />
-                                <label htmlFor="email">Email</label>
+                                <input id="email_2" type="email" className="validate" value={email} onChange={e => setEmail(e.target.value)}/>
+                                <label htmlFor="email" >Email</label>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="input-field col s12">
-                                <input id="password_2" type="password" className="validate" />
-                                <label htmlFor="password">Password</label>
+                                <input id="password_2" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
+                                <label htmlFor="password" >Password</label>
                                 </div>
                             </div>
                             
