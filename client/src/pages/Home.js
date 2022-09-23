@@ -1,8 +1,8 @@
 import React,{useEffect} from 'react';
 import Auth from '../components/auth/Auth';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
-import  AppNavbar  from '../components/layout/AppNavbar';
+import PropTypes from 'prop-types';
+import {UserLandingPage} from '../components/layout/UserLandingPage'
 import { loadUser } from '../actions/authAction';
 
 const Home = ({auth:{isAuthenticated,loading, user}, loadUser}) => {
@@ -12,7 +12,7 @@ const Home = ({auth:{isAuthenticated,loading, user}, loadUser}) => {
     }, []);
 
     return (
-        (!isAuthenticated && !loading) ? <Auth /> : <AppNavbar />
+        (!isAuthenticated && !loading) ? <Auth /> : <UserLandingPage />
     )
     
 }

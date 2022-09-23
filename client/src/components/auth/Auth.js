@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
+import PreLoader from '../layout/Preloader';
 
 
 const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
 
+    
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -85,7 +87,14 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
         }
         console.log("Log In User")
     }
-    
+    console.log(!isAuthenticated);
+    console.log(loading)
+    if(!isAuthenticated && loading){
+        return(
+            <PreLoader />
+        )
+        
+    }
 
     return (
     <div className='my-container'>

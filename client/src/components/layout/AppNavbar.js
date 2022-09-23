@@ -5,7 +5,7 @@ import PreLoader from './Preloader';
 import {logout} from '../../actions/authAction';
 import {loadUser} from '../../actions/authAction'
 
-const AppNavbar = ({auth:{loading, user},icon, title, logout}) => {
+const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout}) => {
 
   useEffect(() => {
     loadUser();
@@ -13,7 +13,7 @@ const AppNavbar = ({auth:{loading, user},icon, title, logout}) => {
   },[]);
 
   console.log(user);
-  if(user == null || (loading)){
+  if((user == null || (loading))){
     window.location.reload();
     return (
       <PreLoader />
