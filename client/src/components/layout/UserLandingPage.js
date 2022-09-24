@@ -10,9 +10,9 @@ export const UserLandingPage = ({auth: isAuthenticated, loading}) => {
         <div>
           <AppNavbar />
         </div>
-        <div>
+        {/* <div>
           <SearchLog />
-        </div>
+        </div> */}
       </div>
   )
 }

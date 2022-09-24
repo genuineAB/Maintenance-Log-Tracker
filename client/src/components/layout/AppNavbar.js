@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PreLoader from './Preloader';
 import {logout} from '../../actions/authAction';
 import {loadUser} from '../../actions/authAction'
+import SearchLog from '../logs/SearchLog';
 
 const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout}) => {
 
@@ -27,21 +28,27 @@ const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout}) 
   }
   console.log(user)
   return (
-    <nav style={{marginBottom: '30px', padding: '0 10px 0 10px'}} className="blue">
-    <div className="nav-wrapper">
-      <span style={{fontSize: '30px', fontWeight: 'bold', textAlign:'center'}}>
-        <i className={icon} />{title}
-      </span>
-        
-      <ul id="nav-mobile" className="right hide-on-med-and-down" style={{fontSize: '1.2rem', fontWeight:'500'}}>
-        <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { user.user.organizationName }</li>
-        <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ user.user.name}</li>
-        <li><a href="#!" style={{fontSize: '1.2rem', fontWeight:'500'}} onClick={onLogout}><i className="fa-solid fa-right-from-bracket"> </i>{' '}Logout</a></li>
-      </ul>
+    <div>
+      <nav style={{marginBottom: '30px', padding: '0 10px 0 10px'}} className="blue">
+        <div className="nav-wrapper">
+          <span style={{fontSize: '30px', fontWeight: 'bold', textAlign:'center'}}>
+            <i className={icon} />{title}
+          </span>
+            
+          <ul id="nav-mobile" className="right hide-on-med-and-down" style={{fontSize: '1.2rem', fontWeight:'500'}}>
+            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { user.user.organizationName }</li>
+            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ user.user.name}</li>
+            <li><a href="#!" style={{fontSize: '1.2rem', fontWeight:'500'}} onClick={onLogout}><i className="fa-solid fa-right-from-bracket"> </i>{' '}Logout</a></li>
+          </ul>
 
+        </div>
+    
+      </nav>
+        {/* <div style={{magin: '30rem', display: 'block'}}> */}
+        <SearchLog />
+      {/* </div> */}
     </div>
-  </nav>
-  
+   
   )
 }
 

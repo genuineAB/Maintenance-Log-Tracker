@@ -12,7 +12,7 @@ const Home = ({auth:{isAuthenticated,loading, user}, loadUser}) => {
     }, []);
 
     return (
-        (!isAuthenticated && !loading) ? <Auth /> : <UserLandingPage />
+        (!isAuthenticated) ? <Auth /> : <UserLandingPage />
     )
     
 }
