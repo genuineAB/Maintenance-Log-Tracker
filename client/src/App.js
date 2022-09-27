@@ -4,9 +4,13 @@ import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { Provider } from 'react-redux';
 import store from './store';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import PrivateRoute from './routing/PrivateRoute';
 import Logs from './components/logs/Logs';
+import Auth from './components/auth/Auth';
 
 import Home  from './pages/Home';
+import PublicRoute from './routing/PublicRoute';
 
 const App = () => {
   useEffect(() => {
@@ -15,13 +19,20 @@ const App = () => {
   })
   return (
     <Provider store={store}>
-      <Fragment>
-        {/* < AppNavbar /> */}
-        <Home />
-        <div className='container'>
-          <Logs />
-        </div>
-      </Fragment>
+      <Router>
+        <Fragment>
+          {/* <div className='container'> */}
+            <Routes>
+            <Route exact path='/auth' element={<PublicRoute />}/>
+            <Route exact path='/' element={<Home />}/>
+
+            </Routes>
+            
+          {/* </div> */}
+          
+        </Fragment>
+      </Router>
+      
     </Provider>
   
   )

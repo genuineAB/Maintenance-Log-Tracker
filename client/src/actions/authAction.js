@@ -65,12 +65,11 @@ export const login = (auth) => async (dispatch, formData) => {
         'Content-Type': 'application/json'
     }
     }
-    console.log(auth);
    
     try {
     const res = await axios.post('/api/auth', auth, config);
-    console.log(formData)
     localStorage.setItem('token', res.data.token)
+    
     dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

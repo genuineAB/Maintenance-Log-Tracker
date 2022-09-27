@@ -2,8 +2,12 @@ import React,{useEffect} from 'react';
 import Auth from '../components/auth/Auth';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {UserLandingPage} from '../components/layout/UserLandingPage'
+import {UserLandingPage} from '../components/layout/UserLandingPage';
+import Preloader from '../components/layout/Preloader';
 import { loadUser } from '../actions/authAction';
+import { Navigate} from 'react-router-dom';
+import Logs from '../components/logs/Logs';
+
 
 const Home = ({auth:{isAuthenticated,loading, user}, loadUser}) => {
     useEffect(() => {
@@ -12,7 +16,16 @@ const Home = ({auth:{isAuthenticated,loading, user}, loadUser}) => {
     }, []);
 
     return (
-        (!isAuthenticated) ? <Auth /> : <UserLandingPage />
+        (!isAuthenticated && !loading) ? <Navigate to='/auth' /> : (
+            <div>
+                <UserLandingPage />
+                <div className='contanier'>
+                    {/* <Logs /> */}
+                </div>
+                
+            </div>
+            
+        )
     )
     
 }

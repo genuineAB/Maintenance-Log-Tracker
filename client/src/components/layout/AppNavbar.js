@@ -3,30 +3,33 @@ import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import PreLoader from './Preloader';
 import {logout} from '../../actions/authAction';
-import {loadUser} from '../../actions/authAction'
+import {loadUser} from '../../actions/authAction';
+import Logs from '../logs/Logs';
 import SearchLog from '../logs/SearchLog';
 
-const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout}) => {
+const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, loadUser, }) => {
 
   useEffect(() => {
     loadUser();
+    // getLogs();
     //eslint-disable-next-line
   },[]);
-
-  console.log(user);
-  if((user == null || (loading))){
-    window.location.reload();
+  // console.log(user)
+  if((user == null) || (loading)){
+    console.log("Got Here")
     return (
       <PreLoader />
     )
     
   }
+
+  
   const onLogout = (e) => {
     e.preventDefault();
     logout();
     console.log("Log Out");
   }
-  console.log(user)
+
   return (
     <div>
       <nav style={{marginBottom: '30px', padding: '0 10px 0 10px'}} className="blue">
@@ -44,9 +47,6 @@ const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout}) 
         </div>
     
       </nav>
-        {/* <div style={{magin: '30rem', display: 'block'}}> */}
-        <SearchLog />
-      {/* </div> */}
     </div>
    
   )

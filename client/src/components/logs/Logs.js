@@ -3,21 +3,22 @@ import LogsItem from './LogsItem';
 import PreLoader from '../layout/Preloader';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import getLogs from '../../actions/logAction'
+import getLogs from '../../actions/logAction';
+import SearchLog from './SearchLog';
 
 const Logs = ({log : {logs, loading, current}, getLogs}) => {
-    console.log(logs);
     useEffect(() => {
         getLogs();
         // eslint-disable-next-line
     }, [])
-
+    
     if(loading || (logs === null)){
         return(
             <PreLoader />
         )
     }
 
+    < SearchLog />
 //    console.log(log._id)
   return (
     <ul className='collection with-header'>

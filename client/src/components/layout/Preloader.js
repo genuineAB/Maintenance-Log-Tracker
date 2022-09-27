@@ -14,6 +14,7 @@ const PreLoader = () => {
         </div>
     </div>
   ) 
+  
 }
 
 export default PreLoader

@@ -1,26 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AppNavbar from './AppNavbar';
+// import { connect } from 'react-redux';
 import SearchLog from '../logs/SearchLog';
-import { connect } from 'react-redux';
+import Logs from '../logs/Logs';
+// import getLogs from '../../actions/logAction';
 
-export const UserLandingPage = ({auth: isAuthenticated, loading}) => {
+export const UserLandingPage = () => {
+  
+  
+  // useEffect(() => {
+  //   getLogs();
+  //   // eslint-disable-next-line
+  // }, [])
+
   return (
-    // (!isAuthenticated && loading) ? <PreLoader /> : <AppNavbar />
-    <div>
+
         <div>
-          <AppNavbar />
+            <AppNavbar />
+            <div className='container'>
+              <SearchLog />
+              <Logs />
+            </div>
+            {/* <SearchLog /> */}
         </div>
-        {/* <div>
-          <SearchLog />
-        </div> */}
-      </div>
+    
   )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth
-    }
-  }
+// const mapStateToProps = (state) => {
+//     return {
+//         log: state.log
+//     }
+//   }
   
-  export default connect(mapStateToProps)(UserLandingPage)
+  export default (UserLandingPage)

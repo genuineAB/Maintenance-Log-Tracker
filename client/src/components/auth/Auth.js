@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
 import PreLoader from '../layout/Preloader';
+import {useNavigate} from 'react-router-dom';
 
 
 const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
@@ -79,22 +80,20 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
             }
 
             login(logIn);
-            console.log(logIn)
 
             //Clear Fields
             setEmail('');
             setPassword('');
         }
-        console.log("Log In User")
     }
-    console.log(!isAuthenticated);
-    console.log(loading)
+    
     if(!isAuthenticated && loading){
         return(
             <PreLoader />
         )
         
     }
+    
 
     return (
     <div className='my-container'>
