@@ -10,7 +10,7 @@ import SearchLog from '../logs/SearchLog';
 const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, loadUser, }) => {
 
   useEffect(() => {
-    loadUser();
+    // loadUser();
     // getLogs();
     //eslint-disable-next-line
   },[]);
