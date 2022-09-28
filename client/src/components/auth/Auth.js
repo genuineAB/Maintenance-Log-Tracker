@@ -5,11 +5,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
-import PreLoader from '../layout/Preloader';
-import {useNavigate} from 'react-router-dom';
 
 
-const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
+const Auth = ({register, login}) => {
 
     
     
@@ -87,12 +85,12 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
         }
     }
     
-    if(!isAuthenticated && loading){
-        return(
-            <PreLoader />
-        )
+    // if(!isAuthenticated && loading){
+    //     return(
+    //         <PreLoader />
+    //     )
         
-    }
+    // }
     
 
     return (
@@ -169,14 +167,8 @@ const Auth = ({auth:{isAuthenticated, loading, user}, register, login}) => {
 }
 
 Auth.propTypes = {
-    auth: PropTypes.object.isRequired,
     register: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired
 }
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth
-    }
-}
 
-export default connect(mapStateToProps, {register, login})(Auth)
+export default connect(null, {register, login})(Auth)

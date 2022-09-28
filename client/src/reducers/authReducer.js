@@ -69,9 +69,8 @@ const authReducer = (state=initialState, action) => {
             error: null
         }
     default:
-        return {
-            state
-        };
+        return state;
+        
   }
 }
 

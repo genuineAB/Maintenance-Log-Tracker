@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import PreLoader from './Preloader';
 import {logout} from '../../actions/authAction';
 import {loadUser} from '../../actions/authAction';
-import Logs from '../logs/Logs';
-import SearchLog from '../logs/SearchLog';
 
 const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, loadUser, }) => {
 
@@ -15,8 +13,7 @@ const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, l
     //eslint-disable-next-line
   },[]);
   // console.log(user)
-  if((user == null) || (loading)){
-    console.log("Got Here")
+  if((user === null) || (loading)){
     return (
       <PreLoader />
     )
