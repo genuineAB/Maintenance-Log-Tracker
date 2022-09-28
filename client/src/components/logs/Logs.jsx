@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 
 const Logs = ({log : {logs, loading, current}, getLogs}) => {
     const auth = useSelector((state) => state.auth);
-    
     useEffect(() => {
         getLogs();
         // eslint-disable-next-line

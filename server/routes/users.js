@@ -95,9 +95,8 @@ router.get('/', auth, async (req, res) => {
         // if(req.user.role !== "Admin"){
         //     res.status(401).json({msg: "Not Authorized"})
         // }
-        console.log(req.user.organizationNumber)
         let users = await User.find({organizationNumber: req.user.organizationNumber}).select('-hashed_password').sort({date: -1});
-        res.json({users});
+        res.json(users);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server Error");

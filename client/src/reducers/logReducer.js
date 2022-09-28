@@ -53,6 +53,7 @@ const logReducer = (state=initialState, action) => {
             }
 
         case SET_CURRENT:
+            
             return{
                 ...state,
                 current: action.payload

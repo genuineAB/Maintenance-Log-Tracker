@@ -14,7 +14,6 @@ const User = require('../models/User');
 // @desc Get Logged in User
 //@access Private
 router.get('/', auth, async (req, res) => {
-        console.log(req.user.role)
         
         try {
             let user = await User.findById(req.user.id).select('-hashed_password');
