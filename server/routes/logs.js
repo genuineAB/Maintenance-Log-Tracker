@@ -13,7 +13,7 @@ const Logs = require('../models/Logs');
 router.get('/', auth, async (req, res) => {
     try{
         let logs = await Logs.find({organizationNumber: req.user.organizationNumber}).sort({date: -1});
-        res.json({logs})
+        res.json(logs)
     }
     catch(error){
         console.error(error.message);

@@ -26,7 +26,7 @@ export const getLogs = () => async dispatch => {
 }
 
 //Add Logs
-export const addLogs = (logs) => async dispatch => {
+export const addLogs = (formData) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -36,18 +36,16 @@ export const addLogs = (logs) => async dispatch => {
     try {
       setLoading();
   
-      const res = await axios.post('/logs', logs, config);
+      const res = await axios.post('/api/logs', formData, config);
   
       dispatch({
           type: ADD_LOGS,
           payload: res.data
       })
-  
-  
     } catch (error) {
       dispatch({
           type: LOGS_ERROR,
-          payload: error.response.statusText
+          payload: error.message
       })
     }
   }

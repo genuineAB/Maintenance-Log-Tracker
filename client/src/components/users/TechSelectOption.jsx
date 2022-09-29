@@ -9,7 +9,7 @@ const TechSelectOption = ({user: {users, loading}, getUsers}) => {
     useEffect(() => {
         getUsers();
     }, [getUsers]);
-    console.log(users);
+    
   return (
     !loading && users !== null && users !== undefined && users.map(user => <option key={user._id} value={`${user.name}`}>
         {user.name}

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 const Logs = ({log : {logs, loading, current}, getLogs}) => {
     const auth = useSelector((state) => state.auth);
+    console.log(logs)
     useEffect(() => {
         getLogs();
         // eslint-disable-next-line
@@ -24,8 +25,8 @@ const Logs = ({log : {logs, loading, current}, getLogs}) => {
                 <li className='collection-header'>
                     <h4 className='center'>Maintenance Logs</h4>
                 </li>
-                {!loading && logs.logs.length === 0 ? (<p className='center'>No logs to show. Add Logs</p>) : (
-                    logs.logs.map(log => <LogsItem log={log} key={log._id}/>)
+                {!loading && logs.length === 0 ? (<p className='center'>No logs to show. Add Logs</p>) : (
+                    logs.map(log => <LogsItem log={log} key={log._id}/>)
                 )}
             </ul>
         )

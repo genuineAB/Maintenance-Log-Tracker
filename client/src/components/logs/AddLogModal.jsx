@@ -1,14 +1,17 @@
 import React,{useState} from 'react';
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addLogs } from '../../actions/logAction';
 import TechSelectOption from '../users/TechSelectOption';
 import M from 'materialize-css/dist/js/materialize.min.js';
 
 const AddLogModal = ({addLogs}) => {
+    const auth = useSelector((state) => state.auth);
+
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
-    const [tech, setTech] = useState('');
+    const [technician, setTech] = useState('');
 
     const onSubmit = () => {
         if(message.trim().length === 0 ){
@@ -18,13 +21,11 @@ const AddLogModal = ({addLogs}) => {
             const newLog = {
                 message,
                 attention,
-                tech,
-                date: new Date()
+                technician
             }
-            console.log("Logs Added")
-            // addLogs(newLog);
+            addLogs(newLog);
 
-            M.toast({html: `Log Added By ${tech}`});
+            M.toast({html: `Log Added By ${auth.user}`});
             //Clear Fields
             setMessage('');
             setTech('');
@@ -49,7 +50,7 @@ const AddLogModal = ({addLogs}) => {
 
             <div className='row'>
                 <div className='input-field'>
-                    <select name="tech" value={tech} className='browser-default' onChange={e => setTech(e.target.value)}>
+                    <select name="tech" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
                         <option value='' disabled>
                             Select Technician
                         </option>

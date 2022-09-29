@@ -36,8 +36,8 @@ const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, l
           </span>
             
           <ul id="nav-mobile" className="right hide-on-med-and-down" style={{fontSize: '1.2rem', fontWeight:'500'}}>
-            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { user.user.organizationName }</li>
-            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ user.user.name}</li>
+            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { user.organizationName }</li>
+            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ user.name}</li>
             <li><a href="#!" style={{fontSize: '1.2rem', fontWeight:'500'}} onClick={onLogout}><i className="fa-solid fa-right-from-bracket"> </i>{' '}Logout</a></li>
           </ul>
 
