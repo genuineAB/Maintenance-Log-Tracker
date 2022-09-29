@@ -5,7 +5,7 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 import { deleteUser } from '../../actions/userActions';
 
 const UserItems = ({user:{_id, name}, deleteUser}) => {
-    
+
   const onDelete = () => {
     deleteUser(_id);
     M.toast({html: `${name} deleted from technician list`});
@@ -13,8 +13,8 @@ const UserItems = ({user:{_id, name}, deleteUser}) => {
   }
   return (
     <li className='collection-item'>
-        <div>
-            {name}
+        <div> 
+        <i className="fa-solid fa-circle-user" /> {' '}{name}
 
             <a href='#!' className='secondary-content' onClick={onDelete}>
               <i className='material-icons grey-text'>delete</i>
