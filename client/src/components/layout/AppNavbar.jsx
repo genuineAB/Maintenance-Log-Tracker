@@ -1,30 +1,30 @@
 import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PreLoader from './Preloader';
-import {logout} from '../../actions/authAction';
+import { LOGOUT } from '../../actions/types';
 import {loadUser} from '../../actions/authAction';
 
 const AppNavbar = ({icon, title}) => {
-  const auth = useSelector((state) => state.auth.user);
-  console.log()
+  const auth = useSelector((state) => state.auth);
+  
+  const dispatch = useDispatch()
   useEffect(() => {
     loadUser();
     // getLogs();
     //eslint-disable-next-line
   },[]);
-  // console.log(user)
+  
   if((auth.user === null) || (auth.loading)){
     return (
       <PreLoader />
     )
     
   }
-
-  
   const onLogout = (e) => {
     e.preventDefault();
-    logout();
+    localStorage.removeItem('token');
+    dispatch({type: LOGOUT})
     console.log("Log Out");
   }
 
@@ -37,8 +37,8 @@ const AppNavbar = ({icon, title}) => {
           </span>
             
           <ul id="nav-mobile" className="right hide-on-med-and-down" style={{fontSize: '1.2rem', fontWeight:'500'}}>
-            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { auth.organizationName }</li>
-            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ auth.name}</li>
+            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { auth.user.organizationName }</li>
+            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ auth.user.name}</li>
             <li><a href="#!" style={{fontSize: '1.2rem', fontWeight:'500'}} onClick={onLogout}><i className="fa-solid fa-right-from-bracket"> </i>{' '}Logout</a></li>
           </ul>
 

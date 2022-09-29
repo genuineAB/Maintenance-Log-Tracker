@@ -19,9 +19,6 @@ const Auth = ({register, login}) => {
     
     useEffect(() => {
         M.AutoInit()
-        // onClick();
-        // onLogIn();
-        // eslint-disable-next-line
     },[] ) 
 
     const onSignUp = (e) => {
@@ -51,7 +48,6 @@ const Auth = ({register, login}) => {
             }
 
             register(signUp);
-            console.log(signUp)
 
             //Clear Fields
             setEmail('');
@@ -78,10 +74,11 @@ const Auth = ({register, login}) => {
             }
 
             login(logIn);
-
             //Clear Fields
             setEmail('');
             setPassword('');
+            
+            window.location.reload()
         }
     }
     

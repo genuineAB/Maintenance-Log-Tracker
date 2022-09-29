@@ -7,6 +7,7 @@ import AddLogModal from "../components/logs/AddLogModal";
 import EditLogsModal from "../components/logs/EditLogsModal";
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import AddUserModal from "../components/users/AddUserModal";
 
 const Dashboard = () => {
     React.useEffect(() => {
@@ -23,6 +24,7 @@ const Dashboard = () => {
                 <EditLogsModal />
                 <AddBtn />
                 <AddLogModal />
+                <AddUserModal />
             </div>
         </div>
     )

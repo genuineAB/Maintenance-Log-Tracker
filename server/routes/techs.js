@@ -36,7 +36,6 @@ router.post('/', auth,
     //Phone Number must not be empty
     body('phoneNumber', 'Please add a phone number').not().isEmpty(),
     async (req, res) => {
-        console.log(req.user)
         
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -53,8 +52,10 @@ router.post('/', auth,
         //     return res.status(405).json({msg: "Access Denied"})
 
         const {name, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
-
-        console.log({role});
+        
+        if(role !== 'Technician'){
+            role = 'Guest';
+        } ;
         
         try {
             let userEmail = await User.findOne({email});
@@ -64,7 +65,7 @@ router.post('/', auth,
             if((userEmail) || (userNumber) || (userName)){
                 return res.status(400).json({msg: "User Already Exist"});
             }
-            console.log(req.user.organizationNumber);
+
             let user = new User ({
                 name,
                 email,
@@ -98,7 +99,6 @@ router.post('/', auth,
                 if(err) throw err;
                 res.json({ token });
             })
-
             
             // res.json({tech});
         } catch (error) {

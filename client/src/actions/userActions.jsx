@@ -26,7 +26,7 @@ export const getUsers = () => async dispatch => {
   
 
   //Add Users
-  export const addUsers = FormData => async dispatch => {
+  export const addUser = FormData => async dispatch => {
     const config = {
         headers:{
             'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export const getUsers = () => async dispatch => {
     try {
         setLoading();
 
-        const res = await axios.post('/Users', FormData, config);
+        const res = await axios.post('/api/users', FormData, config);
 
         dispatch({
             type: ADD_USER,
@@ -44,7 +44,7 @@ export const getUsers = () => async dispatch => {
     } catch (error) {
         dispatch({
             type: USER_ERROR,
-            payload: error.response.statusText
+            payload: error.message
         })
         
     }
