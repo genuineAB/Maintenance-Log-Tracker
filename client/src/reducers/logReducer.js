@@ -47,9 +47,10 @@ const logReducer = (state=initialState, action) => {
             }
 
         case UPDATE_LOG:
+            console.log(action.payload)
             return{
                 ...state,
-                logs: state.logs.map(log => log.id ===  action.payload.id ? action.payload.id : log)
+                logs: state.logs.map(log => log.id ===  action.payload._id ? action.payload._id : log)
             }
 
         case SET_CURRENT:

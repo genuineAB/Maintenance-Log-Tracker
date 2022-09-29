@@ -17,7 +17,7 @@ router.get('/', auth, async (req, res) => {
         
         try {
             let user = await User.findById(req.user.id).select('-hashed_password');
-            res.json(user.name)
+            res.json(user)
            
         } catch (error) {
             console.error(error.message);

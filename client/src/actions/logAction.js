@@ -54,7 +54,7 @@ export const addLogs = (formData) => async dispatch => {
   export const deleteLogs = id => async (dispatch) => {
     setLoading();
     try {
-        await axios.delete(`/logs/${id}`);
+        await axios.delete(`/api/logs/${id}`);
         dispatch({
             type: DELETE_LOGS,
             payload: id
@@ -69,7 +69,7 @@ export const addLogs = (formData) => async dispatch => {
   }
 
 //Update Logs
-export const updateLogs = (log) => async dispatch => {
+export const updateLogs = (formData) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -77,9 +77,7 @@ export const updateLogs = (log) => async dispatch => {
     }
 
     try {
-  
-      const res = await axios.patch(`/logs/${log.id}`, log, config);
-  
+      const res = await axios.patch(`/api/logs/${formData.id}`, formData, config);
       dispatch({
           type: UPDATE_LOG,
           payload: res.data
@@ -90,7 +88,7 @@ export const updateLogs = (log) => async dispatch => {
     } catch (error) {
       dispatch({
           type: LOGS_ERROR,
-          payload: error.response.statusText
+          payload: error.message
       })
     }
   }

@@ -77,11 +77,16 @@ router.patch('/:id', auth, async (req, res) => {
     if (technician){
         logFields.technician = technician;
     }
+
+    if(!logFields.attention){
+        logFields.attention = false
+    }
+    logFields.updated = Date.now();
    
     try {
         let log = await Logs.findById(req.params.id);
 
-        if((!log) || (log.organizationNumber.toString() !== req.user.organizationNumber)){
+        if((!log) || (log.organizationNumber !== req.user.organizationNumber)){
             return res.status(404).json({msg: "Log not found"})
         }
 
@@ -92,7 +97,7 @@ router.patch('/:id', auth, async (req, res) => {
             { new: true }
           );
 
-        res.json({log});
+        res.json(log);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server Error");
@@ -107,7 +112,7 @@ router.delete('/:id', auth, async (req, res) => {
     try {
         let log = await Logs.findById(req.params.id);
 
-        if(!log || (log.organizationNumber.toString() !== req.user.organizationNumber)){
+        if(!log || (log.organizationNumber !== req.user.organizationNumber)){
             return res.status(404).json({msg: "Log not found"})
         }
 

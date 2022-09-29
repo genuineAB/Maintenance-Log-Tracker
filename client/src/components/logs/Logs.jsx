@@ -8,11 +8,9 @@ import { useSelector } from 'react-redux';
 
 const Logs = ({log : {logs, loading, current}, getLogs}) => {
     const auth = useSelector((state) => state.auth);
-    console.log(logs)
     useEffect(() => {
         getLogs();
-        // eslint-disable-next-line
-    }, [])
+    }, [getLogs])
     
     if(auth.user && !auth.loading){
         if(loading || (logs === null)){
@@ -20,6 +18,7 @@ const Logs = ({log : {logs, loading, current}, getLogs}) => {
                 <LogsPreLoader />
             )
         }
+
         return (
             <ul className='collection with-header'>
                 <li className='collection-header'>

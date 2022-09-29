@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import LogsPreLoader from '../layout/LogsPreLoader';
 import { deleteLogs, setCurrent } from '../../actions/logAction';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
@@ -9,8 +10,10 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 const LogsItem = ({log, deleteLogs, setCurrent}) => {
   
   const onDelete = () => {
-    deleteLogs(log.id);
+    console.log(log._id)
+    deleteLogs(log._id);
     M.toast({html: 'Log Deleted'});
+    window.location.reload();
   }
   return (
     <li className='collection-item'>

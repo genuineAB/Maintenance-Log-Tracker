@@ -1,19 +1,20 @@
 import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PreLoader from './Preloader';
 import {logout} from '../../actions/authAction';
 import {loadUser} from '../../actions/authAction';
 
-const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, loadUser, }) => {
-
+const AppNavbar = ({icon, title}) => {
+  const auth = useSelector((state) => state.auth.user);
+  console.log()
   useEffect(() => {
     loadUser();
     // getLogs();
     //eslint-disable-next-line
   },[]);
   // console.log(user)
-  if((user === null) || (loading)){
+  if((auth.user === null) || (auth.loading)){
     return (
       <PreLoader />
     )
@@ -36,8 +37,8 @@ const AppNavbar = ({auth:{loading, user, isAuthenticated},icon, title, logout, l
           </span>
             
           <ul id="nav-mobile" className="right hide-on-med-and-down" style={{fontSize: '1.2rem', fontWeight:'500'}}>
-            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { user.organizationName }</li>
-            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ user.name}</li>
+            <li style={{paddingRight: '1em'}}> <i className="fa-solid fa-building"> </i>{' '} { auth.organizationName }</li>
+            <li style={{paddingRight: '1em'}}><i className="fa-solid fa-user"></i>{' '}{ auth.name}</li>
             <li><a href="#!" style={{fontSize: '1.2rem', fontWeight:'500'}} onClick={onLogout}><i className="fa-solid fa-right-from-bracket"> </i>{' '}Logout</a></li>
           </ul>
 
@@ -59,10 +60,6 @@ AppNavbar.defaultProps = {
     icon: 'fa-solid fa-screwdriver-wrench'
 }
 
-const mapStateToProps = (state) => {
-  return {
-      auth: state.auth
-  }
-}
 
-export default connect(mapStateToProps, {logout, loadUser})(AppNavbar)
+
+export default (AppNavbar)

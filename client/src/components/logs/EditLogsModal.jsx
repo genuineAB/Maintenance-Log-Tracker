@@ -2,37 +2,36 @@ import React,{useState, useEffect} from 'react';
 import { connect } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
-import TechSelectOption from '../tech/TechSelectOption';
+import TechSelectOption from '../users/TechSelectOption';
 import { updateLogs } from '../../actions/logAction';
 
 const EditLogModal = ({updateLogs, current}) => {
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
-    const [tech, setTech] = useState('');
+    const [technician, setTech] = useState('');
+    // console.log(attention)
     useEffect(() => {
         if(current){
             setMessage(current.message);
             setAttention(current.attention);
-            setTech(current.tech);
-        }
+            setTech(current.technician);
+        };
     }, [current])
-
+    
     const onSubmit = () => {
         if(message.trim().length === 0 ){
-            M.toast({html: 'Please enter a message and tech'});
+            M.toast({html: 'Please enter a message and technician'});
         }
         else{
             const updateLog = {
-                id: current.id,
+                id: current._id,
                 message,
                 attention,
-                tech,
-                date: new Date()
+                technician
             }
-            // updateLogs(updateLog);
-            console.log("Logs Updated")
+            updateLogs(updateLog);
             M.toast({html: 'Logs Updated'});
-            // window.location.reload();
+            window.location.reload();
             
 
             //Clear Fields
@@ -56,11 +55,11 @@ const EditLogModal = ({updateLogs, current}) => {
 
             <div className='row'>
                 <div className='input-field'>
-                    <select name="tech" value={tech} className='browser-default' onChange={e => setTech(e.target.value)}>
+                    <select name="technician" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
                         <option value='' disabled>
                             Select Technician
                         </option>
-                        {/* <TechSelectOption /> */}
+                        <TechSelectOption />
 
                     </select>
                 </div>
@@ -70,7 +69,7 @@ const EditLogModal = ({updateLogs, current}) => {
                 <div className='input-field'>
                     <p>
                         <label>
-                            <input type='checkbox' className='filled-in' checked={attention} value={attention} onChange={ e => setAttention(!attention)}/>
+                            <input type='checkbox' className='filled-in' checked={attention} value={attention} onChange={ e => setAttention(!(attention))}/>
                         
                         <span>Needs Attention</span>
                         </label>
