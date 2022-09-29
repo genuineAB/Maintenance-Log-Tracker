@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { deleteUser } from '../../actions/userActions';
 
-const UserItems = ({user:{id, name}, deleteUser}) => {
+const UserItems = ({user:{_id, name}, deleteUser}) => {
+    
   const onDelete = () => {
-    deleteUser(id);
+    deleteUser(_id);
     M.toast({html: `${name} deleted from technician list`});
     // window.location.reload();
   }

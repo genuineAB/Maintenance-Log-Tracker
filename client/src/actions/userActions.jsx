@@ -53,8 +53,8 @@ export const getUsers = () => async dispatch => {
   //Delete Users
   export const deleteUser = (id) => async dispatch => {
     try {
-        await axios.delete(`/users/${id}`);
-
+        await axios.delete(`/api/users/${id}`);
+        
         dispatch({
             type: DELETE_USER,
             payload: id
@@ -63,7 +63,7 @@ export const getUsers = () => async dispatch => {
     } catch (error) {
         dispatch({
             type: USER_ERROR,
-            payload: error.response.statusText
+            payload: error.message
         })
     }
   }
