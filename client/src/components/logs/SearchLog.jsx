@@ -1,14 +1,16 @@
 import React, {useRef} from 'react';
 import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { searchLogs } from '../../actions/logAction';
 
-const SearchLog = () => {
+const SearchLog = ({searchLogs}) => {
     const auth = useSelector((state) => state.auth);
     
    
     const text = useRef('');
 
     const onChange = e => {
-        console.log(text.current.value);
+        searchLogs(text.current.value);
     }
     if(auth.user && !auth.loading){
         return (
@@ -25,4 +27,4 @@ const SearchLog = () => {
     
 }
 
-export default SearchLog
+export default connect(null, {searchLogs})(SearchLog)

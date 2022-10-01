@@ -17,7 +17,6 @@ const EditLogModal = ({updateLogs, current}) => {
             setTech(current.technician);
         };
     }, [current])
-    
     const onSubmit = () => {
         if(message.trim().length === 0 ){
             M.toast({html: 'Please enter a message and technician'});
@@ -87,6 +86,7 @@ const EditLogModal = ({updateLogs, current}) => {
     </div>
   )
 }
+
 const modalStyle = {
     widht: '75%',
     height: '75%'

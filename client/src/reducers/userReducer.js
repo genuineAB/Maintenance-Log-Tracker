@@ -1,11 +1,12 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER
 } from '../actions/types';
 
 const initialState = {
     users: null,
     loading: false,
-    error: null
+    error: null,
+    current: null
 }
 
 
@@ -33,12 +34,33 @@ const userReducer = (state=initialState, action) => {
             users: [action.payload, ...state.users],
             loading: false
         }
-    
+
+    case GET_USER:
+        console.log(action.payload)
+        return {
+            ...state,
+            users: state.users.filter(user => user.id !== action.payload),
+            loading: false
+        }
+
+    case UPDATE_USER:
+        console.log(action.payload)
+        return{
+            ...state,
+            users: state.users.map(user => user.id ===  action.payload._id ? action.payload._id : user)
+        }
+
     case DELETE_USER:
         return {
             ...state,
-            users: state.users.filter(tech => tech.id !== action.payload),
+            users: state.users.filter(user => user.id !== action.payload),
             loading: false
+        }
+    case SET_CURRENT_USER:
+        
+        return{
+            ...state,
+            current: action.payload
         }
 
     case USER_ERROR:

@@ -11,14 +11,15 @@ const AppNavbar = ({icon, title}) => {
   const dispatch = useDispatch()
   useEffect(() => {
     loadUser();
-    // getLogs();
-    //eslint-disable-next-line
-  },[]);
+
+  }, []);
   
   if((auth.user === null) || (auth.loading)){
+    window.location.reload(true)
     return (
       <PreLoader />
-    )
+      
+    );
     
   }
   const onLogout = (e) => {

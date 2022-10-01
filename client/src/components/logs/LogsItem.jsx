@@ -2,8 +2,6 @@ import React from 'react';
 import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-
-import LogsPreLoader from '../layout/LogsPreLoader';
 import { deleteLogs, setCurrent } from '../../actions/logAction';
 
 import M from 'materialize-css/dist/js/materialize.min.js';

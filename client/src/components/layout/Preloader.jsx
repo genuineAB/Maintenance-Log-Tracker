@@ -1,6 +1,7 @@
 import React from 'react'
 
 const PreLoader = () => {
+  
   return (
     <div className="preloader-wrapper big active" style={{ margin: '20% 45%', display: 'block'}}>
         <div className="spinner-layer spinner-blue-only">

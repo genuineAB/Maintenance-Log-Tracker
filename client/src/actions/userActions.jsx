@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER
 } from './types';
 import axios from 'axios';
 
@@ -49,7 +49,51 @@ export const getUsers = () => async dispatch => {
         
     }
   }
- 
+// GET A User
+export const getSingleUser = (id) => async dispatch => {
+
+    try {
+      const res = await axios.get(`/api/users/${id}`);
+      dispatch({
+          type: GET_USER,
+          payload: res.data
+      })
+      
+      setLoading();
+  
+    } catch (error) {
+      dispatch({
+          type: USER_ERROR,
+          payload: error.message
+      })
+    }
+  }
+
+  //Update Users
+export const updateUser = (formData) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    try {
+      const res = await axios.patch(`/api/users/${formData.id}`, formData, config);
+      dispatch({
+          type: UPDATE_USER,
+          payload: res.data
+      })
+      
+      setLoading();
+  
+    } catch (error) {
+      dispatch({
+          type: USER_ERROR,
+          payload: error.message
+      })
+    }
+  }
+
   //Delete Users
   export const deleteUser = (id) => async dispatch => {
     try {
@@ -68,6 +112,13 @@ export const getUsers = () => async dispatch => {
     }
   }
 
+  //Set Current
+export const setCurrent = (user) => dispatch => {
+    dispatch({
+        type: SET_CURRENT_USER,
+        payload: user
+    })
+}
   //Set Loading to True
   export const setLoading = () => {
       return {

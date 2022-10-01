@@ -117,7 +117,7 @@ router.get('/:id', auth, async (req, res) => {
             return res.status(400).json({msg: "User Not Found"});
         }
         
-        if(((req.user.role !== "Admin") || (req.user.id !== req.params.id)) ){
+        if(((req.user.role !== "Admin") && (req.user.id !== req.params.id)) ){
             return res.status(401).json({msg: "Not Authorized"})
         }
 

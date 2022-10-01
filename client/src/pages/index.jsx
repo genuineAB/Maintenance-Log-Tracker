@@ -31,7 +31,6 @@ const Pages = () => {
         getUser();
         // eslint-disable-next-line
     }, []);
-    
     if (auth.loading) {
         return <PreLoader />;
     }

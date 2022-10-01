@@ -43,6 +43,14 @@
   font-size: x-large;
 }
 
+.style-display{
+  display: block;
+}
+
+.style-no-display{
+  display: none;
+}
+
 .form-1 {
   padding: 0 20px 0 20px;
   margin-bottom: 30%;

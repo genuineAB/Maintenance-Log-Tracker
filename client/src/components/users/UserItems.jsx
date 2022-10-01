@@ -1,24 +1,31 @@
 import React from 'react';
-import { connect } from 'react-redux/es/exports';
+import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { deleteUser } from '../../actions/userActions';
+import { setCurrent } from '../../actions/userActions';
 
-const UserItems = ({user:{_id, name}, deleteUser}) => {
+const UserItems = ({user, deleteUser, setCurrent}) => {
+    const auth = useSelector((state) => state.auth.user)
+    console.log(auth.role)
 
   const onDelete = () => {
-    deleteUser(_id);
-    M.toast({html: `${name} deleted from technician list`});
+    deleteUser(user._id);
+    M.toast({html: `${user.name} deleted from technician list`});
     // window.location.reload();
   }
   return (
     <li className='collection-item'>
         <div> 
-        <i className="fa-solid fa-circle-user" /> {' '}{name}
-
-            <a href='#!' className='secondary-content' onClick={onDelete}>
-              <i className='material-icons grey-text'>delete</i>
+            <a href='#get-user-modal' className='black-text modal-trigger' onClick={() => {setCurrent(user)}}>
+                <i className="fa-solid fa-circle-user" /> {' '}{user.name}
             </a>
+            {(auth.role === 'Admin') ? (
+                <a href='#!' className='secondary-content' onClick={onDelete}>
+                <i className='material-icons grey-text'>delete</i>
+              </a>
+            ) : <span></span>}
+            
         </div>
         
     </li>
@@ -30,4 +37,4 @@ UserItems.propTypes = {
     deleteUser: PropTypes.func.isRequired
 }
 
-export default connect(null, {deleteUser})(UserItems)
+export default connect(null, {deleteUser, setCurrent})(UserItems)
