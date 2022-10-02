@@ -6,6 +6,14 @@ import { updateUser } from '../../actions/userActions';
 
 const SingleUserModal = ({updateUser, current}) => {
     const auth = useSelector((state) => state.auth.user);
+    const user = useSelector((state) => state.user);
+    let sentinel;
+    if(user.current === null){
+        sentinel = user.current;
+    }
+    else{
+        sentinel = user.current.role
+    }
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -65,7 +73,7 @@ const SingleUserModal = ({updateUser, current}) => {
         
         <div id='get-user-modal' className='modal' style={modalStyle}>
             <div className='modal-content'>
-                <h4>Enter System Log</h4>
+                <h4>User Details</h4>
                 <div className="row">
                     <div className="input-field col s6">
                         <i className="material-icons prefix">account_circle</i>
@@ -91,33 +99,45 @@ const SingleUserModal = ({updateUser, current}) => {
                     <label htmlFor="organization_name" className='active'>Organization Name</label>
                     </div>
                 </div>
-                <div className='row'>        
-                    <div className="input-field col s6">
-                        <input name='employment' type="text"  value={employmentType} onChange={e => setEmploymentType(e.target.value)} disabled={auth.role !== 'Admin'}/>
-                        <label htmlFor="employment_type" className='active'> Employment Type</label>
+                {(sentinel === null || sentinel === 'Admin') ? <span></span> : (
+                    <div className='row'>        
+                        <div className="input-field col s6">
+                            <input name='employment' type="text"  value={employmentType} onChange={e => setEmploymentType(e.target.value)} disabled={auth.role !== 'Admin'}/>
+                            <label htmlFor="employment_type" className='active'> Employment Type</label>
+                        </div>
+                        <div className="input-field col s6">
+                            <input name='occupation' type="text" className="validate" value={occupation} onChange={e => setOccupation(e.target.value)} disabled={auth.role !== 'Admin'}/>
+                            <label htmlFor="occupation_type" className='active'>Occupation</label>
+                        </div>
                     </div>
-                    <div className="input-field col s6">
-                        <input name='occupation' type="text" className="validate" value={occupation} onChange={e => setOccupation(e.target.value)} disabled={auth.role !== 'Admin'}/>
-                        <label htmlFor="occupation_type" className='active'>Occupation</label>
-                    </div>
-                </div>
+                )
+}
+                
+                {(sentinel === null || sentinel === 'Admin') ?  <span></span> : (
                 <div>
+                {(role === 'Guest') ? (
                     <p  style={{display: 'inline', paddingRight: '20px'}}>
                         <label>
                             <input name="role" type="radio" value="Guest" checked={role === 'Guest'} onChange={e => setRole(e.target.value)} />
                             <span>Guest</span>
                         </label>
-                    </p>
+                    </p>) : (
                     <p  style={{display: 'inline', paddingRight: '20px'}}>
                         <label>
                             <input name="role" type="radio" value="Technician" checked={role === 'Technician'} onChange={e => setRole(e.target.value)} />
                             <span>Technician</span>
                         </label>
                     </p>
+                    )}
+                            
+                            
                 </div>
+                )}
+                
+                
                 {(auth.role === 'Admin') ? 
                     (<div className='modal-footer'>
-                    <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Enter
+                    <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update User
                         <i className="material-icons right">send</i>
                     </button>
                 </div>) : <span></span> }

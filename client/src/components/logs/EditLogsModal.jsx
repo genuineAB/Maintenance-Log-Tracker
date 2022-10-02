@@ -45,10 +45,11 @@ const EditLogModal = ({updateLogs, current}) => {
   return (
     <div id='edit-log-modal' className='modal' style={modalStyle}>
         <div className='modal-content'>
-            <h4>Enter System Log</h4>
+            <h4 style={{paddingBottom: '2rem'}}>Enter System Log</h4>
             <div className='row'>
                 <div className='input-field'>
                     <input type='text' name='message' value={message} onChange={e => setMessage(e.target.value)} />
+                    <label htmlFor="message" className='active'>Log Message</label>
                 </div>
             </div>
 
@@ -79,7 +80,7 @@ const EditLogModal = ({updateLogs, current}) => {
         </div>
 
         <div className='modal-footer'>
-            <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Enter
+            <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update Log
                 <i className="material-icons right">send</i>
             </button>
         </div>

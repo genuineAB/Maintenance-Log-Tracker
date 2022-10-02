@@ -6,13 +6,11 @@ import { deleteUser } from '../../actions/userActions';
 import { setCurrent } from '../../actions/userActions';
 
 const UserItems = ({user, deleteUser, setCurrent}) => {
-    const auth = useSelector((state) => state.auth.user)
-    console.log(auth.role)
+    const auth = useSelector((state) => state.auth.user);
 
   const onDelete = () => {
     deleteUser(user._id);
     M.toast({html: `${user.name} deleted from technician list`});
-    // window.location.reload();
   }
   return (
     <li className='collection-item'>
