@@ -36,7 +36,7 @@ const userReducer = (state=initialState, action) => {
         }
 
     case GET_USER:
-        console.log(action.payload)
+        
         return {
             ...state,
             users: state.users.filter(user => user.id !== action.payload),
@@ -44,7 +44,7 @@ const userReducer = (state=initialState, action) => {
         }
 
     case UPDATE_USER:
-        console.log(action.payload)
+        
         return{
             ...state,
             users: state.users.map(user => user.id ===  action.payload._id ? action.payload._id : user)

@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import getUsers from '../../actions/userActions';
 
 const TechSelectOption = ({user: {users, loading}, getUsers}) => {
-    console.log(users)
-    // getUsers();
+    
     useEffect(() => {
         getUsers();
     }, [getUsers]);

@@ -12,9 +12,9 @@ const SingleUserModal = ({updateUser, current}) => {
         sentinel = user.current;
     }
     else{
-        sentinel = user.current.role
+        sentinel = user.current.name
     }
-
+    
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
@@ -48,12 +48,12 @@ const SingleUserModal = ({updateUser, current}) => {
                 role,
                 occupation,
                 organizationName,
-                employmentType,
-                phone
+                employment_type: employmentType,
+                phoneNumber: phone
             }
             updateUser(userForm);
-            M.toast({html: 'Logs Updated'});
-            window.location.reload();
+            M.toast({html: 'User Updated'});
+            window.location.reload(false);
             
 
             //Clear Fields
@@ -68,7 +68,7 @@ const SingleUserModal = ({updateUser, current}) => {
         }
         
     }
-    
+
     return (
         
         <div id='get-user-modal' className='modal' style={modalStyle}>
@@ -77,29 +77,39 @@ const SingleUserModal = ({updateUser, current}) => {
                 <div className="row">
                     <div className="input-field col s6">
                         <i className="material-icons prefix">account_circle</i>
-                        <input name='name' type="text" value={name} onChange={e => setName(e.target.value)} disabled={auth.role !== 'Admin'}/>
+                        <input name='name' type="text" value={name} onChange={e => setName(e.target.value)} disabled={(auth.role !== 'Admin') && (auth.name !== sentinel)}/>
                         <label htmlFor="Full Name" className='active'> Name</label>
                     </div>
                     <div className="input-field col s6">
                         <i className="material-icons prefix">phone</i>
-                        <input name='phone' type="text" value={phone} onChange={e => setPhone(e.target.value)} disabled={auth.role !== 'Admin'}/>
+                        <input name='phone' type="text" value={phone} onChange={e => setPhone(e.target.value)} disabled={(auth.role !== 'Admin') && (auth.name !== sentinel)}/>
                         <label htmlFor="Phone Number" className='active'>Phone Number</label>
                     </div>
                 </div>
-                <div className="row">
+
+                {(auth.role !== 'Admin') ? (
+                    <div className="input-field col s12">
+                    <i className="material-icons prefix">email</i>
+                    <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth.name}/>
+                    <label htmlFor="Email" className='active'>Email</label>
+                </div>) : (
+                    <div className="row">
 
                     <div className="input-field col s6">
                         <i className="material-icons prefix">email</i>
-                        <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin'}/>
+                        <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth.name}/>
                         <label htmlFor="Email" className='active'>Email</label>
                     </div>
-                    <div className="input-field col s6">
+                     <div className="input-field col s6">
                         <i className="material-icons prefix" >business</i>
                     <input name="organization" type="text" value={organizationName} onChange={e => setOrgName(e.target.value)} disabled={auth.role !== 'Admin'}/>
                     <label htmlFor="organization_name" className='active'>Organization Name</label>
                     </div>
+                    
                 </div>
-                {(sentinel === null || sentinel === 'Admin') ? <span></span> : (
+                )}
+                
+                {((sentinel === null || user.current.role === 'Admin') || (auth.role !== 'Admin')) ? <span></span> : (
                     <div className='row'>        
                         <div className="input-field col s6">
                             <input name='employment' type="text"  value={employmentType} onChange={e => setEmploymentType(e.target.value)} disabled={auth.role !== 'Admin'}/>
@@ -113,8 +123,9 @@ const SingleUserModal = ({updateUser, current}) => {
                 )
 }
                 
-                {(sentinel === null || sentinel === 'Admin') ?  <span></span> : (
+                {(sentinel === null || user.current.role === 'Admin') ?  <span></span> : (
                 <div>
+                    
                 {(role === 'Guest') ? (
                     <p  style={{display: 'inline', paddingRight: '20px'}}>
                         <label>
@@ -135,7 +146,7 @@ const SingleUserModal = ({updateUser, current}) => {
                 )}
                 
                 
-                {(auth.role === 'Admin') ? 
+                {(auth.role === 'Admin' || sentinel === auth.name) ? 
                     (<div className='modal-footer'>
                     <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update User
                         <i className="material-icons right">send</i>

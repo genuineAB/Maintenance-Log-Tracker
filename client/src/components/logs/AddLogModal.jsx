@@ -23,6 +23,7 @@ const AddLogModal = ({addLogs}) => {
                 attention,
                 technician
             }
+            console.log(newLog)
             addLogs(newLog);
 
             M.toast({html: `Log Added By ${auth.user}`});
@@ -30,7 +31,7 @@ const AddLogModal = ({addLogs}) => {
             setMessage('');
             setTech('');
             setAttention(false);
-            window.location.reload();
+            // window.location.reload();
         }
         
     }
@@ -49,9 +50,11 @@ const AddLogModal = ({addLogs}) => {
                 </div>
             </div>
 
-            <div className='row'>
+            {(auth.user.role === 'Admin') ? 
+                (
+                <div className='row'>
                 <div className='input-field'>
-                    <select name="tech" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
+                    <select name="technician" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
                         <option value='' disabled>
                             Select Technician
                         </option>
@@ -59,7 +62,8 @@ const AddLogModal = ({addLogs}) => {
 
                     </select>
                 </div>
-            </div>
+                </div>
+                ) : <span></span>}
 
             <div className='row'>
                 <div className='input-field'>

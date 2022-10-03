@@ -46,21 +46,20 @@ router.post('/', auth,
             res.status(401).json({msg: "Not Authorized"})
         }
 
-        // let userRole = await Tech.find({user: req.user.role});
-            
-        // if (userRole !== 'Admin')
-        //     return res.status(405).json({msg: "Access Denied"})
 
         const {name, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
         
-        if(role !== 'Technician'){
-            role = 'Guest';
-        } ;
         
+        let userRole = role
+        if(userRole !== 'Technician'){
+            userRole = 'Guest';
+        } ;
+
         try {
             let userEmail = await User.findOne({email});
             let userName = await User.findOne({name});
             let userNumber = await User.findOne({phoneNumber})
+            
 
             if((userEmail) || (userNumber) || (userName)){
                 return res.status(400).json({msg: "User Already Exist"});
@@ -69,7 +68,7 @@ router.post('/', auth,
             let user = new User ({
                 name,
                 email,
-                role,
+                role : userRole,
                 hashed_password,
                 phoneNumber,
                 occupation,

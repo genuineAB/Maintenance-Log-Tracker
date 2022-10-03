@@ -168,7 +168,7 @@ router.patch('/:id', auth, async (req, res) => {
     
     
     userFields.updated = Date.now();
-
+    
     try {
         let user = await User.findById(req.params.id);
         if(req.user.role == "Admin" && req.user.id == req.params.id){
@@ -179,7 +179,7 @@ router.patch('/:id', auth, async (req, res) => {
             return res.status(404).json({msg: " User not found"})
         }
 
-        if(((req.user.role !== "Admin") || (req.user.id !== req.params.id))){
+        if(((req.user.role !== "Admin") && (req.user.id !== req.params.id))){
             return res.status(401).json({msg: "Not Authorized"})
         }
 

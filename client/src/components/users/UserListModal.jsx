@@ -10,8 +10,7 @@ const UserListModal = ({user:{users, loading}, getUsers }) => {
         getUsers();
         // eslint-disable-next-line
     }, [])
-
-   
+ 
   return (
     <div id='tech-list-modal' className='modal'>
         <div className='modal-content'>

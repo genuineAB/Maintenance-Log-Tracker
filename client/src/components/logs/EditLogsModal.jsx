@@ -1,15 +1,17 @@
 import React,{useState, useEffect} from 'react';
-import { connect } from 'react-redux/es/exports';
+import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import TechSelectOption from '../users/TechSelectOption';
 import { updateLogs } from '../../actions/logAction';
 
 const EditLogModal = ({updateLogs, current}) => {
+    const auth = useSelector((state) => state.auth.user);
+    
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
     const [technician, setTech] = useState('');
-    // console.log(attention)
+    
     useEffect(() => {
         if(current){
             setMessage(current.message);
@@ -52,8 +54,9 @@ const EditLogModal = ({updateLogs, current}) => {
                     <label htmlFor="message" className='active'>Log Message</label>
                 </div>
             </div>
-
-            <div className='row'>
+            {(auth.role === 'Admin') ? 
+                (
+                <div className='row'>
                 <div className='input-field'>
                     <select name="technician" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
                         <option value='' disabled>
@@ -63,13 +66,15 @@ const EditLogModal = ({updateLogs, current}) => {
 
                     </select>
                 </div>
-            </div>
+                </div>
+                ) : <span></span>}
+            
 
             <div className='row'>
                 <div className='input-field'>
                     <p>
                         <label>
-                            <input type='checkbox' className='filled-in' checked={attention} value={attention} onChange={ e => setAttention(!(attention))}/>
+                            <input type='checkbox' className='filled-in' checked={attention} value={attention} onChange={ e => setAttention(!(attention))} disabled={auth.role === 'Guest'}/>
                         
                         <span>Needs Attention</span>
                         </label>
@@ -78,12 +83,15 @@ const EditLogModal = ({updateLogs, current}) => {
                 </div>
             </div>
         </div>
-
-        <div className='modal-footer'>
-            <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update Log
-                <i className="material-icons right">send</i>
-            </button>
-        </div>
+        {(auth.role === 'Admin' || auth.role === 'Technician') ?
+            (
+                <div className='modal-footer'>
+                    <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update Log
+                        <i className="material-icons right">send</i>
+                    </button>
+                </div>
+            ) : <span></span>}
+        
     </div>
   )
 }

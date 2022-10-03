@@ -30,7 +30,7 @@ const AddUserModal = ({addUser}) => {
             addUser(newUser);
             // window.location.reload();
 
-            M.toast({html: `${name} was added as a technician`});
+            M.toast({html: `${name} was added`});
             //Clear Fields
             setName('');
             setOccupation('');

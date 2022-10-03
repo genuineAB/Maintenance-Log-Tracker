@@ -27,23 +27,26 @@ router.get('/', auth, async (req, res) => {
 router.post('/', auth,
     //Log Message must not be empty
     body('message', 'Please add Log Message').not().isEmpty(),
-    //Technician Must not be empty
-    body('technician', 'Please add Technician to Log').not().isEmpty(),
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
         }
     
-        const {message, attention, technician} = req.body;
-
+        const {message, attention} = req.body;
+        let {technician} = req.body
+        const {organizationNumber} = req.user
         try {
             let log = await Logs.findOne({message});
+            let orgNum = await Logs.findOne({organizationNumber});
 
-            if(log){
+            if(log && orgNum){
                 return res.status(400).json({msg: "Log Already Exist"});
             }
-            console.log(req.user.organizationNumber)
+            
+            if((technician === null) || (technician.trim().length === 0)){
+                technician = 'None'
+            }
             log = new Logs ({
                 message,
                 attention,

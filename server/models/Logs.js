@@ -27,8 +27,9 @@ const LogSchema = mongoose.Schema({
     },
 
     technician: {
-        type: String
-        // required: [true, 'Please select a technician']
+        type: String,
+        // required: [true, 'Please select a technician'],
+        default: 'None'
     },
 
     created: {
