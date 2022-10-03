@@ -8,12 +8,7 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 
 const LogsItem = ({log, deleteLogs, setCurrent}) => {
   const user = useSelector((state) => state.auth.user)
-  const onDelete = () => {
-    console.log(log._id)
-    deleteLogs(log._id);
-    M.toast({html: 'Log Deleted'});
-    window.location.reload();
-  }
+  
   return (
     <li className='collection-item'>
         <div>
@@ -36,7 +31,7 @@ const LogsItem = ({log, deleteLogs, setCurrent}) => {
               <Moment format='MMM Do YYYY, h:mm:ss a'>{log.updated}</Moment>
             </span>
             {(user.role === 'Admin') ? (
-              <a a href='#delete-log-modal' onClick={onDelete} className='modal-trigger secondary-content'>
+              <a a href='#delete-log-modal' className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
               <i className='material-icons grey-text'>delete</i>
               </a>
             ) : <span></span>}

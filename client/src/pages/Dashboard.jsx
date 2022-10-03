@@ -10,6 +10,7 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 import AddUserModal from "../components/users/AddUserModal";
 import UserListModal from "../components/users/UserListModal";
 import SingleUserModal from "../components/users/SingleUserModal";
+import DeleteLogModal from "../components/logs/DeleteLogModal";
 
 const Dashboard = () => {
     React.useEffect(() => {
@@ -29,6 +30,7 @@ const Dashboard = () => {
                 <AddUserModal />
                 <UserListModal />
                 <SingleUserModal />
+                <DeleteLogModal />
             </div>
         </div>
     )
