@@ -9,12 +9,11 @@ const DeleteLogModal = ({deleteLogs}) => {
     console.log(log)
 
     const onDelete = () => {
-        // console.log(current)
         
         console.log("Got Here")
         deleteLogs(log._id);
         M.toast({html: 'Log Deleted'});
-        // window.location.reload();
+        window.location.reload(false);
       }
 
   return (

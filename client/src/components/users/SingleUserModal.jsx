@@ -7,6 +7,7 @@ import { updateUser } from '../../actions/userActions';
 const SingleUserModal = ({updateUser, current}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user);
+    console.log(auth.role)
     let sentinel;
     if(user.current === null){
         sentinel = user.current;
@@ -123,23 +124,55 @@ const SingleUserModal = ({updateUser, current}) => {
                 )
 }
                 
-                {(sentinel === null || user.current.role === 'Admin') ?  <span></span> : (
-                <div>
-                    
-                {(role === 'Guest') ? (
-                    <p  style={{display: 'inline', paddingRight: '20px'}}>
+                {(sentinel === null || user.current.role === 'Admin') ?  ( <p  style={{display: 'inline', paddingRight: '20px'}}>
                         <label>
-                            <input name="role" type="radio" value="Guest" checked={role === 'Guest'} onChange={e => setRole(e.target.value)} />
-                            <span>Guest</span>
+                            <input name="role" type="radio" value="Admin" checked={role === 'Admin'} onChange={e => setRole(e.target.value)} />
+                            <span>Admin</span>
                         </label>
                     </p>) : (
-                    <p  style={{display: 'inline', paddingRight: '20px'}}>
+                <div>
+                {(auth.role === 'Admin') ? (
+                    (
+                        <div>
+                            <p  style={{display: 'inline', paddingRight: '20px'}}>
+                            <label>
+                                <input name="role" type="radio" value="Guest" checked={role === 'Guest'} onChange={e => setRole(e.target.value)} />
+                                <span>Guest</span>
+                            </label>
+                        </p>
+                        <p  style={{display: 'inline', paddingRight: '20px'}}>
                         <label>
                             <input name="role" type="radio" value="Technician" checked={role === 'Technician'} onChange={e => setRole(e.target.value)} />
                             <span>Technician</span>
                         </label>
                     </p>
-                    )}
+                    <p  style={{display: 'inline', paddingRight: '20px'}}>
+                    <label>
+                        <input name="role" type="radio" value="Admin" checked={role === 'Admin'} onChange={e => setRole(e.target.value)} />
+                        <span>Admin</span>
+                    </label>
+                    </p>
+                        </div> 
+                        )
+                ) : (
+                    <div>
+                    {(role === 'Guest') ? (
+                        <p  style={{display: 'inline', paddingRight: '20px'}}>
+                            <label>
+                                <input name="role" type="radio" value="Guest" checked={role === 'Guest'} onChange={e => setRole(e.target.value)} />
+                                <span>Guest</span>
+                            </label>
+                        </p>) : (
+                        <p  style={{display: 'inline', paddingRight: '20px'}}>
+                            <label>
+                                <input name="role" type="radio" value="Technician" checked={role === 'Technician'} onChange={e => setRole(e.target.value)} />
+                                <span>Technician</span>
+                            </label>
+                        </p>
+                        )}
+                    </div>
+                )} 
+                
                             
                             
                 </div>
