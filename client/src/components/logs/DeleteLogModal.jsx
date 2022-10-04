@@ -5,8 +5,7 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 
 const DeleteLogModal = ({deleteLogs}) => {
     const auth = useSelector((state) => state.auth.user);
-    const log = useSelector((state) => state.log.current)
-    console.log(log)
+    const log = useSelector((state) => state.log.current);
 
     const onDelete = () => {
         

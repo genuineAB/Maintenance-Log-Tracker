@@ -7,7 +7,6 @@ import { updateUser } from '../../actions/userActions';
 const SingleUserModal = ({updateUser, current}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user);
-    console.log(auth.role)
     let sentinel;
     if(user.current === null){
         sentinel = user.current;

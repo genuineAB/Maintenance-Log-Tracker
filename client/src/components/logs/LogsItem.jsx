@@ -31,7 +31,7 @@ const LogsItem = ({log, deleteLogs, setCurrent}) => {
               <Moment format='MMM Do YYYY, h:mm:ss a'>{log.updated}</Moment>
             </span>
             {(user.role === 'Admin') ? (
-              <a a href='#delete-log-modal' className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
+              <a href='#delete-log-modal' className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
               <i className='material-icons grey-text'>delete</i>
               </a>
             ) : <span></span>}

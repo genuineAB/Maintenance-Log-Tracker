@@ -11,6 +11,7 @@ import AddUserModal from "../components/users/AddUserModal";
 import UserListModal from "../components/users/UserListModal";
 import SingleUserModal from "../components/users/SingleUserModal";
 import DeleteLogModal from "../components/logs/DeleteLogModal";
+import DeleteUserModal from "../components/users/DeleteUserModal";
 
 const Dashboard = () => {
     React.useEffect(() => {
@@ -31,6 +32,7 @@ const Dashboard = () => {
                 <UserListModal />
                 <SingleUserModal />
                 <DeleteLogModal />
+                <DeleteUserModal />
             </div>
         </div>
     )
