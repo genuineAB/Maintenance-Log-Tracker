@@ -7,7 +7,7 @@ const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 
-const Tech = require('../models/Techs');
+// const Tech = require('../models/Token');
 
 // @route GET api/authtech
 // @desc Get Logged in Technician

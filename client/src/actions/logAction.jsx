@@ -107,7 +107,7 @@ export const searchLogs = (text) => async dispatch => {
       setLoading();
    
       const res = await axios.get(`/api/logs?q=${text}`);
-  
+      
       dispatch({
           type: SEARCH_LOGS,
           payload: res.data

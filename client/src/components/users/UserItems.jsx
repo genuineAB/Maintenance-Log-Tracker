@@ -16,7 +16,7 @@ const UserItems = ({user, deleteUser, setCurrent}) => {
     <li className='collection-item'>
         <div> 
             <a href='#get-user-modal' className='black-text modal-trigger' onClick={() => {setCurrent(user)}}>
-                <i className="fa-solid fa-circle-user" /> {' '}{user.name}
+                <i className="fa-solid fa-circle-user" /> {' '}{user.firstName} {' '} {user.lastName}
             </a>
             {(auth.role === 'Admin') ? (
                 <a href='#delete-user-modal' className='secondary-content modal-trigger' onClick={() => {setCurrent(user)}}>

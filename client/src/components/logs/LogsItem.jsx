@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { deleteLogs, setCurrent } from '../../actions/logAction';
 
-import M from 'materialize-css/dist/js/materialize.min.js';
-
 const LogsItem = ({log, deleteLogs, setCurrent}) => {
-  const user = useSelector((state) => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   
   return (
     <li className='collection-item'>
@@ -17,19 +15,25 @@ const LogsItem = ({log, deleteLogs, setCurrent}) => {
             }}>{log.message}</a>
             <br />
             <span className='grey-text'>
+              {}Log assigned to{' '}
               <span className='black-text'>
-                ID #{log._id}
-              </span>
-              {} assigned to{' '}
+                {log.technician}{','}
+              </span> {} added by{' '}
               <span className='black-text'>
-                {log.technician}
-              </span> {} last updated by{' '}
+                {log.addedBy}
+              </span> 
+              {' '} on {' '}
+              <Moment format='MMM Do YYYY, h:mm:ss a'>{log.created}</Moment>
+            </span>
+            {log.updatedBy !== 'None' ? (<span>
+              <span className='grey-text'>{'.'} Updated by{' '}
               <span className='black-text'>
-                {user.name}
+                {log.updatedBy}
               </span> 
               {' '} on {' '}
               <Moment format='MMM Do YYYY, h:mm:ss a'>{log.updated}</Moment>
             </span>
+            </span>): <span></span>}
             {(user.role === 'Admin') ? (
               <a href='#delete-log-modal' className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
               <i className='material-icons grey-text'>delete</i>

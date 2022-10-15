@@ -7,15 +7,17 @@ import { updateUser } from '../../actions/userActions';
 const SingleUserModal = ({updateUser, current}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user);
+    
     let sentinel;
     if(user.current === null){
         sentinel = user.current;
     }
     else{
-        sentinel = user.current.name
+        sentinel = user.current._id
     }
     
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const [organizationName, setOrgName] = useState('');
@@ -26,7 +28,8 @@ const SingleUserModal = ({updateUser, current}) => {
     
     useEffect(() => {
         if(current){
-            setName(current.name);
+            setFirstName(current.firstName);
+            setLastName(current.lastName)
             setEmail(current.email);
             setRole(current.role);
             setOrgName(current.organizationName);
@@ -35,15 +38,44 @@ const SingleUserModal = ({updateUser, current}) => {
             setPhone(current.phoneNumber);
         };
     }, [current])
+
+    const validatePhoneNumNig = (phone) => {
+        var res = /^\+?([0-9]{2,3})\)?\d{10}$/;
+        return res.test(String(phone));
+    }
+    const validatePhoneNumInt = (phone) => {
+        var res = /^\+?([0-9]{1,3})\)?[-. ]?([0-9]{4,5})[-. ]?([0-9]{4,5})$/;
+        return res.test(String(phone));
+    }
+    const validateNigNum = (phone) => {
+        var res = /((^0)(7|8|9){1}(0|1){1}[0-9]{8})/
+        return res.test(String(phone));
+    }
     
     const onSubmit = () => {
-        if(name.trim().length === 0 ){
-            M.toast({html: 'Please enter a name and role'});
+        if(firstName.trim().length === 6){
+            M.toast({html: 'Please Enter First Name'});
+        }
+        else if(firstName.trim().length > 25){
+            M.toast({html: 'Name should be a maximum of 25 characters'});
+        }
+        else if(lastName.trim().length === 6){
+            M.toast({html: 'Please Enter Last Name'});
+        }
+        else if(lastName.trim().length > 25){
+            M.toast({html: 'Name should be a maximum of 25 characters'});
+        }
+        else if(phone.trim().length === 0){
+            M.toast({html: 'Please Enter Phone '});
+        }
+        else if(validateNigNum(phone) === false && validatePhoneNumInt(phone) === false &&validatePhoneNumNig(phone) === false){
+            M.toast({html: 'Invalid Phone Number. Please Enter a valid phone number'});
         }
         else{
             const userForm = {
                 id: current._id,
-                name,
+                firstName,
+                lastName,
                 email,
                 role,
                 occupation,
@@ -57,7 +89,8 @@ const SingleUserModal = ({updateUser, current}) => {
             
 
             //Clear Fields
-            setName('');
+            setFirstName('');
+            setLastName('');
             setRole('');
             setEmail('');
             setEmploymentType('');
@@ -77,27 +110,36 @@ const SingleUserModal = ({updateUser, current}) => {
                 <div className="row">
                     <div className="input-field col s6">
                         <i className="material-icons prefix">account_circle</i>
-                        <input name='name' type="text" value={name} onChange={e => setName(e.target.value)} disabled={(auth.role !== 'Admin') && (auth.name !== sentinel)}/>
-                        <label htmlFor="Full Name" className='active'> Name</label>
+                        <input name='firstName' type="text" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={(auth.role !== 'Admin') && (auth._id !== sentinel)}/>
+                        <label htmlFor="firstName" className='active'> First Name</label>
                     </div>
                     <div className="input-field col s6">
+                        <i className="material-icons prefix">account_circle</i>
+                        <input name='lastName' type="text" value={lastName} onChange={e => setLastName(e.target.value)} disabled={(auth.role !== 'Admin') && (auth._id !== sentinel)}/>
+                        <label htmlFor="lastName" className='active'> Last Name</label>
+                    </div>
+                    
+                </div>
+                <div className='row'>
+                    <div className="input-field col s12">
                         <i className="material-icons prefix">phone</i>
-                        <input name='phone' type="text" value={phone} onChange={e => setPhone(e.target.value)} disabled={(auth.role !== 'Admin') && (auth.name !== sentinel)}/>
+                        <input name='phone' type="text" value={phone} onChange={e => setPhone(e.target.value)} disabled={(auth.role !== 'Admin') && (auth._id !== sentinel)}/>
                         <label htmlFor="Phone Number" className='active'>Phone Number</label>
                     </div>
                 </div>
+                
 
                 {(auth.role !== 'Admin') ? (
                     <div className="input-field col s12">
                     <i className="material-icons prefix">email</i>
-                    <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth.name}/>
+                    <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth._id}/>
                     <label htmlFor="Email" className='active'>Email</label>
                 </div>) : (
                     <div className="row">
 
                     <div className="input-field col s6">
                         <i className="material-icons prefix">email</i>
-                        <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth.name}/>
+                        <input type="email" name='email'  value={email} onChange={e => setEmail(e.target.value)} disabled={auth.role !== 'Admin' && sentinel !== auth._id}/>
                         <label htmlFor="Email" className='active'>Email</label>
                     </div>
                      <div className="input-field col s6">
@@ -178,7 +220,7 @@ const SingleUserModal = ({updateUser, current}) => {
                 )}
                 
                 
-                {(auth.role === 'Admin' || sentinel === auth.name) ? 
+                {(auth.role === 'Admin' || sentinel === auth._id) ? 
                     (<div className='modal-footer'>
                     <button className="modal-close btn blue waves-effect waves-light" type="submit" name="action" onClick={onSubmit}>Update User
                         <i className="material-icons right">send</i>

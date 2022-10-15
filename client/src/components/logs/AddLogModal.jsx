@@ -8,11 +8,12 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 
 const AddLogModal = ({addLogs}) => {
     const auth = useSelector((state) => state.auth);
-
+    
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
     const [technician, setTech] = useState('');
 
+    const addedBy = auth.user.firstName + ' ' + auth.user.lastName;
     const onSubmit = () => {
         if(message.trim().length === 0 ){
             M.toast({html: 'Please enter a message and tech'});
@@ -21,9 +22,9 @@ const AddLogModal = ({addLogs}) => {
             const newLog = {
                 message,
                 attention,
-                technician
+                technician,
+                addedBy
             }
-            console.log(newLog)
             addLogs(newLog);
 
             M.toast({html: `Log Added By ${auth.user}`});

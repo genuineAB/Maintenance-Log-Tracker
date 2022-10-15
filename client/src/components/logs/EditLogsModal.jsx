@@ -19,20 +19,24 @@ const EditLogModal = ({updateLogs, current}) => {
             setTech(current.technician);
         };
     }, [current])
+
+    const updatedBy = auth.firstName + ' ' + auth.lastName;
     const onSubmit = () => {
         if(message.trim().length === 0 ){
-            M.toast({html: 'Please enter a message and technician'});
+            M.toast({html: 'Please enter a message'});
         }
         else{
             const updateLog = {
                 id: current._id,
                 message,
                 attention,
-                technician
+                technician,
+                updatedBy
             }
+            
             updateLogs(updateLog);
             M.toast({html: 'Logs Updated'});
-            window.location.reload();
+            // window.location.reload();
             
 
             //Clear Fields
@@ -47,10 +51,10 @@ const EditLogModal = ({updateLogs, current}) => {
   return (
     <div id='edit-log-modal' className='modal' style={modalStyle}>
         <div className='modal-content'>
-            <h4 style={{paddingBottom: '2rem'}}>Enter System Log</h4>
+            <h4 style={{paddingBottom: '2rem'}}>Maintenance Log</h4>
             <div className='row'>
                 <div className='input-field'>
-                    <input type='text' name='message' value={message} onChange={e => setMessage(e.target.value)} />
+                    <input type='text' name='message' value={message} onChange={e => setMessage(e.target.value)} disabled={auth.role === 'Guest'}/>
                     <label htmlFor="message" className='active'>Log Message</label>
                 </div>
             </div>

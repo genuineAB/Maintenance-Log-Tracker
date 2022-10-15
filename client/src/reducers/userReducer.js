@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER
 } from '../actions/types';
 
 const initialState = {
@@ -47,7 +47,14 @@ const userReducer = (state=initialState, action) => {
         
         return{
             ...state,
-            users: state.users.map(user => user.id ===  action.payload._id ? action.payload._id : user)
+            users: state.users.map(user => user.id ===  action.payload._id ? action.payload._id : user),
+            loading: false
+        }
+    
+    case VERIFY_USER:
+        return{
+            ...state,
+            loading: false
         }
 
     case DELETE_USER:

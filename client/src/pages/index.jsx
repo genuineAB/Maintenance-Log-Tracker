@@ -1,6 +1,7 @@
 import React,{useEffect} from "react";
 import Authenticated from "./Authenticated";
 import UnAuthenticated from "./unAuthenticated";
+import UnVerified from "./Unverified";
 import { useSelector, useDispatch } from "react-redux";
 import setAuthToken from "../authToken/setAuthToken";
 import axios from 'axios';
@@ -27,6 +28,15 @@ const Pages = () => {
         }
     };
     
+    let verify;
+    if(auth.user === null || !auth.user){
+        verify = false;
+    }
+    else {
+        verify = auth.user.verified
+    }
+    
+    // verify = true;
     useEffect(() => {
         getUser();
         // eslint-disable-next-line
@@ -35,9 +45,15 @@ const Pages = () => {
         return <PreLoader />;
     }
     
+    if (isAuthenticated && !verify){
+        return <UnVerified />
+    }
+
     if (isAuthenticated) {
         return <Authenticated />;
     }
+
+    
     
     return <UnAuthenticated />;
 };

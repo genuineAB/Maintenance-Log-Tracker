@@ -15,16 +15,24 @@
   padding: 0;
 }
 
-.my-container {
-  font-family: 'Roboto', sans-serif;
+body{
+  
   width: 100vw;
   height: 100vh;
+  color: #333;
+  background-color: rgb(244, 244, 244);
+}
+
+.my-container {
+  font-family: 'Roboto', sans-serif;
+  /* width: 100vw;
+  height: 100vh; */
   font-size: 1rem;
   line-height: 1.6;
   background-color: rgb(244, 244, 244);
   color: #333;
   display: grid;
-  grid-template-columns: /*repeat(2, 1fr)*/ 1.5fr 1fr;
+  grid-template-columns: .5fr 1.5fr 1.5fr .5fr;
   grid-gap: 2rem;
   padding: 10% 5% 10% 5%;
 }
@@ -509,6 +517,8 @@ table th {
 /* Mobile Styles */
 @media (max-width: 1200px){
   .my-container {
+    
+    grid-template-columns: 0 1fr 1.5fr 0;
     grid-gap: 1rem;
     padding: 10% 3%;
   }

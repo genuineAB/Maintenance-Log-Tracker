@@ -1,21 +1,12 @@
 const mongoose = require('mongoose');
 
 const LogSchema = mongoose.Schema({
-    // organizationNumber:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User'
-    // },
 
     organizationNumber: {
         type: Number,
         required: true
     },
     
-    // tech:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Tech'
-    // },
-
     message: {
         type: String,
         required: [true, 'Name is Required']
@@ -28,7 +19,16 @@ const LogSchema = mongoose.Schema({
 
     technician: {
         type: String,
-        // required: [true, 'Please select a technician'],
+        default: 'None'
+    },
+
+    addedBy: {
+        type: String,
+        required: true
+    },
+
+    updatedBy: {
+        type: String,
         default: 'None'
     },
 

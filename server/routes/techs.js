@@ -7,7 +7,7 @@ const {body, validationResult} = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const User = require('../models/User');
-const Tech = require('../models/Techs');
+const Tech = require('../models/Verify');
 
 // @route GET api/tech
 // @desc Get All technician
@@ -28,11 +28,12 @@ router.get('/', auth, async(req, res) => {
 router.post('/', auth,
     // email validation
     body('email', 'Please include a valid email').isEmail(),
-    //Technician Name must not be empty
-    body('name', 'Please add  User Name').not().isEmpty(),
+    //User Name must not be empty
+    body('firstName', 'Please add  First Name').not().isEmpty(),
+    body('lastName', 'Please add  Last Name').not().isEmpty(),
     body('role', 'Please add user role').not().isEmpty(),
     // password must be at least 6 chars long
-    body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 6 }),
+    body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 8 }),
     //Phone Number must not be empty
     body('phoneNumber', 'Please add a phone number').not().isEmpty(),
     async (req, res) => {
@@ -47,28 +48,30 @@ router.post('/', auth,
         }
 
 
-        const {name, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
+        const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
         
-        
-        let userRole = role
-        if(userRole !== 'Technician'){
-            userRole = 'Guest';
-        } ;
+        console.log(role);
+        // let userRole = role
+        // if(userRole !== 'Technician'){
+        //     userRole = 'Guest';
+        // } ;
 
         try {
             let userEmail = await User.findOne({email});
-            let userName = await User.findOne({name});
+            let userFirstName = await User.findOne({firstName});
+            let userLastName = await User.findOne({lastName});
             let userNumber = await User.findOne({phoneNumber})
             
 
-            if((userEmail) || (userNumber) || (userName)){
+            if((userEmail) || (userNumber) || (userFirstName && userLastName)){
                 return res.status(400).json({msg: "User Already Exist"});
             }
 
             let user = new User ({
-                name,
+                firstName,
+                lastName,
                 email,
-                role : userRole,
+                role,
                 hashed_password,
                 phoneNumber,
                 occupation,

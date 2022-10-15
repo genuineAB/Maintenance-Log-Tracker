@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER
 } from './types';
 import axios from 'axios';
 
@@ -69,6 +69,35 @@ export const getSingleUser = (id) => async dispatch => {
     }
   }
 
+  //Verify User
+  export const verifyUser = FormData => async dispatch => {
+    const config = {
+        headers:{
+            'Content-Type': 'application/json'
+        } 
+    }
+    
+    try {
+        
+
+        const res = await axios.post('/api/verify', FormData, config);
+        setLoading();
+        
+        dispatch({
+            type: VERIFY_USER,
+            payload: res.data
+        });
+        
+    } catch (error) {
+        dispatch({
+            type: USER_ERROR,
+            payload: error.message
+        })
+        
+    }
+  }
+
+
   //Update Users
 export const updateUser = (formData) => async dispatch => {
     const config = {
@@ -77,6 +106,7 @@ export const updateUser = (formData) => async dispatch => {
         }
     }
 
+    setLoading()
     try {
       const res = await axios.patch(`/api/users/${formData.id}`, formData, config);
       dispatch({
@@ -96,6 +126,7 @@ export const updateUser = (formData) => async dispatch => {
 
   //Delete Users
   export const deleteUser = (id) => async dispatch => {
+    setLoading();
     try {
         await axios.delete(`/api/users/${id}`);
         

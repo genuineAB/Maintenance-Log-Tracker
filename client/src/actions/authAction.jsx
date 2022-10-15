@@ -22,7 +22,7 @@ export const register = (auth) => async (dispatch) => {
         'Content-Type': 'application/json'
       }
     }
-    console.log(auth)
+    
     try {
       const res = await axios.post('/api/users', auth, config);
       localStorage.setItem('token', res.data.token);

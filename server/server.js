@@ -1,6 +1,7 @@
 // Create an instance of a server
 const express = require('express');
 const connectDB = require('../config/db');
+require('dotenv').config()
 // const path = require('path');
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/logs', require('./routes/logs'));
 app.use('/api/subUsers', require('./routes/techs'));
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/authtech', require('./routes/authtech'));
+// app.use('/api/authtech', require('./routes/authtech'));
+app.use('/api/verify', require('./routes/verify'));
 
 app.listen(port, () => console.log(`Server Started at ${port}`));

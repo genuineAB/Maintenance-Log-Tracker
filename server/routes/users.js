@@ -5,14 +5,82 @@ const config = require('config');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
+
 
 
 
 const User = require('../models/User');
+const Verify = require('../models/Verify');
+
 
 const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
     };
+
+
+//Send OTP for Email Verification
+
+const sendOTPVerificationEmail = async ({id, email, firstName, lastName}, res) => {
+    console.log(id)
+    try {
+        const otp = getRandomNumber(333651, 999234);
+
+        // // Send Email
+        // step 1
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD
+            }
+        });
+
+        //Step 2
+        let mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Maintenance Log Keeper',
+            html: `Hello ${firstName} ${lastName}. <br> <br> <p>Enter <b> ${otp} </b> in the app to verify your email addressa and complete your registration.</p><br> <p> This OTP expires in one hour. </p>`
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedOTP = await bcrypt.hash(otp.toString(), salt);
+
+        console.log(hashedOTP);
+        let verify = new Verify ({
+            userId: id,
+            token: hashedOTP,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 3600000
+
+        });
+
+        await verify.save();
+        //Step 3
+        transporter.sendMail(mailOptions);
+
+        console.log("Email Sent");
+        // res.json({
+        //     status: 'Pending',
+        //     message: 'Verification OTP Email Sent',
+        //     data: {
+        //         userId: _id,
+        //         email
+        //     }
+        // })
+
+    } catch (error) {
+        console.log(error.message);
+        // res.json({
+        //     status: 'Failed',
+        //     message: error.message
+        // })
+        
+    }
+}
+
 
 // @route POST api/users
 // @desc Register a user
@@ -21,7 +89,10 @@ router.post('/',
     // email validation
     body('email', 'Please include a valid email').isEmail(),
     //username must not be empty
-    body('name', 'Please add Name').not().isEmpty(),
+    body('firstName', 'Please add First Name').not().isEmpty(),
+    body('lastName', 'Please add Last Name').not().isEmpty(),
+    //phone must not be empty
+    body('phoneNumber', 'Please add Phone Number').not().isEmpty(),
     body('organizationName', 'Please add organization Name').not().isEmpty(),
     // password must be at least 6 chars long
     body('hashed_password', 'Password must be a minimum of 6 characters').isLength({ min: 6 }), async (req, res) => {
@@ -30,7 +101,7 @@ router.post('/',
         return res.status(400).json({ errors: errors.array() });
         } 
         
-        const {name, email, hashed_password, organizationName} = req.body;
+        const {firstName, lastName, phoneNumber, email, hashed_password, organizationName} = req.body;
 
 
         try {
@@ -48,19 +119,30 @@ router.post('/',
             } while (orgNumber == await User.findOne({orgNumber: orgNumber}));
             
             user = new User ({
-                name,
+                firstName,
+                lastName,
+                phoneNumber,
                 email,
                 hashed_password,
                 organizationName,
                 organizationNumber: orgNumber,
                 
             });
-            // 
+
+            // Encrypt Password
             const salt = await bcrypt.genSalt(10);
             user.hashed_password = await bcrypt.hash(hashed_password, salt);
 
             
-            await user.save();
+            console.log(user);
+            sendOTPVerificationEmail(user);
+            user = await user.save();
+            // console.log(user._id)
+            // sendOTPVerificationEmail(user.id, user.email);
+        
+
+            
+            
             
             const payload ={
                 user: {
@@ -78,6 +160,7 @@ router.post('/',
                 res.json({ token });
             })
 
+            
         } catch (error) {
             console.error(error.message);
             res.status(500).send('Server Error');

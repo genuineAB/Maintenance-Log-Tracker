@@ -5,3 +5,7 @@ export const PUBLIC_PATHS = {
   export const PROTECTED_PATHS = {
     DASHBOARD: "/dashboard",
   };
+
+  export const VERIFY_PATHS = {
+    VERIFY: "/verify",
+  }

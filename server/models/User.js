@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
         trim: true,
-        required: [true, 'Name is Required']
+        required: [true, 'First Name is Required']
+    },
+
+    lastName: {
+        type: String,
+        trim: true,
+        required: [true, 'Last Name is Required']
     },
 
     email: {
@@ -33,8 +39,8 @@ const UserSchema = mongoose.Schema({
     },
 
     phoneNumber: {
-        type: String
-        // required: [true, 'Phone Number is Required']
+        type: String,
+        required: [true, 'Phone Number is Required']
         // validate: [validatePhoneNumber, 'Please Enter a Valid Phone Number'],
         // match: [/^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i , 'Please Enter a Valid Phone Number']
     },
@@ -54,6 +60,11 @@ const UserSchema = mongoose.Schema({
     role: {
         type: String,
         default: "Admin"
+    },
+
+    verified: {
+        type: Boolean,
+        default: false
     },
     
     created: {

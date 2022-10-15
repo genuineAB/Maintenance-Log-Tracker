@@ -4,7 +4,7 @@ const {body, validationResult} = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Users = require('../models/User');
-const Tech = require('../models/Techs');
+const Tech = require('../models/Verify');
 const Logs = require('../models/Logs');
 
 // @route GET api/logs
@@ -33,7 +33,7 @@ router.post('/', auth,
         return res.status(400).json({ errors: errors.array() });
         }
     
-        const {message, attention} = req.body;
+        const {message, attention, addedBy} = req.body;
         let {technician} = req.body
         const {organizationNumber} = req.user
         try {
@@ -51,6 +51,7 @@ router.post('/', auth,
                 message,
                 attention,
                 technician,
+                addedBy,
                 organizationNumber: req.user.organizationNumber
             })
 
@@ -67,7 +68,7 @@ router.post('/', auth,
 // @desc Update Maintenance Log
 //@access Private
 router.patch('/:id', auth, async (req, res) => {
-    const {message, attention, technician } = req.body;
+    const {message, attention, technician, updatedBy } = req.body;
 
     //Create Contact Field Object
     const logFields = {};
@@ -79,6 +80,9 @@ router.patch('/:id', auth, async (req, res) => {
     }
     if (technician){
         logFields.technician = technician;
+    }
+    if(updatedBy){
+        logFields.updatedBy = updatedBy;
     }
 
     if(!logFields.attention){
