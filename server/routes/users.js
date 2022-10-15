@@ -133,8 +133,6 @@ router.post('/',
             const salt = await bcrypt.genSalt(10);
             user.hashed_password = await bcrypt.hash(hashed_password, salt);
 
-            
-            console.log(user);
             sendOTPVerificationEmail(user);
             user = await user.save();
             // console.log(user._id)

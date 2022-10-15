@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS
 } from './types';
 import axios from 'axios';
 
@@ -44,7 +44,7 @@ export const getUsers = () => async dispatch => {
     } catch (error) {
         dispatch({
             type: USER_ERROR,
-            payload: error.message
+            payload: error.response.data
         })
         
     }
@@ -64,7 +64,7 @@ export const getSingleUser = (id) => async dispatch => {
     } catch (error) {
       dispatch({
           type: USER_ERROR,
-          payload: error.message
+          payload: error.response.data
       })
     }
   }
@@ -91,11 +91,41 @@ export const getSingleUser = (id) => async dispatch => {
     } catch (error) {
         dispatch({
             type: USER_ERROR,
-            payload: error.message
+            payload: error.response.data
         })
         
     }
   }
+
+  //Resend User OTP
+  export const resendOTP = FormData => async dispatch => {
+    const config = {
+        headers:{
+            'Content-Type': 'application/json'
+        } 
+    }
+    
+    try {
+        
+
+        const res = await axios.post('/api/verify/resend', FormData, config);
+        setLoading();
+        
+        dispatch({
+            type: VERIFY_USER,
+            payload: res.data
+        });
+        
+    } catch (error) {
+        
+        dispatch({
+            type: USER_ERROR,
+            payload: error.response.data
+        })
+        
+    }
+  }
+
 
 
   //Update Users
@@ -155,6 +185,13 @@ export const setCurrent = (user) => dispatch => {
       return {
           type: SET_LOADING
       }
+  }
+
+  //Clear Errors
+  export const clearErrors = () => {
+    return {
+        type: CLEAR_ERRORS
+    }
   }
   
   export default getUsers;

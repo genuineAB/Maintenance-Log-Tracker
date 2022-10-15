@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS
 } from '../actions/types';
 
 const initialState = {
@@ -19,6 +19,12 @@ const userReducer = (state=initialState, action) => {
             loading: true
         }
 
+    }
+    case CLEAR_ERRORS: {
+        return {
+            ...state,
+            error: null
+        }
     }
 
     case GET_USERS:
@@ -71,6 +77,7 @@ const userReducer = (state=initialState, action) => {
         }
 
     case USER_ERROR:
+        console.log(action.payload)
         return {
             ...state,
             error: action.payload,
