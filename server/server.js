@@ -21,7 +21,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/logs', require('./routes/logs'));
 app.use('/api/subUsers', require('./routes/techs'));
 app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/authtech', require('./routes/authtech'));
+app.use('/api/forgotpassword', require('./routes/forgotPassword'));
 app.use('/api/verify', require('./routes/verify'));
 
 app.listen(port, () => console.log(`Server Started at ${port}`));

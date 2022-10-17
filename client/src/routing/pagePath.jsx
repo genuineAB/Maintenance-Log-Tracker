@@ -9,3 +9,7 @@ export const PUBLIC_PATHS = {
   export const VERIFY_PATHS = {
     VERIFY: "/verify",
   }
+
+  export const FORGOTPASSWORD_PATHS = {
+    VERIFY: "/forgotpassword",
+  }

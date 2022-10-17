@@ -158,7 +158,7 @@ router.post('/resend',
             
             
             let {userId, email} = req.body;
-            const userOTPVerification = await Verify.find({
+            const userOTPVerification = await Verify.findOne({
                 userId,
             });
             

@@ -2,13 +2,15 @@ import React, {useEffect, useState} from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
+import { useNavigate } from 'react-router-dom';
 
 
 const Auth = ({register, login}) => {
-
+    const auth = useSelector((state) => state.auth);
+    const error = auth.error;
     
     
     const [email, setEmail] = useState('');
@@ -19,9 +21,10 @@ const Auth = ({register, login}) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [organization, setOrganization] = useState('');
 
-    
+    const navigate = useNavigate();
     useEffect(() => {
-        M.AutoInit()
+        M.AutoInit();
+        
     },[] ) 
 
     const validateEmail = (email) => {
@@ -45,6 +48,12 @@ const Auth = ({register, login}) => {
     const validateNigNum = (phone) => {
         var res = /((^0)(7|8|9){1}(0|1){1}[0-9]{8})/
         return res.test(String(phone));
+    }
+
+    const onForgot = e => {
+        e.preventDefault();
+        console.log("Forgot Your Password?");
+        navigate('/forgotpassword');
     }
 
     const onSignUp = (e) => {
@@ -91,6 +100,7 @@ const Auth = ({register, login}) => {
         else if(password !== password2){
             M.toast({html: 'Password do not match'});
         }
+        
         else{
             const signUp = {
                 email,
@@ -132,6 +142,9 @@ const Auth = ({register, login}) => {
         else if(validatePassword(password) === false){
             M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character'})
         }
+        else if(error === "Email and Password don't match"){
+            M.toast({html: "Email and Password don't match"});
+        }
         
         else{
             const logIn = {
@@ -169,7 +182,7 @@ const Auth = ({register, login}) => {
                     </button>
                 </div>
                 <div className='recover'>
-                        <a href='!#'> Forgotten Password?</a>
+                        <a href='!#' onClick={onForgot}> Forgot your Password?</a>
                 </div>
             </form>
 

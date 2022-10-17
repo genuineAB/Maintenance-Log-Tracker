@@ -101,7 +101,7 @@ const AddUserModal = ({addUser}) => {
   return (
     <div id='add-user-modal' className='modal form-2' style={modalStyle}>
         <div className='modal-content'>
-            <h4><i class="fa-solid fa-user-plus" /> Add New User</h4>
+            <h4><i className="fa-solid fa-user-plus" /> Add New User</h4>
             <div className="row">
                 <form className="col s12">
                     <div className="row">
