@@ -6,12 +6,12 @@ import { connect, useSelector } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
 import { useNavigate } from 'react-router-dom';
+import { clearErrors } from '../../actions/authAction';
 
 
-const Auth = ({register, login}) => {
-    const auth = useSelector((state) => state.auth);
-    const error = auth.error;
-    
+const Auth = ({register, login, clearErrors}) => {
+    // const auth = useSelector((state) => state.auth);
+    // const error = auth.error;
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -142,9 +142,12 @@ const Auth = ({register, login}) => {
         else if(validatePassword(password) === false){
             M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character'})
         }
-        else if(error === "Email and Password don't match"){
-            M.toast({html: "Email and Password don't match"});
-        }
+        // I have to fix this
+
+        // else if(error === "Email and Password don't match"){
+        //     console.log("Got Here");
+        //     M.toast({html: "Email and Password don't match"});
+        // }
         
         else{
             const logIn = {
@@ -159,6 +162,7 @@ const Auth = ({register, login}) => {
             
             // window.location.reload()
         }
+    
     }
     
 
@@ -258,4 +262,4 @@ Auth.propTypes = {
     login: PropTypes.func.isRequired
 }
 
-export default connect(null, {register, login})(Auth)
+export default connect(null, {register, login, clearErrors})(Auth)

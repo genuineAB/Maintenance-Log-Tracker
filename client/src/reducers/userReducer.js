@@ -1,8 +1,9 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS, RESET_PASSWORD
 } from '../actions/types';
 
 const initialState = {
+    token: localStorage.getItem('token'),
     users: null,
     loading: false,
     error: null,
@@ -63,6 +64,13 @@ const userReducer = (state=initialState, action) => {
             loading: false
         }
 
+    case RESET_PASSWORD:
+        return{
+            ...state,
+            loading: false,
+            users: action.payload
+        }
+
     case DELETE_USER:
         return {
             ...state,
@@ -77,7 +85,6 @@ const userReducer = (state=initialState, action) => {
         }
 
     case USER_ERROR:
-        console.log(action.payload)
         return {
             ...state,
             error: action.payload,

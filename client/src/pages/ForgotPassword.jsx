@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import { connect, useSelector } from 'react-redux';
+import { resetPassword } from '../actions/userActions';
+import { clearErrors } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
+import { setCurrent } from '../actions/userActions';
 
-const ForgotPassword = () => {
-
+const ForgotPassword = ({resetPassword, setCurrent}) => {
+    const error = useSelector((state) => state.user.error)
     const [email, setEmail] = useState('');
+
+    const navigate = useNavigate();
 
     const validateEmail = (email) => {
         const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,15 +20,23 @@ const ForgotPassword = () => {
 
     const onSubmit = e => {
         e.preventDefault();
+        
         if(email.trim().length === 0){
             M.toast({html: "Email Field Cannot Be Empty"})
         }
         else if(!validateEmail(email)){
             M.toast({html: "Email is Invalid. Enter a Valid Email Address"});
         }
+        
         else {
-            console.log("Reset Password");
+            
+            const reset = {
+                email
+            }
+            resetPassword(reset);
+            navigate('/resetpassword');
         }
+        
         
     }
     
@@ -45,4 +60,4 @@ const ForgotPassword = () => {
   )
 }
 
-export default ForgotPassword 
+export default connect(null, {resetPassword, setCurrent, clearErrors})(ForgotPassword)

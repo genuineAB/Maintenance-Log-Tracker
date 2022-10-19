@@ -47,6 +47,7 @@ router.post('/',
                 return res.status(400).json({msg: "User Not Found"});
             }
 
+           
             const isMatch = await bcrypt.compare(hashed_password, user.hashed_password);
             
             if(!isMatch){

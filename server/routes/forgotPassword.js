@@ -12,7 +12,6 @@ const nodemailer = require('nodemailer');
 
 
 const User = require('../models/User');
-const Verify = require('../models/Verify');
 
 
 
@@ -40,15 +39,18 @@ router.post('/',
                 return  res.status(400).send("User Not Found. Register User");
             }
           
+            
+
+            const secret = config.get('jwtSecret') + user.hashed_password;
+            
             const payload = {
                 email,
                 id: user.id
             }
 
-            const secret = config.get('jwtSecret') + user.hashed_password;
-            
-            const token = jwt.sign(payload, secret, {expiresIn: '15min'});
+            const token = jwt.sign(payload, secret, {expiresIn: '60min'});
 
+            
             const link = `http://localhost:5000/api/forgotpassword/${user.id}/${token}`;
 
             // // Send Email
@@ -85,7 +87,7 @@ router.post('/',
 
             //Step 3
             transporter.sendMail(mailOptions);
-            return res.status(200).send("Password Reset Link Sent to Email");
+            return res.status(200).json({token, payload});
         } catch (error) {
             
             console.error(error.message);
@@ -95,21 +97,24 @@ router.post('/',
 
 router.get('/:id/:token', async (req, res) => {
     const {id, token} = req.params;
+    
         const user = await User.findOne({
             id
         });
 
+        
         if(!user){
             return res.status(400).send("Invalid User Id");
         }
 
         const secret = config.get('jwtSecret') + user.hashed_password;
 
-        console.log(token);
 
     try {
         const payload = jwt.verify(token, secret);
-        console.log(payload)
+        // console.log(payload.email)
+        res.render('resetpassword', {email: payload.email});
+        // res.send(req.params);
         
     } catch (error) {
         console.error(error.message);
@@ -120,9 +125,16 @@ router.get('/:id/:token', async (req, res) => {
 });
 
 
-router.post('/:id/:token', async (req, res) => {
-    const {id, token} = req.params;
-    let {password} = req.body;
+router.post('/:id/:token',
+    // must include password
+    body('password', 'Please Enter a Password').exists(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        } 
+        const {id, token} = req.params;
+        let {password} = req.body;
 
         const user = await User.findOne({
             id
@@ -136,15 +148,16 @@ router.post('/:id/:token', async (req, res) => {
         
 
     try {
-        const payload = jwt.verify(token, secret);
-        console.log(payload);
+        
+        jwt.verify(token, secret);
+        
 
-         // Encrypt Password
-            const salt = await bcrypt.genSalt(10);
-            password = await bcrypt.hash(password, salt);
-            console.log(password)
+        // Encrypt Password
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(password, salt);
 
         await User.updateOne({_id: id}, {hashed_password: password});
+
 
         return res.status(200).send("Password Reset Successfully")
         

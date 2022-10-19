@@ -31,7 +31,6 @@ export const register = (auth) => async (dispatch) => {
         payload: res.data
       })
       loadUser();
-      // console.log(loadUser);
 
     } catch (error) {
       dispatch({

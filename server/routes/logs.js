@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {body, validationResult} = require('express-validator');
 const auth = require('../../middleware/auth');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 const Users = require('../models/User');
 const Tech = require('../models/Verify');
@@ -44,6 +46,11 @@ router.post('/', auth,
                 return res.status(400).json({msg: "Log Already Exist"});
             }
             
+            let user = Users.find({organizationNumber: organizationNumber, role: 'Admin'});
+            if(user){
+                console.log(" User exist")
+            }
+            
             if((technician === null) || (technician.trim().length === 0)){
                 technician = 'None'
             }
@@ -56,6 +63,41 @@ router.post('/', auth,
             })
 
             await log.save();
+
+            // // // Send Email
+            // // step 1
+            // let transporter = nodemailer.createTransport({
+            //     service: 'gmail',
+            //     auth: {
+            //         user: process.env.EMAIL,
+            //         pass: process.env.PASSWORD
+            //     }
+            // });
+
+            // //Step 2
+            // let mailOptions = {
+            //     from: process.env.EMAIL,
+            //     to: email,
+            //     subject: 'Reset Your Maintenance Logger Password',
+            //     html: `<p>
+            //     Someone (hopefully you) has requested a password reset for your Maintenance Logs account. Follow the link below to set a new password: 
+            //     </p>
+            //     <br>
+            //     <a href=${link}> Reset Password </a>
+            //     <br>
+            //     <p>
+            //     If you don't wish to reset your password, disregard this email and no action will be taken.
+            //     </p>
+            //     <br>
+                
+            //     <p>
+            //     Maintenance Logger Team
+            //     </p>
+            //     `
+            // }
+
+            // //Step 3
+            // transporter.sendMail(mailOptions);
 
             return res.json({msg: "Log Added"});
         } catch (error) {

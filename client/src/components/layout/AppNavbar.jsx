@@ -26,7 +26,7 @@ const AppNavbar = ({icon, title}) => {
     e.preventDefault();
     localStorage.removeItem('token');
     dispatch({type: LOGOUT})
-    console.log("Log Out");
+    window.location.reload(false);
   }
 
   return (

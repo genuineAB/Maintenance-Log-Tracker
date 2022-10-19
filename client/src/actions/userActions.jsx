@@ -1,7 +1,8 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS, RESET_PASSWORD
 } from './types';
 import axios from 'axios';
+import setAuthToken from '../authToken/setAuthToken';
 
 
 //Get Users
@@ -147,6 +148,91 @@ export const updateUser = (formData) => async dispatch => {
       setLoading();
   
     } catch (error) {
+      dispatch({
+          type: USER_ERROR,
+          payload: error.message
+      })
+    }
+  }
+
+//Reset Password
+export const resetPassword = FormData => async dispatch => {
+    const config = {
+        headers:{
+            'Content-Type': 'application/json'
+        } 
+    }
+    
+    try {
+        
+
+        const res = await axios.post('/api/forgotpassword', FormData, config);
+        localStorage.setItem('token', res.data.token);
+        setCurrent(res.data.payload);
+        setLoading();
+        
+        dispatch({
+            type: RESET_PASSWORD,
+            payload: res.data
+        });
+        loadUser();
+    } catch (error) {
+        dispatch({
+            type: USER_ERROR,
+            payload: error.response.data
+        })
+        
+    }
+  }
+
+  // Load User
+export const loadUser = (id, token) => async dispatch => {
+    if(localStorage.token){
+        setAuthToken(localStorage.token);
+        
+    }
+
+    try {
+      const res = await axios.get(`/api/forgotpassword/${id}/${token}`);
+      console.log(res.data);
+      dispatch({
+          type: GET_USER,
+          payload: res.data
+      })
+      
+      setLoading();
+  
+    } catch (error) {
+      dispatch({
+          type: USER_ERROR,
+          payload: error.response.data
+      })
+    }
+  }
+
+   //Update User Password
+export const updatePassword = (formData) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    setLoading()
+    try {
+      const res = await axios.post(`/api/forgotpassword/${formData.id}/${formData.token}`, formData, config);
+      
+      
+
+      dispatch({
+          type: RESET_PASSWORD,
+          payload: res.data
+      })
+      
+      setLoading();
+  
+    } catch (error) {
+        console.log(error)
       dispatch({
           type: USER_ERROR,
           payload: error.message

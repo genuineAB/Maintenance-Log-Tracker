@@ -2,9 +2,9 @@ import React from 'react';
 import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { deleteLogs, setCurrent } from '../../actions/logAction';
+import {  setCurrent } from '../../actions/logAction';
 
-const LogsItem = ({log, deleteLogs, setCurrent}) => {
+const LogsItem = ({log, setCurrent}) => {
   const user = useSelector((state) => state.auth.user);
   
   return (
@@ -52,4 +52,4 @@ LogsItem.propTypes ={
     setCurrent: PropTypes.func.isRequired
 }
 
-export default connect(null, {deleteLogs, setCurrent})(LogsItem);
+export default connect(null, { setCurrent})(LogsItem);
