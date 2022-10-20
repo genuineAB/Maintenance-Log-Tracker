@@ -40,8 +40,20 @@ const sendOTPVerificationEmail = async ({id, email, firstName, lastName}, res) =
         let mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: 'Maintenance Log Keeper',
-            html: `Hello ${firstName} ${lastName}. <br> <br> <p>Enter <b> ${otp} </b> in the app to verify your email addressa and complete your registration.</p><br> <p> This OTP expires in one hour. </p>`
+            subject: 'Verify Your Email Address',
+            html: `Hi ${firstName} ${lastName}, <br> <br> 
+            <p>Enter <b> ${otp} </b> the maintenance logger application to verify your email address and complete your registration.
+            </p>
+            <br> 
+            <p> 
+            This OTP expires in one hour. 
+            </p>
+            <br>
+            <p>
+            Maintenance Logger Team
+            </p>`
+
+           
         }
 
         const salt = await bcrypt.genSalt(10);

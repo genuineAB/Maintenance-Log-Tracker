@@ -48,7 +48,7 @@ router.post('/',
                 id: user.id
             }
 
-            const token = jwt.sign(payload, secret, {expiresIn: '60min'});
+            const token = jwt.sign(payload, secret, {expiresIn: '10min'});
 
             
             const link = `http://localhost:5000/api/forgotpassword/${user.id}/${token}`;

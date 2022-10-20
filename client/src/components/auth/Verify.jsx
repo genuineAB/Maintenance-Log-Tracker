@@ -9,8 +9,7 @@ import { clearErrors } from '../../actions/userActions';
 
 const Verify = ({verifyUser, resendOTP, clearErrors}) => {
     const user = useSelector((state) => state.auth.user);
-    const error = useSelector((state) => state.user.error)
-    // console.log(user);
+    // const error = useSelector((state) => state.user.error)
 
     const [otp, setOtp] = useState('');
 
@@ -43,20 +42,22 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
             }
             
             verifyUser(verify);
+            window.location.reload();
             ////Need to Figure out how not to move to next Line Until Until Previous Line Completes Operation
             
-            if(error.msg === 'Code has expired, Please Request Again'){
-                M.toast({html: 'Code has expired, Please Request Again'});
-            }
-            else if(error.msg === 'Invalid code passed. Check your inbox'){
-                M.toast({html: 'Invalid code passed. Check your inbox'});
+            
+            // if(error.msg === 'Code has expired, Please Request Again'){
+            //     M.toast({html: 'Code has expired, Please Request Again'});
+            // }
+            // else if(error.msg === 'Invalid code passed. Check your inbox'){
+            //     M.toast({html: 'Invalid code passed. Check your inbox'});
                 
-            }
-            else{
-                clearErrors();
-                setOtp('');
-                window.location.reload(false);
-            }
+            // }
+            // else{
+            //     clearErrors();
+            //     setOtp('');
+            //     window.location.reload(false);
+            // }
             
         }
         
