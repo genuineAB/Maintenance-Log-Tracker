@@ -87,7 +87,7 @@ router.post('/',
 
             //Step 3
             transporter.sendMail(mailOptions);
-            return res.status(200).json({token, payload});
+            return res.status(200).json({payload});
         } catch (error) {
             
             console.error(error.message);
@@ -112,9 +112,7 @@ router.get('/:id/:token', async (req, res) => {
 
     try {
         const payload = jwt.verify(token, secret);
-        // console.log(payload.email)
-        res.render('resetpassword', {email: payload.email});
-        // res.send(req.params);
+        return res.render('resetpassword', {email: payload.email});
         
     } catch (error) {
         console.error(error.message);
@@ -127,21 +125,39 @@ router.get('/:id/:token', async (req, res) => {
 
 router.post('/:id/:token',
     // must include password
-    body('password', 'Please Enter a Password').exists(),
+    body('password', 'Please Must Be At Least 8 Ch').isLength({min: 8, max:15}),
+    body('password2', 'Please Confirm Password').exists(),
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
         } 
         const {id, token} = req.params;
-        let {password} = req.body;
+        let {password, password2} = req.body;
+
+
+        const validatePassword = (password) => {
+            const res =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+            return res.test(String(password));
+        }
+        let message;
+        if(!validatePassword(password)){
+            message = "Password Must Contain A Number, An UpperCase and s special symbol"
+            return res.status(400).send(message);
+        };
+        
+        if(password !== password2){
+            message = "Password does not match"
+            return res.status(400).send(message);
+        }
 
         const user = await User.findOne({
             id
         });
 
         if(!user){
-            return res.status(400).send("Invalid User Id");
+            message = "Invalid User Id"
+            return res.status(400).send(message);
         }
 
         const secret = config.get('jwtSecret') + user.hashed_password;
@@ -158,12 +174,13 @@ router.post('/:id/:token',
 
         await User.updateOne({_id: id}, {hashed_password: password});
 
-
-        return res.status(200).send("Password Reset Successfully")
+        message = "Password Reset Successfully";
+        return res.status(200).send(message)
         
     } catch (error) {
         console.error(error.message);
-        return res.status(500).send('Server Error');
+        message = 'Server Error'
+        return res.status(500).send(message);
     }
     
 

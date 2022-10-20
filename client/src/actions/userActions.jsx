@@ -167,15 +167,13 @@ export const resetPassword = FormData => async dispatch => {
         
 
         const res = await axios.post('/api/forgotpassword', FormData, config);
-        localStorage.setItem('token', res.data.token);
-        setCurrent(res.data.payload);
         setLoading();
         
         dispatch({
             type: RESET_PASSWORD,
             payload: res.data
         });
-        loadUser();
+
     } catch (error) {
         dispatch({
             type: USER_ERROR,
@@ -185,60 +183,60 @@ export const resetPassword = FormData => async dispatch => {
     }
   }
 
-  // Load User
-export const loadUser = (id, token) => async dispatch => {
-    if(localStorage.token){
-        setAuthToken(localStorage.token);
+//   // Load User
+// export const loadUser = (id, token) => async dispatch => {
+//     if(localStorage.token){
+//         setAuthToken(localStorage.token);
         
-    }
+//     }
 
-    try {
-      const res = await axios.get(`/api/forgotpassword/${id}/${token}`);
-      console.log(res.data);
-      dispatch({
-          type: GET_USER,
-          payload: res.data
-      })
+//     try {
+//       const res = await axios.get(`/api/forgotpassword/${id}/${token}`);
+//       console.log(res.data);
+//       dispatch({
+//           type: GET_USER,
+//           payload: res.data
+//       })
       
-      setLoading();
+//       setLoading();
   
-    } catch (error) {
-      dispatch({
-          type: USER_ERROR,
-          payload: error.response.data
-      })
-    }
-  }
+//     } catch (error) {
+//       dispatch({
+//           type: USER_ERROR,
+//           payload: error.response.data
+//       })
+//     }
+//   }
 
-   //Update User Password
-export const updatePassword = (formData) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
+//    //Update User Password
+// export const updatePassword = (formData) => async dispatch => {
+//     const config = {
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     }
 
-    setLoading()
-    try {
-      const res = await axios.post(`/api/forgotpassword/${formData.id}/${formData.token}`, formData, config);
+//     setLoading()
+//     try {
+//       const res = await axios.post(`/api/forgotpassword/${formData.id}/${formData.token}`, formData, config);
       
       
 
-      dispatch({
-          type: RESET_PASSWORD,
-          payload: res.data
-      })
+//       dispatch({
+//           type: RESET_PASSWORD,
+//           payload: res.data
+//       })
       
-      setLoading();
+//       setLoading();
   
-    } catch (error) {
-        console.log(error)
-      dispatch({
-          type: USER_ERROR,
-          payload: error.message
-      })
-    }
-  }
+//     } catch (error) {
+//         console.log(error)
+//       dispatch({
+//           type: USER_ERROR,
+//           payload: error.message
+//       })
+//     }
+//   }
 
   //Delete Users
   export const deleteUser = (id) => async dispatch => {

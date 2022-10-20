@@ -48,7 +48,6 @@ const LogsItem = ({log, setCurrent}) => {
 
 LogsItem.propTypes ={
     log: PropTypes.object.isRequired,
-    deleteLogs: PropTypes.func.isRequired,
     setCurrent: PropTypes.func.isRequired
 }
 

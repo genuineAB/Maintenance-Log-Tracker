@@ -21,6 +21,9 @@ body{
   height: 100vh;
   color: #333;
   background-color: rgb(244, 244, 244);
+}
+
+.container-1{
   display: flex;
   justify-content: center;  
   align-items: center; 
@@ -67,6 +70,11 @@ body{
   background-color: #fff;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   border-radius: 10px;
+}
+
+.form-1 p{
+  color: var(--primary-color);
+  font-size: 20px;
 }
 
 .form-2 {
@@ -120,7 +128,7 @@ body{
   
 }
 .form-1 .btn-items .btn-2{
-  width: 65%;
+  width: 80%;
   height: 50px;
   border-radius: 5px;
   margin: 30px 0;
@@ -454,6 +462,19 @@ input {
   padding:  0 10% 0 10%;;
 }
 
+.reset-style{
+  margin: 0;
+  padding: 10%;
+  color: var(--primary-color)
+}
+
+.reset-style p{
+  padding: 5% 0;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--dark-color);
+}
+
 input[type='text'],
 input[type='email'],
 input[type='password'],
@@ -517,11 +538,13 @@ table th {
 }
 /* Mobile Styles */
 @media (max-width: 1200px){
+  
+
   .my-container {
     
-    grid-template-columns: 0 1fr 1.5fr 0;
-    grid-gap: 1rem;
-    padding: 10% 3%;
+    grid-template-columns: 0.2fr 2fr 3fr 0.2fr; 
+    /* grid-gap: 1rem; */
+    /* padding: 10% 3%;  */
   }
   
   .header {
@@ -543,13 +566,38 @@ table th {
   
   
 }
+
+@media (max-width: 1000px) {
+  .reset-style p{
+    font-size: 1.5rem;
+  }
+}
+
 @media (max-width: 800px) {
 
+
   .my-container {
+    font-family: 'Roboto', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: rgb(244, 244, 244);
+    color: #333;
     display: block;
     padding: 5%;
   }
   
+  .form-1{
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-1 h3{
+    font-size: x-large;
+    font-weight:600;
+  }
+
   .header {
     margin-top: 2%;
   
@@ -557,7 +605,7 @@ table th {
   
   .header h3{
     text-align: center;
-    font-size: xx-large;
+    font-size: x-large;
   }
 
   .header p{
@@ -579,6 +627,10 @@ table th {
     margin-bottom: 7%;
     
     
+  }
+
+  .reset-style p{
+    font-size: 1rem;
   }
   
   .form-1 .recover{
@@ -622,148 +674,38 @@ table th {
   }
 }
 
-
-/*Animation*/
-.item-enter {
-  opacity: 0;
-}
-.item-enter-active {
-  opacity: 1;
-  transition: opacity 700ms ease-in;
-}
-.item-exit {
-  opacity: 1;
-}
-.item-exit-active {
-  opacity: 0;
-  transition: opacity 800ms ease-in;
-}
-
-/* Modal */
-.modalBackground {
-  background-color: rgb(233, 229, 229);
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  margin-top: -40px;
-  border-radius: 8px;
-  z-index: 1;
-}
-.modalContainer {
-  border-radius: 12px;
-  /* background-color: white; */
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 15px 20px 15px 20px;
-}
-
-.modalContainer .modalTitle {
-  display: inline-block;
-  text-align: center;
-  margin-top: 5px;
-}
-
-.modalContainer .modalFooter {
-  flex: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modalContainer .modalFooter button {
-  
-  margin: 1px 2px 1px 2px;
-  padding: 1px 3px 1px 2px;
-  border: none;
-  border-radius: 0;
-  background-color: var(--danger-color);
-  color: white;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-#cancelBtn {
-  background-color: var(--dark-color);
-}
-
-@media (max-width: 520px){
-  .my-container {
-    font-family: 'Roboto', sans-serif;
-    width: 100vw;
-    height: 100vh;
-    font-size: 1rem;
-    line-height: 1.6;
-    background-color: rgb(244, 244, 244);
-    color: #333;
-    display: block;
-    padding: 5%;
+@media (max-width: 475px) {
+  .form-1 p{
+    font-size: 15px;
   }
-  
-  .header {
-    margin-top: 10%;
-    padding: 5% 2%;
-    font-size: large;
-    align-content: center;
-  
-  }
-  
+}
+
+@media (max-width: 400px){
   .header h3{
-    text-align: left;
-    color: var(--primary-color);
-    font-weight: bolder;
     font-size: large;
+    text-align: left;
   }
 
-  .header p{
-    display: none;
+  .form-1 p{
+    font-size: 12px;
   }
-  
-  .form-1 {
-    /* grid-area: form-1; */
-    padding: 0 20px 40px 20px;
-    margin-bottom: 30%;
-    border-style: outset;
-    background-color: #fff;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 10px;
-  }
-  
-  .form-1 .btn-1{
-    /* padding: 0% 42% 0 42%; */
-    width: 100%;
-    border-radius: 5px;
+}
+
+
+@media (max-width: 300px){
+  .header h3{
+    font-size: large;
     text-align: center;
-    background-color: var(--primary-color);
-    margin: 5% 0 5% 0;
-    
-  }
-  .form-1 .btn-items{
-    display: flex;  
-    justify-content: center;  
-    align-items: center; 
-    
-  }
-  .form-1 .btn-2{
-    width: 60%;
-    border-radius: 5px;
-    margin-top: 30px;
-    text-align: center;
-    background-color: var(--success-color);
-    
-    
   }
   
-  .form-1 .recover{
-    padding-bottom: 20px;
-    text-align: center;
-    color: var(--primary-color);
-    border-bottom-style: solid;
-    border-color: rgb(244, 244, 244);;
+  .form-1 .btn-items .btn-2{
+    width: 90%;
     
   }
-  
-  
-  .hide-sm {
-    display: none;
+  .form-1 h3{
+    font-size: large;
+    font-weight:600;
   }
+  
+
 }

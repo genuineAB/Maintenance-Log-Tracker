@@ -6,12 +6,12 @@ import { connect, useSelector } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
 import { useNavigate } from 'react-router-dom';
-import { clearErrors } from '../../actions/authAction';
+// import { clearErrors } from '../../actions/authAction';
+// import PreLoader from '../layout/Preloader';
 
 
-const Auth = ({register, login, clearErrors}) => {
-    // const auth = useSelector((state) => state.auth);
-    // const error = auth.error;
+const Auth = ({register, login}) => {
+    // const auth = useSelector((state) => state.auth.error);
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +25,9 @@ const Auth = ({register, login, clearErrors}) => {
     useEffect(() => {
         M.AutoInit();
         
-    },[] ) 
+    },[] );
+
+     
 
     const validateEmail = (email) => {
         const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -51,8 +53,7 @@ const Auth = ({register, login, clearErrors}) => {
     }
 
     const onForgot = e => {
-        e.preventDefault();
-        console.log("Forgot Your Password?");
+        e.preventDefault();;
         navigate('/forgotpassword');
     }
 
@@ -99,6 +100,7 @@ const Auth = ({register, login, clearErrors}) => {
         }
         else if(password !== password2){
             M.toast({html: 'Password do not match'});
+            
         }
         
         else{
@@ -144,10 +146,11 @@ const Auth = ({register, login, clearErrors}) => {
         }
         // I have to fix this
 
-        // else if(error === "Email and Password don't match"){
-        //     console.log("Got Here");
-        //     M.toast({html: "Email and Password don't match"});
-        // }
+        // else if(auth === "Email and Password don't match"){
+                   
+        //             M.toast({html: "Email and Password don't match"});
+        //         }
+
         
         else{
             const logIn = {
@@ -168,7 +171,9 @@ const Auth = ({register, login, clearErrors}) => {
 
     return (
     <div className='my-container'>
-        <div></div>
+        <div>
+            
+        </div>
         <div className='header'>
             <h3><i className='fa-solid fa-screwdriver-wrench'> Maintenance Logger</i></h3>
             <p>Maintenance Logger helps you to effectively manage and track maintenance issues in your organization</p>
@@ -191,7 +196,7 @@ const Auth = ({register, login, clearErrors}) => {
             </form>
 
             <div className='btn-items'>
-                <button className="waves-effect waves-light btn modal-trigger btn-2" href="#modal1" >Create New Account</button>
+                <button className="waves-effect waves-light btn modal-trigger btn-2" href="#modal1" >New Account</button>
 
                 <div id="modal1" className="modal form-2">
                     <div className="modal-content">
@@ -262,4 +267,4 @@ Auth.propTypes = {
     login: PropTypes.func.isRequired
 }
 
-export default connect(null, {register, login, clearErrors})(Auth)
+export default connect(null, {register, login})(Auth)

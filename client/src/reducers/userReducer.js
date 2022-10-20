@@ -3,7 +3,6 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    token: localStorage.getItem('token'),
     users: null,
     loading: false,
     error: null,
@@ -68,7 +67,7 @@ const userReducer = (state=initialState, action) => {
         return{
             ...state,
             loading: false,
-            users: action.payload
+            current: action.payload
         }
 
     case DELETE_USER:

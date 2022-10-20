@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCurrent } from '../actions/userActions';
 
 const ForgotPassword = ({resetPassword, setCurrent}) => {
-    const error = useSelector((state) => state.user.error)
+    // const error = useSelector((state) => state.user.error)
     const [email, setEmail] = useState('');
 
     const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { PUBLIC_PATHS, PROTECTED_PATHS} from "./pagePath";
 import Login from "../pages/Login";
-import ForgotPassword from "../pages/ForgotPassword";
+import PasswordPage from "../pages/PasswordPage";
 import ResetPassword from "../pages/ResetPassword";
 
 const { LOGIN } = PUBLIC_PATHS;
@@ -17,7 +17,7 @@ const PUBLIC_ROUTES = [
     };
   }),
 
-  {path: "/forgotpassword", element: <div><ForgotPassword /></div> },
+  {path: "/forgotpassword", element: <div><PasswordPage /></div> },
 
   {path: "/resetpassword", element: <div><ResetPassword /></div> },
 
