@@ -33,6 +33,7 @@ router.post('/',
             const user = await User.findOne({
                 email
             });
+           
             
             
             if(!user){
@@ -97,11 +98,11 @@ router.post('/',
 
 router.get('/:id/:token', async (req, res) => {
     const {id, token} = req.params;
+    console.log(id);
     
         const user = await User.findOne({
-            id
+            _id : id
         });
-
         
         if(!user){
             return res.status(400).send("Invalid User Id");
@@ -152,7 +153,7 @@ router.post('/:id/:token',
         }
 
         const user = await User.findOne({
-            id
+            _id: id
         });
 
         if(!user){

@@ -35,9 +35,12 @@ router.post('/', auth,
         return res.status(400).json({ errors: errors.array() });
         }
     
-        const {message, attention, addedBy} = req.body;
-        let {technician} = req.body
-        const {organizationNumber} = req.user
+        const {message, attention, addedBy,} = req.body;
+        let {technician} = req.body;
+
+        
+        const {organizationNumber, firstName, lastName} = req.user;
+
         try {
             let log = await Logs.findOne({message});
             let orgNum = await Logs.findOne({organizationNumber});
@@ -46,58 +49,69 @@ router.post('/', auth,
                 return res.status(400).json({msg: "Log Already Exist"});
             }
             
-            let user = Users.find({organizationNumber: organizationNumber, role: 'Admin'});
-            if(user){
-                console.log(" User exist")
-            }
+            let user = await Users.findOne({organizationNumber: organizationNumber, role: 'Admin'}).select('email firstName lastName');
             
-            if((technician === null) || (technician.trim().length === 0)){
-                technician = 'None'
+            
+            if(!technician || technician.trim().length === 0){
+                technician = 'None';
             }
+            else{
+                
+                technician = technician.split(' ');
+                let tech = Users.findOne({email: technician[2], organizationNumber});
+
+                if(!tech){
+                    return res.status(400).json({msg: "Invalid Technician Selection"});
+                }
+            }
+
             log = new Logs ({
                 message,
                 attention,
-                technician,
+                technician: `${(technician === 'None') ? 'None' : technician[0] + ' ' + technician[1]}`,
                 addedBy,
                 organizationNumber: req.user.organizationNumber
             })
 
             await log.save();
 
-            // // // Send Email
-            // // step 1
-            // let transporter = nodemailer.createTransport({
-            //     service: 'gmail',
-            //     auth: {
-            //         user: process.env.EMAIL,
-            //         pass: process.env.PASSWORD
-            //     }
-            // });
+            
+            // // Send Email
+            // step 1
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
 
-            // //Step 2
-            // let mailOptions = {
-            //     from: process.env.EMAIL,
-            //     to: email,
-            //     subject: 'Reset Your Maintenance Logger Password',
-            //     html: `<p>
-            //     Someone (hopefully you) has requested a password reset for your Maintenance Logs account. Follow the link below to set a new password: 
-            //     </p>
-            //     <br>
-            //     <a href=${link}> Reset Password </a>
-            //     <br>
-            //     <p>
-            //     If you don't wish to reset your password, disregard this email and no action will be taken.
-            //     </p>
-            //     <br>
-                
-            //     <p>
-            //     Maintenance Logger Team
-            //     </p>
-            //     `
-            // }
+            //Step 2
+            let mailOptions = {
+                from: process.env.EMAIL,
+                to: `${(technician !== 'None') ? `${technician[2]}` : `${user.email}`}`,
+                cc: `${(technician !== 'None') ? `${user.email}` : ''}`,
+                subject: `${!attention ? '' : 'Very Urgent: '} New Task Assignment`,
+                html: `<p>
+                <b>Hi ${(technician !== 'None') ? `${technician[0]} ${technician[1]}` : `${user.firstName} ${user.lastName}` }, </b>
+                </p>
+                <br>
+                <br>
+                <p>
+                ${firstName} ${lastName} wants you to attend to the task below: 
+                </p>
+                <p> ${message} </p>
+                <br>
+            
+                <p>
+                Maintenance Logger Team
+                </p>
+                `
+            }
 
-            // //Step 3
-            // transporter.sendMail(mailOptions);
+            //Step 3
+            transporter.sendMail(mailOptions);
+           
 
             return res.json({msg: "Log Added"});
         } catch (error) {
@@ -110,8 +124,11 @@ router.post('/', auth,
 // @desc Update Maintenance Log
 //@access Private
 router.patch('/:id', auth, async (req, res) => {
-    const {message, attention, technician, updatedBy } = req.body;
+    const {message, attention, updatedBy } = req.body;
+    let {technician} = req.body
+    const {organizationNumber, firstName, lastName} = req.user;
 
+    
     //Create Contact Field Object
     const logFields = {};
     if (message){
@@ -135,10 +152,31 @@ router.patch('/:id', auth, async (req, res) => {
     try {
         let log = await Logs.findById(req.params.id);
 
+        let user = await Users.findOne({organizationNumber: organizationNumber, role: 'Admin'}).select('email firstName lastName');
+
+        let tech;
+
+        if(!user){
+            return res.status(400).send("User Not Found");
+        }
+
         if((!log) || (log.organizationNumber !== req.user.organizationNumber)){
             return res.status(404).json({msg: "Log not found"})
         }
+        
+        
+        if((technician === null) || (technician.trim().length === 0)){
+            technician = 'None'
+        }
+        else{
+            
+            technician = technician.split(' ');
+            tech = await Users.findOne({firstName: technician[0], organizationNumber: organizationNumber}).select('email');
 
+            if(!tech){
+                return res.status(400).json({msg: "Invalid Technician Selection"});
+            }
+        };
 
         log = await Logs.findByIdAndUpdate(
             req.params.id,
@@ -146,6 +184,42 @@ router.patch('/:id', auth, async (req, res) => {
             { new: true }
           );
 
+           // // Send Email
+            // step 1
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            //Step 2
+            let mailOptions = {
+                from: process.env.EMAIL,
+                to: `${(technician !== 'None') ? `${tech.email}` : `${user.email}`}`,
+                cc: `${(technician !== 'None') ? `${user.email}` : ''}`,
+                subject: `${!attention ? '' : 'Very Urgent: '} Updated Task Assignment`,
+                html: `<p>
+                <b>Hi ${(technician !== 'None') ? `${technician[0]} ${technician[1]}` : `${user.firstName} ${user.lastName}` }, </b>
+                </p>
+                <br>
+                <br>
+                <p>
+                ${firstName} ${lastName} wants you to attend to the task below: 
+                </p>
+                <p> ${message} </p>
+                <br>
+            
+                <p>
+                Maintenance Logger Team
+                </p>
+                `
+            }
+
+            //Step 3
+            transporter.sendMail(mailOptions);
+        
         res.json(log);
     } catch (error) {
         console.error(error.message);

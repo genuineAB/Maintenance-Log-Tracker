@@ -10,7 +10,7 @@ const TechSelectOption = ({user: {users, loading}, getUsers}) => {
     }, [getUsers]);
 
   return (
-    !loading && users !== null && users !== undefined && users.filter(user => user.role === 'Technician').map(user => <option key={user._id} value={`${user.firstName}`}>
+    !loading && users !== null && users !== undefined && users.filter(user => user.role === 'Technician').map(user => <option key={user._id} value={`${user.firstName} ${user.lastName} ${user.email}`}>
         {user.firstName} {" "} {user.lastName}
     </option>)
   )

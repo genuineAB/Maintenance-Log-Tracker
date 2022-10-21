@@ -155,7 +155,9 @@ router.post('/',
                     id: user.id,
                     role: user.role,
                     organizationNumber: user.organizationNumber,
-                    organizationName: user.organizationName
+                    organizationName: user.organizationName,
+                    firstName,
+                    lastName
                 }
             }
             
