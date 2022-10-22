@@ -97,6 +97,7 @@ const SingleUserModal = ({updateUser, current}) => {
             setPhone('');
             setOccupation('');
             setOrgName('');
+
             
         }
         

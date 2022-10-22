@@ -36,13 +36,14 @@ const EditLogModal = ({updateLogs, current}) => {
             
             updateLogs(updateLog);
             M.toast({html: 'Logs Updated'});
-            // window.location.reload();
             
 
             //Clear Fields
             setMessage('');
             setTech('');
             setAttention(false);
+            
+            window.location.reload();
         }
         
     }

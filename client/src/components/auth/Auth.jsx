@@ -2,12 +2,10 @@ import React, {useEffect, useState} from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
 import { useNavigate } from 'react-router-dom';
-// import { clearErrors } from '../../actions/authAction';
-// import PreLoader from '../layout/Preloader';
 
 
 const Auth = ({register, login}) => {
@@ -30,7 +28,7 @@ const Auth = ({register, login}) => {
      
 
     const validateEmail = (email) => {
-        const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const res = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return res.test(String(email).toLowerCase());
     };
 
@@ -125,7 +123,7 @@ const Auth = ({register, login}) => {
             setOrganization('');
         }
         
-        
+        window.location.reload(false)
     }
 
     const onLogIn = (e) => {
@@ -163,7 +161,7 @@ const Auth = ({register, login}) => {
             setEmail('');
             setPassword('');
             
-            // window.location.reload()
+            window.location.reload()
         }
     
     }

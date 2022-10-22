@@ -32,7 +32,7 @@ const AddLogModal = ({addLogs}) => {
             setMessage('');
             setTech('');
             setAttention(false);
-            // window.location.reload();
+            window.location.reload();
         }
         
     }

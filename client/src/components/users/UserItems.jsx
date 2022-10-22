@@ -1,17 +1,11 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
-import M from 'materialize-css/dist/js/materialize.min.js';
-import { deleteUser } from '../../actions/userActions';
 import { setCurrent } from '../../actions/userActions';
 
-const UserItems = ({user, deleteUser, setCurrent}) => {
+const UserItems = ({user, setCurrent}) => {
     const auth = useSelector((state) => state.auth.user);
 
-//   const onDelete = () => {
-//     deleteUser(user._id);
-//     M.toast({html: `${user.name} deleted from technician list`});
-//   }
   return (
     <li className='collection-item'>
         <div> 
@@ -31,8 +25,7 @@ const UserItems = ({user, deleteUser, setCurrent}) => {
 }
 
 UserItems.propTypes = {
-    user: PropTypes.object.isRequired,
-    deleteUser: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired
 }
 
-export default connect(null, {deleteUser, setCurrent})(UserItems)
+export default connect(null, { setCurrent})(UserItems)

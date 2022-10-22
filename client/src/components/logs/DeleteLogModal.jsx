@@ -19,7 +19,6 @@ const DeleteLogModal = ({deleteLogs}) => {
     <div id='delete-log-modal' className='modal' style={modalStyle}>
         <h5 style={{padding: '3rem 1rem ', textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete this log?</h5>
 
-        {/* <p style={{textAlign: 'center', paddingBottom: '2rem'}}>Are you sure you want to delete this log?</p> */}
 
         <div>
         {(auth.role === 'Admin') ? 
