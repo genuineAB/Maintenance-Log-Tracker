@@ -19,7 +19,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
             email: user.email,
             userId: user._id
         }
-
+        
         resendOTP(resend);
         M.toast({html: 'Code Sent. Please Check your email'})
     

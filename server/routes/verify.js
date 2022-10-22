@@ -59,7 +59,7 @@ const sendOTPVerificationEmail = async ({id, email, firstName, lastName}, res) =
         const salt = await bcrypt.genSalt(10);
         const hashedOTP = await bcrypt.hash(otp.toString(), salt);
 
-        console.log(hashedOTP);
+        console.log(id);
         let verify = new Verify ({
             userId: id,
             token: hashedOTP,
@@ -179,12 +179,12 @@ router.post('/resend',
                 return res.status(400).json({msg: "Token Not Found"});
             }
 
-            const {_id} = userOTPVerification[0]._id;
-            await Verify.findByIdAndDelete(_id);
-
-           
-            let user = await User.findOne({email});
-            console.log(user)
+            
+            await Verify.findOneAndDelete({_id: userOTPVerification.id, userId});
+            
+            
+            let user = await User.findOne({email}).select('email firstName lastName');
+            console.log(user.id)
             
             await sendOTPVerificationEmail(user);
 

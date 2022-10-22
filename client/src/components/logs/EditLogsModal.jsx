@@ -66,6 +66,9 @@ const EditLogModal = ({updateLogs, current}) => {
                         <option value='' disabled style={{fontSize: '1.2rem'}}>
                             Select Technician
                         </option >
+                        <option value=''  >
+                            None
+                        </option >
                         <TechSelectOption />
 
                     </select>
