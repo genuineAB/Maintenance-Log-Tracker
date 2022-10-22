@@ -2,3 +2,4 @@ node_modules
 .env
 config.json
 default.json
+production.json
