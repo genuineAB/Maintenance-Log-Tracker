@@ -1,0 +1,10 @@
+{
+    
+    "HOST": "smtp.gmail.com",
+    "BASE_URL": "http://localhost:5000/api/",
+    "SERVICE": "gmail",
+    "EMAIL_PORT": 587,
+    "SECURE": true,
+    "USER": "maintenancelogs88@gmail.com",
+    "PASS": "#maintenance007"
+}
