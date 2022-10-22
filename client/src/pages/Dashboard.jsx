@@ -21,9 +21,9 @@ const Dashboard = () => {
     return (
         <div>
             <AppNavbar />
-            <SearchLog />
             <div className='container'>
                 
+                <SearchLog />
                 <Logs />
                 <EditLogsModal />
                 <AddBtn />

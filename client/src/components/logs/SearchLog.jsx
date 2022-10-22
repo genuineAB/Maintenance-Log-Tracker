@@ -7,20 +7,25 @@ const SearchLog = ({searchLogs}) => {
     const auth = useSelector((state) => state.auth);
     
    
-    const text = useRef('');
+    let text = useRef('');
 
     const onChange = e => {
         searchLogs(text.current.value);
     }
+  
     if(auth.user && !auth.loading){
         return (
-        
-            <form className="input-field"  style={{width: '50%'}}>
-                <div className="input-field" >
-                    <input id="search" type="search" placeholder='Search Logs...' ref={text} onChange={onChange} />
-                    <i className="material-icons">close</i>
+
+            <div className="wrap">
+                <div className="search">
+                    <button type="submit" className=" searchButton">
+                            <i className="fa fa-search"></i>
+                        </button>
+                    <input type="text" className="searchTerm" placeholder="Search Logs... " ref={text} onChange={onChange}/>
                 </div>
-            </form>
+            </div>
+        
+           
         )
     }
       

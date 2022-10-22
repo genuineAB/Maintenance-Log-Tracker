@@ -66,7 +66,7 @@ const logReducer = (state=initialState, action) => {
             }
 
         case SEARCH_LOGS:
-            console.log(action.payload)
+            
             return{
                 ...state,
                 logs: action.payload

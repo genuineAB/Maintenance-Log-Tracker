@@ -107,10 +107,14 @@ export const searchLogs = (text) => async dispatch => {
       setLoading();
    
       const res = await axios.get(`/api/logs?q=${text}`);
-      
+      let filteredLogs = res.data;
+      filteredLogs = filteredLogs.filter(log => {
+        const regex = new RegExp(`${text}`, 'gi');
+        return log.message.match(regex) || log.technician.match(regex) || log.addedBy.match(regex) || log.updatedBy.match(regex) });
+        
       dispatch({
           type: SEARCH_LOGS,
-          payload: res.data
+          payload: filteredLogs
       })
   
   
