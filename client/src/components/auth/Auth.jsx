@@ -161,7 +161,7 @@ const Auth = ({register, login}) => {
             setEmail('');
             setPassword('');
             
-            window.location.reload()
+            // window.location.reload()
         }
     
     }
