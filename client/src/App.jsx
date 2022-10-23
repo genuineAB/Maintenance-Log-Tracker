@@ -1,4 +1,5 @@
-import React, {useEffect, Fragment} from 'react';
+import * as React from 'react';
+import {useEffect, Fragment} from 'react';
 import './App.css';
 import Pages from './pages';
 import 'materialize-css/dist/css/materialize.min.css';
