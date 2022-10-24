@@ -42,7 +42,7 @@ router.post('/',
           
             
 
-            const secret = config.get('jwtSecret') + user.hashed_password;
+            const secret = process.env.jwtSecret + user.hashed_password;
             
             const payload = {
                 email,
@@ -108,7 +108,7 @@ router.get('/:id/:token', async (req, res) => {
             return res.status(400).send("Invalid User Id");
         }
 
-        const secret = config.get('jwtSecret') + user.hashed_password;
+        const secret = process.env.jwtSecret + user.hashed_password;
 
 
     try {
@@ -161,7 +161,7 @@ router.post('/:id/:token',
             return res.status(400).send(message);
         }
 
-        const secret = config.get('jwtSecret') + user.hashed_password;
+        const secret = process.env.jwtSecret + user.hashed_password;
         
 
     try {

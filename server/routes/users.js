@@ -7,6 +7,7 @@ const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 
 
@@ -161,7 +162,7 @@ router.post('/',
                 }
             }
             
-            jwt.sign(payload, config.get('jwtSecret'), {
+            jwt.sign(payload, process.env.jwtSecret, {
                 expiresIn: 36000
             }, (err, token) => {
                 if(err) throw err;
