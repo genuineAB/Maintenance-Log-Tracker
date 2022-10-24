@@ -3,3 +3,5 @@ node_modules
 default.json
 production.json
 /client/build
+# Local Netlify folder
+.netlify

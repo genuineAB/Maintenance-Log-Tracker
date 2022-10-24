@@ -1,6 +1,6 @@
 // Create an instance of a server
 const express = require('express');
-const connectDB = require('../config/db');
+const connectDB = require('./config/db');
 require('dotenv').config();
 const path = require('path');
 const app = express();
@@ -32,6 +32,7 @@ app.use('/api/verify', require('./routes/verify'));
 //Serve static assets in production
 
 __dirname = path.resolve()
+console.log(express.static('/client/build'));
 if(process.env.NODE_ENV === 'production'){
     //
     app.use(express.static('/client/build'));
