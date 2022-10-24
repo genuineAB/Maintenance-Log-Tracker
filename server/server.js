@@ -5,6 +5,26 @@ require('dotenv').config();
 const path = require('path');
 const app = express();
 
+const whitelist = [
+
+    "https://maintenance-app-logs.netlify.app",
+    
+    "http://localhost:3000",
+  ]
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'), false)
+      }
+    },
+  }
+  
+  
+  // Enable CORS
+  app.use(cors(corsOptions));
+
 //Connect DB
 connectDB();
 

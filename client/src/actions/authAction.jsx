@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import setAuthToken from '../authToken/setAuthToken';
+import {baseURL} from '../utils/constant';
 
 import {
     REGISTER_SUCCESS,
@@ -24,7 +25,7 @@ export const register = (auth) => async (dispatch) => {
     }
     
     try {
-      const res = await axios.post('/api/users', auth, config);
+      const res = await axios.post(baseURL+'/api/users', auth, config);
       localStorage.setItem('token', res.data.token);
       dispatch({
         type: REGISTER_SUCCESS,
@@ -47,7 +48,7 @@ export const loadUser = () => async (dispatch) => {
         
     }
     try {
-        const res = await axios.get('/api/auth');
+        const res = await axios.get(baseURL+'/api/auth');
 
         dispatch({
         type: USER_LOADED,
@@ -66,7 +67,7 @@ export const login = (auth) => async (dispatch, formData) => {
     }
    
     try {
-    const res = await axios.post('/api/auth', auth, config);
+    const res = await axios.post(baseURL+'/api/auth', auth, config);
     localStorage.setItem('token', res.data.token)
     
     dispatch({
