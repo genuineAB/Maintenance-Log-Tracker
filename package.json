@@ -2,7 +2,7 @@
   "name": "maintenance-log-tracker",
   "version": "1.0.0",
   "description": "A Maintenance Log Tracker App",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server/server.js",
     "server": "nodemon server.js",
@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.7",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
