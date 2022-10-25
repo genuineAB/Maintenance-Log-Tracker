@@ -2,6 +2,7 @@ import {
     GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS, RESET_PASSWORD
 } from './types';
 import axios from 'axios';
+import {baseURL} from '../utils/constant';
 
 
 //Get Users
@@ -9,7 +10,7 @@ export const getUsers = () => async dispatch => {
     try {
       setLoading();
   
-      const res = await axios.get('/api/users');
+      const res = await axios.get(baseURL+'/api/users');
   
       dispatch({
           type: GET_USERS,
@@ -35,7 +36,7 @@ export const getUsers = () => async dispatch => {
     try {
         setLoading();
 
-        const res = await axios.post('/api/users', FormData, config);
+        const res = await axios.post(baseURL+'/api/users', FormData, config);
 
         dispatch({
             type: ADD_USER,
@@ -53,7 +54,7 @@ export const getUsers = () => async dispatch => {
 export const getSingleUser = (id) => async dispatch => {
 
     try {
-      const res = await axios.get(`/api/users/${id}`);
+      const res = await axios.get(baseURL+`/api/users/${id}`);
       dispatch({
           type: GET_USER,
           payload: res.data
@@ -80,7 +81,7 @@ export const getSingleUser = (id) => async dispatch => {
     try {
         
 
-        const res = await axios.post('/api/verify', FormData, config);
+        const res = await axios.post(baseURL+'/api/verify', FormData, config);
         setLoading();
         
         dispatch({
@@ -108,7 +109,7 @@ export const getSingleUser = (id) => async dispatch => {
     try {
         
 
-        const res = await axios.post('/api/verify/resend', FormData, config);
+        const res = await axios.post(baseURL+'/api/verify/resend', FormData, config);
         setLoading();
         
         dispatch({
@@ -138,7 +139,7 @@ export const updateUser = (formData) => async dispatch => {
 
     setLoading()
     try {
-      const res = await axios.patch(`/api/users/${formData.id}`, formData, config);
+      const res = await axios.patch(baseURL+`/api/users/${formData.id}`, formData, config);
       dispatch({
           type: UPDATE_USER,
           payload: res.data
@@ -165,7 +166,7 @@ export const resetPassword = FormData => async dispatch => {
     try {
         
 
-        const res = await axios.post('/api/forgotpassword', FormData, config);
+        const res = await axios.post(baseURL+'/api/forgotpassword', FormData, config);
         setLoading();
         
         dispatch({
@@ -187,7 +188,7 @@ export const resetPassword = FormData => async dispatch => {
   export const deleteUser = (id) => async dispatch => {
     setLoading();
     try {
-        await axios.delete(`/api/users/${id}`);
+        await axios.delete(baseURL+`/api/users/${id}`);
         
         dispatch({
             type: DELETE_USER,

@@ -2,14 +2,14 @@ import {
     GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING
 } from './types';
 import axios from 'axios';
-
+import {baseURL} from '../utils/constant';
 
 //Get Users
 export const getUsers = () => async dispatch => {
     try {
       setLoading();
   
-      const res = await axios.get('/api/subUsers');
+      const res = await axios.get(baseURL+'/api/subUsers');
   
       dispatch({
           type: GET_USERS,
@@ -35,7 +35,7 @@ export const getUsers = () => async dispatch => {
     try {
         setLoading();
 
-        const res = await axios.post('/api/subUsers', FormData, config);
+        const res = await axios.post(baseURL+'/api/subUsers', FormData, config);
 
         dispatch({
             type: ADD_USER,
@@ -53,7 +53,7 @@ export const getUsers = () => async dispatch => {
   //Delete Users
   export const deleteUser = (id) => async dispatch => {
     try {
-        await axios.delete(`/users/${id}`);
+        await axios.delete(baseURL+`/users/${id}`);
 
         dispatch({
             type: DELETE_USER,
