@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 require('dotenv').config();
 const path = require('path');
 const app = express();
+const cors = require('cors');
 
 const whitelist = [
 
