@@ -53,7 +53,6 @@ router.post('/',
 
             
             const link = process.env.baseURL+`/api/forgotpassword/${user.id}/${token}`;
-            console.log(link)
             // // Send Email
             // step 1
             let transporter = nodemailer.createTransport({
