@@ -12,7 +12,8 @@ const whitelist = [
     
     "http://localhost:3000",
     "http://localhost:5000",
-    "https://maintenanceloggerapp.herokuapp.com"
+    "https://maintenanceloggerapp.herokuapp.com",
+    "https://maintenanceloggerapp.herokuapp.com/api/verify"
     
   ]
   const corsOptions = {

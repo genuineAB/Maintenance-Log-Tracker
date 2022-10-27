@@ -11,11 +11,9 @@ import {USER_LOADED, AUTH_ERROR} from '../../actions/types'
 
 const AppNavbar = ({icon, title}) => {
   const auth = useSelector((state) => state.auth);
-  console.log(auth)
   const dispatch = useDispatch();
   
   useEffect(() => {
-    // loadUser();
     const loadUser = async() => {
       if(localStorage.token){
         setAuthToken(localStorage.token);

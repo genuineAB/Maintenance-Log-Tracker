@@ -19,7 +19,7 @@ const Pages = () => {
         }
         try {
         const res = await axios.get(baseURL+"/api/auth");
-            // console.log("Got Here")
+        
         dispatch({
             type: USER_LOADED,
             payload: res.data,
