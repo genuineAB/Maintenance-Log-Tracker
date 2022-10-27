@@ -7,7 +7,7 @@ import { verifyUser } from '../../actions/userActions';
 import { resendOTP } from '../../actions/userActions';
 import { clearErrors } from '../../actions/userActions';
 
-const Verify = ({verifyUser, resendOTP, clearErrors}) => {
+const Verify = ({verifyUser, resendOTP}) => {
     const user = useSelector((state) => state.auth.user);
     // const error = useSelector((state) => state.user.error)
 
@@ -19,7 +19,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
             email: user.email,
             userId: user._id
         }
-        
+
         resendOTP(resend);
         M.toast({html: 'Code Sent. Please Check your email'})
     
@@ -65,8 +65,8 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
     }
 
     if (user === null || !user){
-        <PreLoader />
-        window.location.reload(false);
+       return <PreLoader />
+        // window.location.reload(false);
     }
     return (
         <div style={{margin: '20% 10%'}} >

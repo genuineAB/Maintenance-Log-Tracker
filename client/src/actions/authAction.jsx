@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import setAuthToken from '../authToken/setAuthToken';
-import {baseURL} from '../utils/constant';
+import { baseURL } from '../utils/constant';
 
 import {
     REGISTER_SUCCESS,
@@ -17,7 +17,7 @@ import {
 
 
 // Register A User
-export const register = (auth) => async (dispatch) => {
+export const register = (formData) => async (dispatch) => {
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export const register = (auth) => async (dispatch) => {
     }
     
     try {
-      const res = await axios.post(baseURL+'/api/users', auth, config);
+      const res = await axios.post(baseURL+'/api/users', formData, config);
       localStorage.setItem('token', res.data.token);
       dispatch({
         type: REGISTER_SUCCESS,
@@ -59,7 +59,7 @@ export const loadUser = () => async (dispatch) => {
     }
 };
 
-export const login = (auth) => async (dispatch, formData) => {
+export const login = (formData) => async (dispatch) => {
     const config = {
     headers: {
         'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ export const login = (auth) => async (dispatch, formData) => {
     }
    
     try {
-    const res = await axios.post(baseURL+'/api/auth', auth, config);
+    const res = await axios.post(baseURL+'/api/auth', formData, config);
     localStorage.setItem('token', res.data.token)
     
     dispatch({

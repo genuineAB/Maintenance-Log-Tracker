@@ -11,6 +11,7 @@ const whitelist = [
     "https://maintenance-app-logs.netlify.app",
     
     "http://localhost:3000",
+    
   ]
   const corsOptions = {
     origin: function (origin, callback) {
@@ -52,8 +53,6 @@ app.use('/api/verify', require('./routes/verify'));
 
 //Serve static assets in production
 
-__dirname = path.resolve()
-console.log(express.static('/client/build'));
 if(process.env.NODE_ENV === 'production'){
     //
     app.use(express.static('/client/build'));

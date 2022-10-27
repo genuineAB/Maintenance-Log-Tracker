@@ -13,10 +13,12 @@ import SingleUserModal from "../components/users/SingleUserModal";
 import DeleteLogModal from "../components/logs/DeleteLogModal";
 import DeleteUserModal from "../components/users/DeleteUserModal";
 
+
 const Dashboard = () => {
     React.useEffect(() => {
         //Initialize materialize JS
         M.AutoInit();
+
       })
     return (
         <div>

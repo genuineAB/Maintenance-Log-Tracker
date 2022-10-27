@@ -56,9 +56,12 @@ const AddLogModal = ({addLogs}) => {
                 <div className='row'>
                 <div className='input-field'>
                     <select name="technician" value={technician} className='browser-default' onChange={e => setTech(e.target.value)}>
-                        <option value='' disabled>
+                        <option value='' disabled style={{fontSize: '1.2rem'}}>
                             Select Technician
                         </option>
+                        <option value=''  >
+                            None
+                        </option >
                         <TechSelectOption />
 
                     </select>

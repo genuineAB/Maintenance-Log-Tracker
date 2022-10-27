@@ -21,9 +21,8 @@ const initialState = {
 
 const authReducer = (state=initialState, action) => {
   switch (action.type) {
-
+    
     case USER_LOADED:
-        // console.log(action.payload);
         return {
             ...state,
             isAuthenticated: true,
@@ -32,6 +31,7 @@ const authReducer = (state=initialState, action) => {
         }
 
     case SET_LOADING: {
+        
         return {
             ...state,
             loading: true
@@ -41,7 +41,7 @@ const authReducer = (state=initialState, action) => {
 
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-        // localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('token', action.payload.token);
         // console.log(action.payload);
         return {
             ...state,

@@ -52,7 +52,7 @@ router.post('/',
             const token = jwt.sign(payload, secret, {expiresIn: '10min'});
 
             
-            const link = `http://localhost:5000/api/forgotpassword/${user.id}/${token}`;
+            const link = procees.env.baseURL+`/api/forgotpassword/${user.id}/${token}`;
 
             // // Send Email
             // step 1

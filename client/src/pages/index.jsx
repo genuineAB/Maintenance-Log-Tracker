@@ -7,6 +7,7 @@ import setAuthToken from "../authToken/setAuthToken";
 import axios from 'axios';
 import PreLoader from "../components/layout/Preloader";
 import { USER_LOADED, AUTH_ERROR } from "../actions/types";
+import { baseURL } from "../utils/constant";
 
 const Pages = () => {
     const auth = useSelector((state) => state.auth);
@@ -17,8 +18,8 @@ const Pages = () => {
         setAuthToken(localStorage.token);
         }
         try {
-        const res = await axios.get("/api/auth");
-    
+        const res = await axios.get(baseURL+"/api/auth");
+            // console.log("Got Here")
         dispatch({
             type: USER_LOADED,
             payload: res.data,

@@ -123,7 +123,7 @@ const Auth = ({register, login}) => {
             setOrganization('');
         }
         
-        window.location.reload(false)
+        // window.location.reload(false)
     }
 
     const onLogIn = (e) => {

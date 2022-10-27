@@ -41,7 +41,6 @@ router.post('/',
         return res.status(400).json({ errors: errors.array() });
         } 
         const {email, hashed_password} = req.body;
-        
         try {
             let user = await User.findOne({email});
 
@@ -72,6 +71,7 @@ router.post('/',
                 if(err) throw err;
                 res.json({ token });
             });
+            
 
         } catch (error) {
             console.error(error.message);

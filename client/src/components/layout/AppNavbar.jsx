@@ -3,15 +3,37 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
 import PreLoader from './Preloader';
 import { LOGOUT } from '../../actions/types';
-import {loadUser} from '../../actions/authAction';
+// import {loadUser} from '../../actions/authAction';
+import axios from 'axios';
+import setAuthToken from '../../authToken/setAuthToken';
+import { baseURL } from '../../utils/constant';
+import {USER_LOADED, AUTH_ERROR} from '../../actions/types'
 
 const AppNavbar = ({icon, title}) => {
   const auth = useSelector((state) => state.auth);
+  console.log(auth)
+  const dispatch = useDispatch();
   
-  const dispatch = useDispatch()
   useEffect(() => {
-    loadUser();
-
+    // loadUser();
+    const loadUser = async() => {
+      if(localStorage.token){
+        setAuthToken(localStorage.token);
+        
+    }
+    try {
+        const res = await axios.get(baseURL+'/api/auth');
+  
+        dispatch({
+        type: USER_LOADED,
+        payload: res.data
+        });
+    } catch (err) {
+        dispatch({ type: AUTH_ERROR });
+    }
+    }
+    loadUser()
+    //eslint-disable-next-line
   }, []);
 
   if((auth.user === null) || (auth.loading)){
