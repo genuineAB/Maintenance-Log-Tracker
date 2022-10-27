@@ -175,7 +175,7 @@ router.post('/:id/:token',
 
         await User.updateOne({_id: id}, {hashed_password: password});
 
-        message = "Password Reset Successfully";
+        message = "Password Reset Successfully. Please sign in with your new password";
         await open(process.env.frontendBaseURL);
         return res.status(200).send(message);
         
