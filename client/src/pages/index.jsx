@@ -19,7 +19,7 @@ const Pages = () => {
         }
         try {
         const res = await axios.get(baseURL+"/api/auth");
-        
+
         dispatch({
             type: USER_LOADED,
             payload: res.data,
@@ -37,7 +37,6 @@ const Pages = () => {
         verify = auth.user.verified
     }
     
-    // verify = true;
     useEffect(() => {
         getUser();
         // eslint-disable-next-line
