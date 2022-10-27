@@ -42,7 +42,7 @@ const Verify = ({verifyUser, resendOTP}) => {
             }
             
             verifyUser(verify);
-            window.location.reload();
+            window.location.reload(false);
             ////Need to Figure out how not to move to next Line Until Until Previous Line Completes Operation
             
             
