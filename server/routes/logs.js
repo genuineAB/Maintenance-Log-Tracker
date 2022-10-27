@@ -100,7 +100,10 @@ router.post('/', auth,
                 <p>
                 ${firstName} ${lastName} wants you to attend to the task below: 
                 </p>
-                <p> ${message} </p>
+                <p> 
+                <a href=${process.env.frontendBaseURL}> ${message} </a>
+                </p>
+                <br>
                 <br>
             
                 <p>
@@ -208,7 +211,9 @@ router.patch('/:id', auth, async (req, res) => {
                 <p>
                 ${firstName} ${lastName} wants you to attend to the task below: 
                 </p>
-                <p> ${message} </p>
+                <p> 
+                <a href=${process.env.frontendBaseURL}> ${message} </a>
+                </p>
                 <br>
             
                 <p>

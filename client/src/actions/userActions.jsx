@@ -175,6 +175,7 @@ export const resetPassword = FormData => async dispatch => {
         });
 
     } catch (error) {
+        console.log(error)
         dispatch({
             type: USER_ERROR,
             payload: error.response.data

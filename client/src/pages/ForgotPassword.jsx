@@ -34,14 +34,15 @@ const ForgotPassword = ({resetPassword, setCurrent}) => {
                 email
             }
             resetPassword(reset);
-            navigate('/resetpassword');
+            M.toast({html: `A password reset link as been sent to ${email}`});
+            navigate('/');
         }
         
         
     }
     
     return (
-        <div style={{margin: '20% 10%'}} >
+        <div style={{margin: '10%'}} >
             
             <form className='form-1 form-style '>
                 <h3>

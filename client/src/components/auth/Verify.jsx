@@ -65,8 +65,8 @@ const Verify = ({verifyUser, resendOTP}) => {
     }
 
     if (user === null || !user){
-       return <PreLoader />
-        // window.location.reload(false);
+        <PreLoader />
+        window.location.reload(false);
     }
     return (
         <div style={{margin: '20% 10%'}} >

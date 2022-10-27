@@ -7,7 +7,7 @@ const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-
+const open = require('open');
 
 
 
@@ -52,8 +52,8 @@ router.post('/',
             const token = jwt.sign(payload, secret, {expiresIn: '10min'});
 
             
-            const link = procees.env.baseURL+`/api/forgotpassword/${user.id}/${token}`;
-
+            const link = process.env.baseURL+`/api/forgotpassword/${user.id}/${token}`;
+            console.log(link)
             // // Send Email
             // step 1
             let transporter = nodemailer.createTransport({
@@ -176,7 +176,9 @@ router.post('/:id/:token',
         await User.updateOne({_id: id}, {hashed_password: password});
 
         message = "Password Reset Successfully";
-        return res.status(200).send(message)
+        await open(process.env.frontendBaseURL);
+        return res.status(200).send(message);
+        
         
     } catch (error) {
         console.error(error.message);
