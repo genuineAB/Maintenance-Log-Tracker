@@ -27,9 +27,19 @@ const LogSchema = mongoose.Schema({
         required: true
     },
 
+    completed: {
+        type: Boolean,
+        default: false
+    },
+
     updatedBy: {
         type: String,
         default: 'None'
+    },
+
+    logDescription: {
+        type: String,
+        default: 'No Description Added'
     },
 
     created: {

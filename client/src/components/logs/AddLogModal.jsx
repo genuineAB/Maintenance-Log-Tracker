@@ -12,6 +12,7 @@ const AddLogModal = ({addLogs}) => {
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
     const [technician, setTech] = useState('');
+    const [logDescription, setLogDescription]  = useState('');
 
     const addedBy = auth.user.firstName + ' ' + auth.user.lastName;
     const onSubmit = () => {
@@ -23,7 +24,8 @@ const AddLogModal = ({addLogs}) => {
                 message,
                 attention,
                 technician,
-                addedBy
+                addedBy,
+                logDescription
             }
             addLogs(newLog);
 
@@ -32,7 +34,8 @@ const AddLogModal = ({addLogs}) => {
             setMessage('');
             setTech('');
             setAttention(false);
-            window.location.reload();
+            setLogDescription('');
+            // window.location.reload();
         }
         
     }
@@ -45,10 +48,20 @@ const AddLogModal = ({addLogs}) => {
             <div className='row'>
                 <div className='input-field'>
                     <input type='text' name='message' value={message} onChange={e => setMessage(e.target.value)} />
-                    <label htmlFor='message'className='active'>
-                        Log Message
+                    <label htmlFor='message'>
+                        Log Title
                     </label>
                 </div>
+            </div>
+            <div className="row">
+                <form className="col s12">
+                <div className="row">
+                    <div className="input-field col s12">
+                    <textarea id="logDescription" className="materialize-textarea" maxLength={500} value={logDescription} onChange={e => setLogDescription(e.target.value)}></textarea>
+                    <label htmlFor="textarea1">Description of Log</label>
+                    </div>
+                </div>
+                </form>
             </div>
 
             {(auth.user.role === 'Admin') ? 

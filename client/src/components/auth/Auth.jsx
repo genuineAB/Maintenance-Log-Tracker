@@ -196,7 +196,7 @@ const Auth = ({register, login}) => {
             <div className='btn-items'>
                 <button className="waves-effect waves-light btn modal-trigger btn-2" href="#modal1" >New Account</button>
 
-                <div id="modal1" className="modal form-2">
+                <div id="modal1" className="modal form-2" style={{modalStyle}}>
                     <div className="modal-content">
                         <h4>Sign Up</h4>
                         <p>It's Quick and Easy</p>
@@ -258,7 +258,10 @@ const Auth = ({register, login}) => {
   )
 }
 
-
+const modalStyle = {
+    width: '60%',
+    height: '100%'
+}
 
 Auth.propTypes = {
     register: PropTypes.func.isRequired,

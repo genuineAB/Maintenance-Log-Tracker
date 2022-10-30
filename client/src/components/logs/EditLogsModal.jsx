@@ -7,16 +7,19 @@ import { updateLogs } from '../../actions/logAction';
 
 const EditLogModal = ({updateLogs, current}) => {
     const auth = useSelector((state) => state.auth.user);
+    const log = useSelector((state) => state.log.current);
     
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
     const [technician, setTech] = useState('');
+    const [logDescription, setLogDescription] = useState('');
     
     useEffect(() => {
         if(current){
             setMessage(current.message);
             setAttention(current.attention);
             setTech(current.technician);
+            setLogDescription(current.logDescription);
         };
     }, [current])
 
@@ -31,7 +34,9 @@ const EditLogModal = ({updateLogs, current}) => {
                 message,
                 attention,
                 technician,
-                updatedBy
+                updatedBy,
+                logDescription,
+                completed:log.completed
             }
             
             updateLogs(updateLog);
@@ -42,6 +47,7 @@ const EditLogModal = ({updateLogs, current}) => {
             setMessage('');
             setTech('');
             setAttention(false);
+            setLogDescription('');
             
             window.location.reload();
         }
@@ -58,6 +64,16 @@ const EditLogModal = ({updateLogs, current}) => {
                     <input type='text' name='message' value={message} onChange={e => setMessage(e.target.value)} disabled={auth.role === 'Guest'}/>
                     <label htmlFor="message" className='active'>Log Message</label>
                 </div>
+            </div>
+            <div className="row">
+                <form className="col s12">
+                <div className="row">
+                    <div className="input-field col s12">
+                    <textarea id="editLogDescription" className="materialize-textarea" maxLength={500} value={logDescription} onChange={e => setLogDescription(e.target.value)}></textarea>
+                    <label htmlFor="textarea1" className='active'>Description of Log</label>
+                    </div>
+                </div>
+                </form>
             </div>
             {(auth.role === 'Admin') ? 
                 (

@@ -12,6 +12,7 @@ import UserListModal from "../components/users/UserListModal";
 import SingleUserModal from "../components/users/SingleUserModal";
 import DeleteLogModal from "../components/logs/DeleteLogModal";
 import DeleteUserModal from "../components/users/DeleteUserModal";
+import CompletedLogsModal from "../components/logs/CompletedLogsModal";
 
 
 const Dashboard = () => {
@@ -32,6 +33,7 @@ const Dashboard = () => {
                 <AddLogModal />
                 <AddUserModal />
                 <UserListModal />
+                <CompletedLogsModal />
                 <SingleUserModal />
                 <DeleteLogModal />
                 <DeleteUserModal />

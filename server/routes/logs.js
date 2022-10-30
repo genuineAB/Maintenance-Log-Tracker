@@ -35,7 +35,7 @@ router.post('/', auth,
         return res.status(400).json({ errors: errors.array() });
         }
     
-        const {message, attention, addedBy,} = req.body;
+        const {message, attention, addedBy, logDescription} = req.body;
         let {technician} = req.body;
 
         
@@ -70,6 +70,7 @@ router.post('/', auth,
                 attention,
                 technician: `${(technician === 'None') ? 'None' : technician[0] + ' ' + technician[1]}`,
                 addedBy,
+                logDescription,
                 organizationNumber: req.user.organizationNumber
             })
 
@@ -127,12 +128,13 @@ router.post('/', auth,
 // @desc Update Maintenance Log
 //@access Private
 router.patch('/:id', auth, async (req, res) => {
-    const {message, attention, updatedBy } = req.body;
+    const {message, attention, updatedBy, completed, logDescription } = req.body;
     let {technician} = req.body
     const {organizationNumber, firstName, lastName} = req.user;
 
-    
+
     //Create Contact Field Object
+    let tech;
     const logFields = {};
     if (message){
         logFields.message = message;
@@ -141,34 +143,7 @@ router.patch('/:id', auth, async (req, res) => {
         logFields.attention = attention;
     }
     if (technician){
-        logFields.technician = technician;
-    }
-    if(updatedBy){
-        logFields.updatedBy = updatedBy;
-    }
-
-    if(!logFields.attention){
-        logFields.attention = false
-    }
-    logFields.updated = Date.now();
-   
-    try {
-        let log = await Logs.findById(req.params.id);
-
-        let user = await Users.findOne({organizationNumber: organizationNumber, role: 'Admin'}).select('email firstName lastName');
-
-        let tech;
-
-        if(!user){
-            return res.status(400).send("User Not Found");
-        }
-
-        if((!log) || (log.organizationNumber !== req.user.organizationNumber)){
-            return res.status(404).json({msg: "Log not found"})
-        }
-        
-        
-        if((technician === null) || (technician.trim().length === 0)){
+        if((technician === null) || (technician.trim().length === 0) || technician==='None'){
             technician = 'None'
         }
         else{
@@ -180,7 +155,41 @@ router.patch('/:id', auth, async (req, res) => {
                 return res.status(400).json({msg: "Invalid Technician Selection"});
             }
         };
+        logFields.technician = `${(technician === 'None') ? 'None' : technician[0] + ' ' + technician[1]}`;
+    }
+    if(updatedBy){
+        logFields.updatedBy = updatedBy;
+    }
 
+    if(!logFields.attention){
+        logFields.attention = false
+    }
+    if(logDescription){
+        logFields.logDescription = logDescription;
+    }
+    if(completed){
+        logFields.completed = completed;
+    }
+    if(!logFields.completed){
+        logFields.completed = false;
+    }
+    logFields.updated = Date.now();
+   
+    try {
+        let log = await Logs.findById(req.params.id);
+
+        let user = await Users.findOne({organizationNumber: organizationNumber, role: 'Admin'}).select('email firstName lastName');
+
+        
+
+        if(!user){
+            return res.status(400).send("User Not Found");
+        }
+
+        if((!log) || (log.organizationNumber !== req.user.organizationNumber)){
+            return res.status(404).json({msg: "Log not found"})
+        }
+        
         log = await Logs.findByIdAndUpdate(
             req.params.id,
             { $set: logFields },
@@ -196,31 +205,59 @@ router.patch('/:id', auth, async (req, res) => {
                     pass: process.env.PASSWORD
                 }
             });
-
-            //Step 2
-            let mailOptions = {
-                from: process.env.EMAIL,
-                to: `${(technician !== 'None') ? `${tech.email}` : `${user.email}`}`,
-                cc: `${(technician !== 'None') ? `${user.email}` : ''}`,
-                subject: `${!attention ? '' : 'Very Urgent: '} Updated Task Assignment`,
-                html: `<p>
-                <b>Hi ${(technician !== 'None') ? `${technician[0]} ${technician[1]}` : `${user.firstName} ${user.lastName}` }, </b>
-                </p>
-                <br>
-                <br>
-                <p>
-                ${firstName} ${lastName} wants you to attend to the task below: 
-                </p>
-                <p> 
-                <a href=${process.env.frontendBaseURL}> ${message} </a>
-                </p>
-                <br>
             
-                <p>
-                Maintenance Logger Team
-                </p>
-                `
+            //Step 2
+            let mailOptions;
+            if(completed === true){
+                mailOptions = {
+                    from: process.env.EMAIL,
+                    to: `${user.email}`,
+                    subject: 'Task Marked As Completed',
+                    html: `<p>
+                    <b>Hi ${user.firstName} ${user.lastName}, </b>
+                    </p>
+                    <br>
+                    <br>
+                    <p>
+                    ${firstName} ${lastName} has marked the task below as completed: 
+                    </p>
+                    <p> 
+                    <a href=${process.env.frontendBaseURL}> ${message} </a>
+                    </p>
+                    <br>
+                
+                    <p>
+                    Maintenance Logger Team
+                    </p>
+                    `
+                }
             }
+            else{
+                mailOptions = {
+                    from: process.env.EMAIL,
+                    to: `${(technician !== 'None') ? `${tech.email}` : `${user.email}`}`,
+                    cc: `${(technician !== 'None') ? `${user.email}` : ''}`,
+                    subject: `${!attention ? '' : 'Very Urgent: '} Updated Task Assignment`,
+                    html: `<p>
+                    <b>Hi ${(technician !== 'None') ? `${technician[0]} ${technician[1]}` : `${user.firstName} ${user.lastName}` }, </b>
+                    </p>
+                    <br>
+                    <br>
+                    <p>
+                    ${firstName} ${lastName} wants you to attend to the task below: 
+                    </p>
+                    <p> 
+                    <a href=${process.env.frontendBaseURL}> ${message} </a>
+                    </p>
+                    <br>
+                
+                    <p>
+                    Maintenance Logger Team
+                    </p>
+                    `
+                }
+            }
+            
 
             //Step 3
             transporter.sendMail(mailOptions);

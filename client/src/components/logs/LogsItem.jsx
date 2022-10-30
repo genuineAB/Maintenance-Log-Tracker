@@ -5,7 +5,10 @@ import Moment from 'react-moment';
 import {  setCurrent } from '../../actions/logAction';
 
 const LogsItem = ({log, setCurrent}) => {
+
   const user = useSelector((state) => state.auth.user);
+  
+   
   
   return (
     <li className='collection-item'>
@@ -34,12 +37,21 @@ const LogsItem = ({log, setCurrent}) => {
               <Moment format='MMM Do YYYY, h:mm:ss a'>{log.updated}</Moment>
             </span>
             </span>): <span></span>}
+           
             {(user.role === 'Admin') ? (
               <a href='#delete-log-modal' className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
+                
               <i className='material-icons grey-text'>delete</i>
               </a>
             ) : <span></span>}
-            
+            <span >
+              <a  href='#completed-logs-modal'  style={{pointerEvents: `${user.role === 'Admin' || (user.firstName + ' ' + user.lastName === log.technician)? '' : 'none'}`}} className='modal-trigger secondary-content' onClick={() => {setCurrent(log)}}>
+                  
+                  <input  type='checkbox' className='filled-in' checked={log.completed} value={log.completed} />
+                  <span style={{padding: '0 20px 0 25px'}}>Completed</span>
+              </a>
+            </span>
+             
         </div>
         
     </li>
@@ -50,5 +62,7 @@ LogsItem.propTypes ={
     log: PropTypes.object.isRequired,
     setCurrent: PropTypes.func.isRequired
 }
+
+
 
 export default connect(null, { setCurrent})(LogsItem);
