@@ -101,7 +101,7 @@ router.post('/', auth,
                     let mailOptions = {
                         from: process.env.EMAIL,
                         to: email,
-                        subject: 'Verify Your Email Address',
+                        subject: 'Invitation to Join Maintenance Logs App',
                         html: `Hi ${firstName} ${lastName}, <br>
                         <p> ${admin.firstName} ${admin.lastName} is inviting you to join ${admin.organizationName} as a ${role} </p>
                         <p>Click on the link below and enter  <b> ${otp} </b> to verify your account if you accept this invitation</p>
