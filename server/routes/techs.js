@@ -17,89 +17,7 @@ const getRandomNumber = (min, max) => {
     };
 
 
-//Send OTP for Email Verification
 
-const sendOTPVerificationEmail = async ({id, email, firstName, lastName}, res) => {
-    
-    try {
-        const otp = getRandomNumber(333651, 999234);
-
-        // // Send Email
-        // step 1
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD
-            }
-        });
-
-        //Step 2
-        let mailOptions = {
-            from: process.env.EMAIL,
-            to: email,
-            subject: 'Verify Your Email Address',
-            html: `Hi ${firstName} ${lastName}, <br> <br> 
-            <p>Enter <b> ${otp} </b> in the maintenance logger application to verify your email address and complete your registration.
-            </p>
-            <br> 
-            <p> 
-            This OTP expires in one hour. 
-            </p>
-            <br>
-            <p>
-            Maintenance Logger Team
-            </p>`
-        }
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedOTP = await bcrypt.hash(otp.toString(), salt);
-
-        let verify = new Verify ({
-            userId: id,
-            token: hashedOTP,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 3600000
-
-        });
-
-        await verify.save();
-        //Step 3
-        transporter.sendMail(mailOptions);
-
-        console.log("Email Sent");
-        // res.json({
-        //     status: 'Pending',
-        //     message: 'Verification OTP Email Sent',
-        //     data: {
-        //         userId: _id,
-        //         email
-        //     }
-        // })
-
-    } catch (error) {
-        console.log(error.message);
-        // res.json({
-        //     status: 'Failed',
-        //     message: error.message
-        // })
-        
-    }
-}
-
-
-// @route GET api/tech
-// @desc Get All technician
-//@access Private
-// router.get('/', auth, async(req, res) => {
-//     try {
-//         let techs = await Tech.find({tech: req.user.id}).select('firstName lastName email occupation employment_type role');
-//         res.json({techs});
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send("Server Error")
-//     }
-// });
 
 // @route POST api/tech
 // @desc Add Technician
@@ -128,7 +46,7 @@ router.post('/', auth,
 
 
         const {firstName, lastName, hashed_password, phoneNumber, email, occupation, employment_type, role} = req.body;
-        
+        let admin = req.user;
 
         try {
             let userEmail = await User.findOne({email});
@@ -156,13 +74,73 @@ router.post('/', auth,
             })
 
             //Encrypting Password
-            const salt = await bcrypt.genSalt(10);
+            let salt = await bcrypt.genSalt(10);
             user.hashed_password = await bcrypt.hash(hashed_password, salt);
 
-            sendOTPVerificationEmail(user);
+            // sendOTPVerificationEmail(user, admin);
 
             await user.save();
 
+            //Send Invitation
+            //Send OTP for Email Verification
+                
+                
+                    const otp = getRandomNumber(333651, 999234);
+
+                    // // Send Email
+                    // step 1
+                    let transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.EMAIL,
+                            pass: process.env.PASSWORD
+                        }
+                    });
+
+                    //Step 2
+                    let mailOptions = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: 'Verify Your Email Address',
+                        html: `Hi ${firstName} ${lastName}, <br>
+                        <p> ${admin.firstName} ${admin.lastName} is inviting you to join ${admin.organizationName} as a ${role} </p>
+                        <p>Click on the link below and enter  <b> ${otp} </b> to verify your account if you accept this invitation</p>
+                        <br> 
+                        <p> 
+                            <a href=${process.env.frontendBaseURL}> Accept Invitation </a>
+                        </p>
+
+                        <p> 
+                        This OTP expires in ten minutes. 
+                        </p>
+                        <br>
+                        <p>
+                        Maintenance Logger Team
+                        </p>`
+                    }
+
+                    salt = await bcrypt.genSalt(10);
+                    const hashedOTP = await bcrypt.hash(otp.toString(), salt);
+
+                    let verify = new Verify ({
+                        userId: user.id,
+                        token: hashedOTP,
+                        createdAt: Date.now(),
+                        expiresAt: Date.now() + 600000
+
+                    });
+
+                    await verify.save();
+                    //Step 3
+                    transporter.sendMail(mailOptions);
+
+                    res.json({
+                        status: 'Pending',
+                        message: 'Verification OTP Email Sent',
+                        
+                    })
+
+              
             const payload ={
                 user: {
                     organizationNumber: req.user.organizationNumber,

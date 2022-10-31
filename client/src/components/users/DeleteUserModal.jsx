@@ -7,9 +7,9 @@ const DeleteUserModal = ({deleteUser}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user.current);
 
-    const onDelete = () => {
+    const onDelete = async () => {
         
-        deleteUser(user._id);
+        await deleteUser(user._id);
         M.toast({html: 'User Deleted'});
         window.location.reload(false);
       }

@@ -52,7 +52,7 @@ const SingleUserModal = ({updateUser, current}) => {
         return res.test(String(phone));
     }
     
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if(firstName.trim().length === 6){
             M.toast({html: 'Please Enter First Name'});
         }
@@ -83,7 +83,7 @@ const SingleUserModal = ({updateUser, current}) => {
                 employment_type: employmentType,
                 phoneNumber: phone
             }
-            updateUser(userForm);
+            await updateUser(userForm);
             M.toast({html: 'User Updated'});
             window.location.reload(false);
             

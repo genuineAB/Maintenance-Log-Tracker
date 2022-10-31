@@ -123,12 +123,12 @@ router.post('/',
 
                 if(expiresAt < Date.now()){
                     await Verify.findByIdAndDelete(userId);
-                    return res.status(400).json({msg: "Code has expired, Please Request Again"});
+                    return res.status(400).send("Code has expired, Please Request Again");
                 } else {
                    const validOTP = await bcrypt.compare(otp.toString(), hashedOTP);
                    
                    if(!validOTP){
-                    return res.status(400).json({msg: "Invalid code passed. Check your inbox"});
+                    return res.status(400).send( "Invalid code passed. Check your inbox");
                    } else {
                     await User.updateOne({_id: userId}, {verified: true});
                     

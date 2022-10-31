@@ -14,7 +14,7 @@ const CompletedLogsModal = ({updateLogs}) => {
     }, [log])
 
   
-    const onUpdate = () => {
+    const onUpdate = async () => {
         
         console.log(log)
         console.log(log._id)
@@ -26,7 +26,7 @@ const CompletedLogsModal = ({updateLogs}) => {
         message: log.message,
         attention: log.attention
         }
-        updateLogs(updateLog);
+        await updateLogs(updateLog);
         window.location.reload(false);
     }
 

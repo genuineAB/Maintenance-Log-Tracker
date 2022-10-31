@@ -15,7 +15,7 @@ const AddLogModal = ({addLogs}) => {
     const [logDescription, setLogDescription]  = useState('');
 
     const addedBy = auth.user.firstName + ' ' + auth.user.lastName;
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if(message.trim().length === 0 ){
             M.toast({html: 'Please enter a message and tech'});
         }
@@ -27,7 +27,7 @@ const AddLogModal = ({addLogs}) => {
                 addedBy,
                 logDescription
             }
-            addLogs(newLog);
+            await addLogs(newLog);
 
             M.toast({html: `Log Added By ${auth.user}`});
             //Clear Fields
@@ -35,7 +35,7 @@ const AddLogModal = ({addLogs}) => {
             setTech('');
             setAttention(false);
             setLogDescription('');
-            // window.location.reload();
+            window.location.reload();
         }
         
     }

@@ -7,10 +7,10 @@ const DeleteLogModal = ({deleteLogs}) => {
     const auth = useSelector((state) => state.auth.user);
     const log = useSelector((state) => state.log.current);
 
-    const onDelete = () => {
+    const onDelete = async () => {
         
         console.log("Got Here")
-        deleteLogs(log._id);
+        await deleteLogs(log._id);
         M.toast({html: 'Log Deleted'});
         window.location.reload(false);
       }

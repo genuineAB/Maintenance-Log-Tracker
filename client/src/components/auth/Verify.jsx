@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, useSelector } from 'react-redux';
 import PreLoader from '../layout/Preloader';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -7,31 +7,48 @@ import { verifyUser } from '../../actions/userActions';
 import { resendOTP } from '../../actions/userActions';
 import { clearErrors } from '../../actions/userActions';
 
-const Verify = ({verifyUser, resendOTP}) => {
+const Verify = ({verifyUser, resendOTP, clearErrors}) => {
     const user = useSelector((state) => state.auth.user);
-    // const error = useSelector((state) => state.user.error)
+    const auth = useSelector((state) => state.user.error);
+    console.log(auth)
 
     const [otp, setOtp] = useState('');
 
-    const onResend = (e) => {
+    useEffect(() => {
+        if(auth === 'Code has expired, Please Request Again'){
+            M.toast({html: 'Code has expired, Please Request Again', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        else if(auth === 'Invalid code passed. Check your inbox'){
+            M.toast({html: 'Invalid code passed. Check your inbox', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        else if(auth  === 'Account Invalid or has already been veified. Sign Up or Log In'){
+            M.toast({html: 'Account Invalid or has already been veified. Sign Up or Log In', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        else{
+            clearErrors()
+        }
+        
+    },[auth, clearErrors])
+
+    const onResend = async (e) => {
         e.preventDefault();
         const resend = {
             email: user.email,
             userId: user._id
         }
 
-        resendOTP(resend);
-        M.toast({html: 'Code Sent. Please Check your email'})
+        await resendOTP(resend);
+        M.toast({html: 'Code Sent. Please Check your email', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
     
     }
 
-    const onConfirm = (e) => {
+    const onConfirm =async (e) => {
         e.preventDefault();
         if(otp.trim().length === 0){
-            M.toast({html: 'OTP Field cannot be Empty'});
+            M.toast({html: 'OTP Field cannot be Empty', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if((otp.trim().length !== 6)){
-            M.toast({html: 'OTP must be 6 numbers'});
+            M.toast({html: 'OTP must be 6 numbers', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         
         else{
@@ -41,23 +58,8 @@ const Verify = ({verifyUser, resendOTP}) => {
                 
             }
             
-            verifyUser(verify);
-            window.location.reload(false);
-            ////Need to Figure out how not to move to next Line Until Until Previous Line Completes Operation
+            await verifyUser(verify);
             
-            
-            // if(error.msg === 'Code has expired, Please Request Again'){
-            //     M.toast({html: 'Code has expired, Please Request Again'});
-            // }
-            // else if(error.msg === 'Invalid code passed. Check your inbox'){
-            //     M.toast({html: 'Invalid code passed. Check your inbox'});
-                
-            // }
-            // else{
-            //     clearErrors();
-            //     setOtp('');
-            //     window.location.reload(false);
-            // }
             
         }
         

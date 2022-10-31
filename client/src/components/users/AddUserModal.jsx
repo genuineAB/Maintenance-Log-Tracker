@@ -36,7 +36,7 @@ const AddUserModal = ({addUser}) => {
         return res.test(String(phone));
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if(phone.trim().length === 0 ){
             M.toast({html: 'Please Enter Phone Number'});
         }
@@ -80,7 +80,7 @@ const AddUserModal = ({addUser}) => {
                 phoneNumber: phone,
                 email
             }
-            addUser(newUser);
+            await addUser(newUser);
             
 
             M.toast({html: `${firstName} ${''} ${lastName} was added`});

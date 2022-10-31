@@ -2,14 +2,15 @@ import React, {useEffect, useState} from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { register } from '../../actions/authAction';
 import { login } from '../../actions/authAction';
 import { useNavigate } from 'react-router-dom';
+import { clearErrors } from '../../actions/authAction';
 
 
-const Auth = ({register, login}) => {
-    // const auth = useSelector((state) => state.auth.error);
+const Auth = ({register, login, clearErrors}) => {
+    const auth = useSelector((state) => state.auth.error);
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,8 +23,23 @@ const Auth = ({register, login}) => {
     const navigate = useNavigate();
     useEffect(() => {
         M.AutoInit();
+
         
-    },[] );
+        if(auth === "Email and Password don't match"){
+                    
+            M.toast({html: "Email and Password don't match", classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        else if(auth === "User Not Found"){
+                    
+            M.toast({html: "User Not Found. Sign in with registered email or Create A New User", classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        else if(auth === "User already exist"){
+            M.toast({html: "User Already Exist. Sign In or Create an account with a different Email", classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
+        }
+        clearErrors()
+        
+    },[auth, clearErrors]);
+
 
      
 
@@ -55,7 +71,7 @@ const Auth = ({register, login}) => {
         navigate('/forgotpassword');
     }
 
-    const onSignUp = (e) => {
+    const onSignUp = async (e) => {
         e.preventDefault();
         if(organization.trim().length === 0 ){
             M.toast({html: 'Please Enter Organization Name'});
@@ -65,39 +81,39 @@ const Auth = ({register, login}) => {
         }
         
         else if(firstName.trim().length === 0){
-            M.toast({html: 'Please Enter First Name'});
+            M.toast({html: 'Please Enter First Name', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(firstName.trim().length > 25){
-            M.toast({html: 'Name should be a maximum of 25 characters'});
+            M.toast({html: 'Name should be a maximum of 25 characters', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(lastName.trim().length === 0){
-            M.toast({html: 'Please Enter Last Name'});
+            M.toast({html: 'Please Enter Last Name', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(lastName.trim().length > 25){
-            M.toast({html: 'Name should be a maximum of 25 characters'});
+            M.toast({html: 'Name should be a maximum of 25 characters', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(phoneNumber.trim().length === 0){
-            M.toast({html: 'Please Enter Phone Number'});
+            M.toast({html: 'Please Enter Phone Number', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(validateNigNum(phoneNumber) === false && validatePhoneNumInt(phoneNumber) === false &&validatePhoneNumNig(phoneNumber) === false){
-            M.toast({html: 'Invalid Phone Number. Please Enter a valid phone number'});
+            M.toast({html: 'Invalid Phone Number. Please Enter a valid phone number', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(email.trim().length === 0){
-            M.toast({html: 'Please enter an email'});
+            M.toast({html: 'Please enter an email', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(validateEmail(email) === false){
-            M.toast({html: 'Invalid Email. Please Enter a valid email address'})
+            M.toast({html: 'Invalid Email. Please Enter a valid email address', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
         }
         else if(password.trim().length < 8 ){
             
-            M.toast({html: 'Password Must be a minimum of 8 characters'});
+            M.toast({html: 'Password Must be a minimum of 8 characters', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
             
         }
         else if(validatePassword(password) === false){
-            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character'})
+            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
         }
         else if(password !== password2){
-            M.toast({html: 'Password do not match'});
+            M.toast({html: 'Password do not match', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
             
         }
         
@@ -111,7 +127,7 @@ const Auth = ({register, login}) => {
                 organizationName: organization
             }
             
-            register(signUp);
+            await register(signUp);
 
             //Clear Fields
             setEmail('');
@@ -126,29 +142,25 @@ const Auth = ({register, login}) => {
         // window.location.reload(false)
     }
 
-    const onLogIn = (e) => {
+    const onLogIn = async (e) => {
         e.preventDefault();
         if(email.trim().length === 0){
-            M.toast({html: 'Please enter an email'});
+            M.toast({html: 'Please enter an email', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
         else if(validateEmail(email) === false){
-            M.toast({html: 'Invalid Email. Please Enter a valid email address'})
+            M.toast({html: 'Invalid Email. Please Enter a valid email address', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
         }
         else if(password.trim().length < 8 ){
             
-            M.toast({html: 'Password Must be a minimum of 8 characters'});
+            M.toast({html: 'Password Must be a minimum of 8 characters', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
             
         }
         else if(validatePassword(password) === false){
-            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character'})
+            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
         }
-        // I have to fix this
+        
 
-        // else if(auth === "Email and Password don't match"){
-                   
-        //             M.toast({html: "Email and Password don't match"});
-        //         }
-
+        
         
         else{
             const logIn = {
@@ -156,12 +168,10 @@ const Auth = ({register, login}) => {
                 hashed_password: password
             }
 
-            login(logIn);
+            await login(logIn);
             //Clear Fields
             setEmail('');
             setPassword('');
-            
-            // window.location.reload()
         }
     
     }
@@ -183,6 +193,7 @@ const Auth = ({register, login}) => {
                 </div>
                 <div className="input-field col s6">
                     <input placeholder="Password" id="password" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
+                    
                 </div>
                 <div>
                     <button className="btn btn-1 waves-light" type="submit" name="action" onClick={onLogIn}>Sign In
@@ -196,7 +207,7 @@ const Auth = ({register, login}) => {
             <div className='btn-items'>
                 <button className="waves-effect waves-light btn modal-trigger btn-2" href="#modal1" >New Account</button>
 
-                <div id="modal1" className="modal form-2" style={{modalStyle}}>
+                <div id="modal1" className="modal form-2" style={{width: '80%', height:'80%'}}>
                     <div className="modal-content">
                         <h4>Sign Up</h4>
                         <p>It's Quick and Easy</p>
@@ -232,11 +243,14 @@ const Auth = ({register, login}) => {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="input-field col s6">
+                                <div className="input-field col s12">
                                 <input id="password_2" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
-                                <label htmlFor="password" >Password</label>
+                                <label htmlFor="password" >Password: 8-15 Characters. Must include atleast a number, a special character, a lowercase, and an uppercase letter</label>
                                 </div>
-                                <div className="input-field col s6">
+                               
+                            </div>
+                            <div className='row'>
+                                <div className="input-field col s12">
                                 <input id="confirm_password" type="password" className="validate" value={password2} onChange={e => setConfirmPassword(e.target.value)}/>
                                 <label htmlFor="password" >Confirm Password</label>
                                 </div>
@@ -268,4 +282,4 @@ Auth.propTypes = {
     login: PropTypes.func.isRequired
 }
 
-export default connect(null, {register, login})(Auth)
+export default connect(null, {register, login, clearErrors})(Auth)

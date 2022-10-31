@@ -24,7 +24,7 @@ const EditLogModal = ({updateLogs, current}) => {
     }, [current])
 
     const updatedBy = auth.firstName + ' ' + auth.lastName;
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if(message.trim().length === 0 ){
             M.toast({html: 'Please enter a message'});
         }
@@ -39,7 +39,7 @@ const EditLogModal = ({updateLogs, current}) => {
                 completed:log.completed
             }
             
-            updateLogs(updateLog);
+            await updateLogs(updateLog);
             M.toast({html: 'Logs Updated'});
             
 
@@ -48,9 +48,12 @@ const EditLogModal = ({updateLogs, current}) => {
             setTech('');
             setAttention(false);
             setLogDescription('');
-            
-            window.location.reload();
+
+            window.location.reload()
+
         }
+
+        
         
     }
     
