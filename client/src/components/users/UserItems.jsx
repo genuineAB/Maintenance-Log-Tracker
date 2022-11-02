@@ -12,7 +12,7 @@ const UserItems = ({user, setCurrent}) => {
             <a href='#get-user-modal' className='black-text modal-trigger' onClick={() => {setCurrent(user)}}>
                 <i className="fa-solid fa-circle-user" /> {' '}{user.firstName} {' '} {user.lastName}
             </a>
-            {(auth.role === 'Admin') ? (
+            {(auth.role === 'Admin' && user.role !=='Admin') ? (
                 <a href='#delete-user-modal' className='secondary-content modal-trigger' onClick={() => {setCurrent(user)}}>
                 <i className='material-icons grey-text'>delete</i>
               </a>
