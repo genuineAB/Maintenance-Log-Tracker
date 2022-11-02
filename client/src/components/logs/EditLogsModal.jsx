@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import TechSelectOption from '../users/TechSelectOption';
 import { updateLogs } from '../../actions/logAction';
+import {getLogs} from '../../actions/logAction';
 
-const EditLogModal = ({updateLogs, current}) => {
+const EditLogModal = ({updateLogs, current, getLogs}) => {
     const auth = useSelector((state) => state.auth.user);
     const log = useSelector((state) => state.log.current);
     
@@ -49,7 +50,7 @@ const EditLogModal = ({updateLogs, current}) => {
             setAttention(false);
             setLogDescription('');
 
-            window.location.reload()
+            getLogs();
 
         }
 
@@ -124,8 +125,8 @@ const EditLogModal = ({updateLogs, current}) => {
 }
 
 const modalStyle = {
-    widht: '75%',
-    height: '75%'
+    widht: '60%',
+    height: '60%'
 }
 
 EditLogModal.propTypes = {
@@ -138,4 +139,4 @@ const mapStateToProps = (state) => {
         current: state.log.current
     }
 }
-export default connect(mapStateToProps, {updateLogs})(EditLogModal);
+export default connect(mapStateToProps, {updateLogs, getLogs})(EditLogModal);

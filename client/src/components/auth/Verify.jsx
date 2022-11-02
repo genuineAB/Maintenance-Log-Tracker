@@ -7,13 +7,13 @@ import { verifyUser } from '../../actions/userActions';
 import { resendOTP } from '../../actions/userActions';
 import { clearErrors } from '../../actions/userActions';
 
+
 const Verify = ({verifyUser, resendOTP, clearErrors}) => {
     const user = useSelector((state) => state.auth.user);
     const auth = useSelector((state) => state.user.error);
-    console.log(auth)
 
     const [otp, setOtp] = useState('');
-
+    
     useEffect(() => {
         if(auth === 'Code has expired, Please Request Again'){
             M.toast({html: 'Code has expired, Please Request Again', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
@@ -24,9 +24,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
         else if(auth  === 'Account Invalid or has already been veified. Sign Up or Log In'){
             M.toast({html: 'Account Invalid or has already been veified. Sign Up or Log In', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
         }
-        else{
-            clearErrors()
-        }
+        
         
     },[auth, clearErrors])
 
@@ -42,6 +40,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
     
     }
 
+    
     const onConfirm =async (e) => {
         e.preventDefault();
         if(otp.trim().length === 0){
@@ -59,8 +58,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
             }
             
             await verifyUser(verify);
-            
-            
+            window.location.reload()
         }
         
         
@@ -71,7 +69,7 @@ const Verify = ({verifyUser, resendOTP, clearErrors}) => {
         window.location.reload(false);
     }
     return (
-        <div style={{margin: '20% 10%'}} >
+        <div style={{margin: '10%'}} >
             
             <form className='form-1 form-style '>
                 <h3>

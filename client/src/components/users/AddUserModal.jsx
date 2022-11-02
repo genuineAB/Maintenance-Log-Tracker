@@ -1,9 +1,10 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { addUser } from '../../actions/otherUserAction';
+import {getUsers} from '../../actions/userActions';
 
-const AddUserModal = ({addUser}) => {
+const AddUserModal = ({addUser, getUsers}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -13,13 +14,19 @@ const AddUserModal = ({addUser}) => {
     const [occupation, setOccupation] = useState('');
     const [employmentType, setEmploymentType] = useState('');
 
+    
     const validateEmail = (email) => {
         const res = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return res.test(String(email).toLowerCase());
     };
 
-    const validatePassword = (password) => {
-        const res =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+    // const validatePassword = (password) => {
+    //     const res =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+    //     return res.test(String(password));
+    // }
+
+    const lengthOfPassword = (password) => {
+        const res = /^.{8,15}$/;
         return res.test(String(password));
     }
 
@@ -63,8 +70,8 @@ const AddUserModal = ({addUser}) => {
             M.toast({html: 'Password Must be a minimum of 8 characters'});
             
         }
-        else if(validatePassword(password) === false){
-            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character'})
+        else if(lengthOfPassword(password) === false){
+            M.toast({html: 'Invalid Password. Must be between 8 - 15 Characters'});
         }
         else if(validateNigNum(phone) === false && validatePhoneNumInt(phone) === false && validatePhoneNumNig(phone) === false){
             M.toast({html: 'Invalid Phone Number. Please Enter a valid phone number'});
@@ -95,6 +102,7 @@ const AddUserModal = ({addUser}) => {
             setEmploymentType('');
 
         }
+        getUsers();
         
     }
     
@@ -129,7 +137,15 @@ const AddUserModal = ({addUser}) => {
                     <div className="row">
                         <div className="input-field col s12">
                         <input id="password_2" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
-                        <label htmlFor="password" >Password</label>
+                        <label htmlFor="password" >
+                            <span>
+                                {(password.length )> 0 ? 
+                                <span style={{display: 'inline', paddingRight: '80px'}}>8-15 Characters
+                                    {lengthOfPassword(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', paddingRight: '10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                </span> :
+                                <span>Password</span>}
+                            </span>
+                        </label>
                         </div>
                     </div>
                     <div className="input-field col s6">
@@ -180,4 +196,4 @@ const modalStyle = {
 
 
 
-export default connect(null, {addUser})(AddUserModal);
+export default connect(null, {addUser, getUsers})(AddUserModal);

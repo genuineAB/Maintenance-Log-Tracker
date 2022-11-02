@@ -3,8 +3,10 @@ import { connect, useSelector } from 'react-redux/es/exports';
 import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { updateUser } from '../../actions/userActions';
+import {getUsers} from '../../actions/userActions';
+import { clearCurrent } from '../../actions/userActions';
 
-const SingleUserModal = ({updateUser, current}) => {
+const SingleUserModal = ({updateUser, current, getUsers, clearCurrent}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user);
     
@@ -37,6 +39,7 @@ const SingleUserModal = ({updateUser, current}) => {
             setEmploymentType(current.employment_type);
             setPhone(current.phoneNumber);
         };
+        // getUsers();
     }, [current])
 
     const validatePhoneNumNig = (phone) => {
@@ -85,8 +88,8 @@ const SingleUserModal = ({updateUser, current}) => {
             }
             await updateUser(userForm);
             M.toast({html: 'User Updated'});
-            window.location.reload(false);
             
+            // getUsers();
 
             //Clear Fields
             setFirstName('');
@@ -98,6 +101,9 @@ const SingleUserModal = ({updateUser, current}) => {
             setOccupation('');
             setOrgName('');
 
+            
+            window.location.reload()
+            
             
         }
         
@@ -235,7 +241,7 @@ const SingleUserModal = ({updateUser, current}) => {
 }
 
 const modalStyle = {
-    width: '75%',
+    width: '60%',
     height: '75%'
 }
 
@@ -252,25 +258,9 @@ const mapStateToProps = (state) => {
         current: state.user.current
     }
 }
-export default connect(mapStateToProps, {updateUser})(SingleUserModal);
+export default connect(mapStateToProps, {updateUser, getUsers, clearCurrent})(SingleUserModal);
 
 
 
-// const SingleUserModal = () => {
-//   return (
-//     <div id='get-user-modal' className='modal' style={{modalStyle}}>
-//         <div className='modal-content'>
-//             <h4>User Details</h4>
-//         </div>
-//     </div>
-//   )
-// }
-
-// const modalStyle = {
-//     widht: '40%',
-//     height: '40%'
-// }
-
-// export default SingleUserModal
 
 

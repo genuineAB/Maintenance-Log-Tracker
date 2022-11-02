@@ -133,21 +133,19 @@ router.post('/',
                     await User.updateOne({_id: userId}, {verified: true});
                     
                     await Verify.findByIdAndDelete(_id);
-                    res.json({
-                        status: "VERIFIED",
-                        message: "User Email Verified Successfully"
-                    })
+                    return res.status(200).send("User Email Verified Successfully");
+                    
                    }
                 }
 
         }
         
         
-    } catch (error) {
-        
-        console.error(error.message);
-        res.status(500).send('Server Error');
-    }
+        } catch (error) {
+            
+            console.error(error.message);
+            return res.status(500).send('Server Error');
+        }
 });
 
 // @route GET api/verify
@@ -184,15 +182,14 @@ router.post('/resend',
             
             
             let user = await User.findOne({email}).select('email firstName lastName');
-            console.log(user.id)
             
             await sendOTPVerificationEmail(user);
 
         }
          catch (error) {
         
-        console.error(error.message);
-        res.status(500).send('Server Error');
+            console.error(error.message);
+            return res.status(500).send('Server Error');
     }
 })
 

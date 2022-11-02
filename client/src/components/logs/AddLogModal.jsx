@@ -1,13 +1,15 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addLogs } from '../../actions/logAction';
 import TechSelectOption from '../users/TechSelectOption';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import {getLogs} from '../../actions/logAction';
 
-const AddLogModal = ({addLogs}) => {
+const AddLogModal = ({addLogs, getLogs}) => {
     const auth = useSelector((state) => state.auth);
+
     
     const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
@@ -35,7 +37,7 @@ const AddLogModal = ({addLogs}) => {
             setTech('');
             setAttention(false);
             setLogDescription('');
-            window.location.reload();
+            getLogs();
         }
         
     }
@@ -110,11 +112,11 @@ AddLogModal.propTypes = {
 }
 
 const modalStyle = {
-    widht: '75%',
-    height: '75%'
+    widht: '60%',
+    height: '60%'
 }
 
 
 
 
-export default connect(null, {addLogs})(AddLogModal);
+export default connect(null, {addLogs, getLogs})(AddLogModal);

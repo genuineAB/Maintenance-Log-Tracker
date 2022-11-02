@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, connect } from 'react-redux';
 import { updateLogs } from '../../actions/logAction';
+import {getLogs} from '../../actions/logAction';
 
-const CompletedLogsModal = ({updateLogs}) => {
+const CompletedLogsModal = ({updateLogs, getLogs}) => {
     const auth = useSelector((state) => state.auth.user);
     const log = useSelector((state) => state.log.current);
     const [completed, setCompleted] = useState(false);
@@ -10,15 +11,13 @@ const CompletedLogsModal = ({updateLogs}) => {
     useEffect(() => {
         if(log){
             setCompleted(log.completed);
+        
         };
     }, [log])
 
   
     const onUpdate = async () => {
         
-        console.log(log)
-        console.log(log._id)
-        console.log(completed)
         const updateLog = {
         id: log._id,
         completed,
@@ -27,7 +26,7 @@ const CompletedLogsModal = ({updateLogs}) => {
         attention: log.attention
         }
         await updateLogs(updateLog);
-        window.location.reload(false);
+        getLogs()
     }
 
 
@@ -45,7 +44,7 @@ const CompletedLogsModal = ({updateLogs}) => {
         <div>
         {(auth.role === 'Admin' || auth.role==='Technician') ? 
             (<div className='modal-footer' style={{paddingRight:'3rem'}}>
-            <button className="modal-close btn red waves-effect waves-light" type="submit" name="action" onClick={onUpdate} >Mark As Done
+            <button className="modal-close btn red waves-effect waves-light" type="submit" name="action" onClick={onUpdate} >Send
                 <i className="material-icons right">send</i>
             </button>
             </div>) : <span></span> }
@@ -59,13 +58,9 @@ const CompletedLogsModal = ({updateLogs}) => {
 
 const modalStyle = {
     width: '40%',
-    height: '20%'
+    height: '30%'
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         current: state.log.current
-//     }
-// }
 
-export default connect(null, {updateLogs})(CompletedLogsModal)
+
+export default connect(null, {updateLogs, getLogs})(CompletedLogsModal)

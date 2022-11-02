@@ -1,5 +1,5 @@
 import {
-    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS, RESET_PASSWORD
+    GET_USERS, ADD_USER, DELETE_USER, USER_ERROR, SET_LOADING, UPDATE_USER, GET_USER, SET_CURRENT_USER, VERIFY_USER, CLEAR_ERRORS, RESET_PASSWORD, CLEAR_CURRENT
 } from './types';
 import axios from 'axios';
 import {baseURL} from '../utils/constant';
@@ -145,7 +145,6 @@ export const updateUser = (formData) => async dispatch => {
           payload: res.data
       })
       
-      setLoading();
   
     } catch (error) {
       dispatch({
@@ -175,7 +174,6 @@ export const resetPassword = FormData => async dispatch => {
         });
 
     } catch (error) {
-        console.log(error)
         dispatch({
             type: USER_ERROR,
             payload: error.response.data
@@ -209,6 +207,13 @@ export const setCurrent = (user) => dispatch => {
     dispatch({
         type: SET_CURRENT_USER,
         payload: user
+    })
+}
+
+//Clear Current
+export const clearCurrent = (dispatch) => {
+    dispatch({
+        type: CLEAR_CURRENT
     })
 }
   //Set Loading to True

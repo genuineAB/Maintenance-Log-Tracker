@@ -1,23 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector, connect } from 'react-redux';
 import { deleteLogs } from '../../actions/logAction';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import {getLogs} from '../../actions/logAction';
 
-const DeleteLogModal = ({deleteLogs}) => {
+const DeleteLogModal = ({deleteLogs, getLogs}) => {
     const auth = useSelector((state) => state.auth.user);
     const log = useSelector((state) => state.log.current);
 
+   
     const onDelete = async () => {
         
         console.log("Got Here")
         await deleteLogs(log._id);
         M.toast({html: 'Log Deleted'});
-        window.location.reload(false);
+        getLogs();
       }
 
   return (
     <div id='delete-log-modal' className='modal' style={modalStyle}>
-        <h5 style={{padding: '3rem 1rem ', textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete this log?</h5>
+        <h5 style={{padding: '3rem 1rem ', textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete {(log === null) ? <span></span> : <span>{log.message}</span>}?</h5>
 
 
         <div>
@@ -36,9 +38,9 @@ const DeleteLogModal = ({deleteLogs}) => {
 }
 
 const modalStyle = {
-    width: '40%',
-    height: '20%'
+    width: '35%',
+    height: '30%'
 }
 
 
-export default connect(null, {deleteLogs})(DeleteLogModal)
+export default connect(null, {deleteLogs, getLogs})(DeleteLogModal)

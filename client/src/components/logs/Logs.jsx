@@ -24,9 +24,11 @@ const Logs = ({log : {logs, loading, current}, getLogs}) => {
                 <li className='collection-header'>
                     <h4 className='center'><i className="fa-solid fa-rectangle-list" /> Maintenance Logs</h4>
                 </li>
-                {!loading && logs.length === 0 ? (<p className='center'>No logs to show. Add Logs</p>) : (
-                    logs.map(log => <LogsItem log={log} key={log._id}/>)
-                )}
+                <li className="collection-item" >
+                    {!loading && logs.length === 0 ? (<p className='center'>No logs to show. Add Logs</p>) : (
+                        logs.map(log => <LogsItem log={log} key={log._id}/>)
+                    )}
+                </li>
             </ul>
         )
     }

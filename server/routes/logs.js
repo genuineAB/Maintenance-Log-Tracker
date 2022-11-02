@@ -19,7 +19,7 @@ router.get('/', auth, async (req, res) => {
     }
     catch(error){
         console.error(error.message);
-        res.status(500).send("Server Error");
+        return res.status(500).send("Server Error");
     }
 });
 
@@ -120,7 +120,7 @@ router.post('/', auth,
             return res.json({msg: "Log Added"});
         } catch (error) {
             console.error(error.message);
-            res.status(500).send("Server Error");
+            return res.status(500).send("Server Error");
         }
 });
 
@@ -265,7 +265,7 @@ router.patch('/:id', auth, async (req, res) => {
         res.json(log);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Server Error");
+        return res.status(500).send("Server Error");
         
     };
 });
@@ -291,7 +291,7 @@ router.delete('/:id', auth, async (req, res) => {
         res.json({msg: "Log deleted"});
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Server Error");
+        return res.status(500).send("Server Error");
     }
 });
 

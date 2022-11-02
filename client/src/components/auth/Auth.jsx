@@ -52,6 +52,31 @@ const Auth = ({register, login, clearErrors}) => {
         const res =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
         return res.test(String(password));
     }
+
+    const lowerCase = (password) => {
+        const res = /[a-z\s]+/
+        return res.test(String(password));
+    }
+    const isDigit = (password) => {
+        const res = /[0-9\s]+/
+        return res.test(String(password));
+    }
+
+    const upperCase = (password) => {
+        const res = /[A-Z\s]+/
+        return res.test(String(password));
+    }
+    const specialCharsRegex = (password) => {
+        const res = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+        return res.test(String(password));
+    } 
+
+    const lengthOfPassword = (password) => {
+        const res = /^.{8,15}$/;
+        return res.test(String(password));
+    }
+
+    
     
     const validatePhoneNumNig = (phone) => {
         var res = /^\+?([0-9]{2,3})\)?\d{10}$/;
@@ -73,6 +98,7 @@ const Auth = ({register, login, clearErrors}) => {
 
     const onSignUp = async (e) => {
         e.preventDefault();
+        
         if(organization.trim().length === 0 ){
             M.toast({html: 'Please Enter Organization Name'});
         }
@@ -155,9 +181,7 @@ const Auth = ({register, login, clearErrors}) => {
             M.toast({html: 'Password Must be a minimum of 8 characters', classes:'rounded'}, {inDuration:2000}, {displayLength:4000});
             
         }
-        else if(validatePassword(password) === false){
-            M.toast({html: 'Invalid Password. Must contain at least one lowercase, one uppercase, one numeric digit, and one special character', classes:'rounded'}, {inDuration:2000}, {displayLength:4000})
-        }
+        
         
 
         
@@ -207,7 +231,7 @@ const Auth = ({register, login, clearErrors}) => {
             <div className='btn-items'>
                 <button className="waves-effect waves-light btn modal-trigger btn-2" href="#modal1" >New Account</button>
 
-                <div id="modal1" className="modal form-2" style={{width: '80%', height:'80%'}}>
+                <div id="modal1" className="modal form-2" style={modalStyle}>
                     <div className="modal-content">
                         <h4>Sign Up</h4>
                         <p>It's Quick and Easy</p>
@@ -245,7 +269,38 @@ const Auth = ({register, login, clearErrors}) => {
                             <div className="row">
                                 <div className="input-field col s12">
                                 <input id="password_2" type="password" className="validate" value={password} onChange={e => setPassword(e.target.value)}/>
-                                <label htmlFor="password" >Password: 8-15 Characters. Must include atleast a number, a special character, a lowercase, and an uppercase letter</label>
+                                <label htmlFor="password" >
+                                    <span>{password.length > 0 ? 
+                                    
+                                    <span >
+                                        <span style={{display: 'block'}}> 
+                                            <span style={{display: 'inline', paddingRight: '80px'}}> 1 LowerCase
+                                            {lowerCase(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', padding: '0 10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                            </span> 
+                                            <span style={{display: 'inline', paddingRight: '80px'}}> 1 Number
+                                                {isDigit(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', paddingRight: '10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                            </span> 
+                                            <span style={{display: 'inline', paddingRight: '80px'}}>1 Special Character
+                                                {specialCharsRegex(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', paddingRight: '10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                            </span> 
+                                        </span>
+
+                                        <span style={{display: 'block', paddingBottom: '80px'}}>
+                                            
+                                            <span style={{display: 'inline', paddingRight: '80px'}}>1 UpperCase
+                                                {upperCase(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', paddingRight: '10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                            </span>
+                                            <span style={{display: 'inline', paddingRight: '80px'}}>8-15 Characters
+                                                {lengthOfPassword(password) ? <i className="fa-solid fa-check" style={{color: '#28a745', paddingRight: '10px'}}></i> : <i className="fa-solid fa-xmark" style={{color: 'red', padding: '0 10px'}}></i>}
+                                            </span> 
+                                        </span>
+
+                                    </span>
+                                    : 
+                                    <span>Password </span> }</span>
+                                    
+                                
+                                </label>
                                 </div>
                                
                             </div>
@@ -257,7 +312,7 @@ const Auth = ({register, login, clearErrors}) => {
                             </div>
                             
                             <div className="modal-footer submit-btn">
-                                <button href="#!" className="modal-close waves-effect btn-flat submit-1" onClick={onSignUp}>Sign Up</button>
+                                <button href="#!" className="waves-effect btn-flat submit-1" onClick={onSignUp} style={{fontSize: '1.2rem'}}>Sign Up</button>
                                 <button href="#!" className="modal-close waves-effect btn-flat submit-2">Close</button>
                             </div>
                         </form>
@@ -273,7 +328,7 @@ const Auth = ({register, login, clearErrors}) => {
 }
 
 const modalStyle = {
-    width: '60%',
+    width: '100%',
     height: '100%'
 }
 

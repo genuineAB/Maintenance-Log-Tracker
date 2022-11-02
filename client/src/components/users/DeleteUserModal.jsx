@@ -1,22 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector, connect } from 'react-redux';
 import { deleteUser } from '../../actions/userActions';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import {getUsers} from '../../actions/userActions';
 
-const DeleteUserModal = ({deleteUser}) => {
+const DeleteUserModal = ({deleteUser, getUsers}) => {
     const auth = useSelector((state) => state.auth.user);
     const user = useSelector((state) => state.user.current);
 
+   
     const onDelete = async () => {
         
         await deleteUser(user._id);
         M.toast({html: 'User Deleted'});
-        window.location.reload(false);
+        getUsers();
       }
 
   return (
     <div id='delete-user-modal' className='modal' style={modalStyle}>
-        <h5 style={{padding: '3rem 1rem ', textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete {user === null ? '' : user.name}?</h5>
+        <h5 style={{padding: '3rem 1rem ', textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete {user === null ? '' : (user.firstName + ' ' + user.lastName)}?</h5>
 
 
         <div>
@@ -36,8 +38,8 @@ const DeleteUserModal = ({deleteUser}) => {
 
 const modalStyle = {
     width: '40%',
-    height: '20%'
+    height: '30%'
 }
 
 
-export default connect(null, {deleteUser})(DeleteUserModal)
+export default connect(null, {deleteUser, getUsers})(DeleteUserModal)

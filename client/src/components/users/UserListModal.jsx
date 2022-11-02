@@ -12,7 +12,7 @@ const UserListModal = ({user:{users, loading}, getUsers }) => {
     }, [])
  
   return (
-    <div id='tech-list-modal' className='modal'>
+    <div id='tech-list-modal' className='modal' style={modalStyle}>
         <div className='modal-content'>
             <h4> <i className="fa-solid fa-users" /> {' '} User List</h4>
             <ul className='collection'>
@@ -34,6 +34,11 @@ const mapStateToProps = (state) => {
     return {
         user: state.user
     }
+}
+
+const modalStyle = {
+    width: '60%',
+    height: '60%'
 }
 
 export default connect(mapStateToProps, {getUsers})(UserListModal)
